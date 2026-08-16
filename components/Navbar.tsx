@@ -1,6 +1,7 @@
 "use client";
-
+// Force Turbopack cache invalidation
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Briefcase, Layers, User, MessageSquare } from 'lucide-react';
@@ -39,12 +40,10 @@ export default function Navbar() {
           {/* Logo */}
           <Link 
             href="/" 
-            className="text-lg md:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2 pl-1 md:pl-2"
+            className="flex items-center gap-2 pl-1 md:pl-2"
           >
-            <div className="w-7 h-7 md:w-8 md:h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-sm">
-              <span className="text-base md:text-lg font-black">A</span>
-            </div>
-            Aluxa
+            <Image src="/logo/logo_only.png" alt="Aluxa Logo" width={32} height={32} className="w-7 h-7 md:w-8 md:h-8 object-contain" />
+            <span className="text-lg md:text-2xl font-bold tracking-tight text-slate-900">Aluxa</span>
           </Link>
 
           {/* Desktop Nav */}

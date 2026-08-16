@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/site-config';
 import { GitBranch, Briefcase, Mail, MessageCircle } from 'lucide-react';
@@ -16,12 +17,10 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Link 
               href="/" 
-              className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2 mb-4"
+              className="flex items-center gap-2 mb-4"
             >
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
-                <span className="text-xl font-black">A</span>
-              </div>
-              Aluxa
+              <Image src="/logo/logo_only.png" alt="Aluxa Logo" width={32} height={32} className="w-8 h-8 object-contain" />
+              <span className="text-2xl font-bold tracking-tight text-slate-900">Aluxa</span>
             </Link>
             <p className="text-slate-600 mb-6 max-w-sm">
               Designing and building high-performance, production-ready digital products and websites.
