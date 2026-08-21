@@ -18,9 +18,9 @@ export default function AdminLogoutButton() {
     <button
       onClick={handleLogout}
       id="admin-logout-btn"
-      className="flex items-center gap-1.5 text-xs text-white/40 hover:text-red-400 transition-colors"
+      className="flex items-center gap-1.5 text-xs font-medium text-[#1d1d1f]/50 hover:text-[#e3231c] transition-colors"
     >
-      <LogOut size={11} />
+      <LogOut size={14} />
       Logout
     </button>
   )
