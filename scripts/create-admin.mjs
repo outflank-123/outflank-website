@@ -29,7 +29,8 @@ const SERVICE_ROLE_KEY = env['SUPABASE_SERVICE_ROLE_KEY']
 // ── Admin credentials to create ──────────────────────────────────────────────
 const ADMIN_EMAIL    = 'alam01491625@gmail.com'
 const ADMIN_PASSWORD = 'Alam@123'
-const ADMIN_NAME     = 'Admin'
+const ADMIN_NAME     = 'Alam Super Admin'
+const ADMIN_ROLE     = 'super_admin'
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -78,7 +79,7 @@ async function main() {
     .upsert({
       id: userId,
       full_name: ADMIN_NAME,
-      role: 'super_admin',
+      role: ADMIN_ROLE,
     })
 
   if (profileErr) {

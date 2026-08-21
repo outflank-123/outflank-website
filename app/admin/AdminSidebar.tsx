@@ -8,18 +8,30 @@ import AdminLogoutButton from './AdminLogoutButton'
 
 interface AdminSidebarProps {
   userEmail?: string
+  userRole?: string
 }
 
-export default function AdminSidebar({ userEmail }: AdminSidebarProps) {
+export default function AdminSidebar({ userEmail, userRole = 'admin' }: AdminSidebarProps) {
   const pathname = usePathname()
 
-  const navItems = [
+  let navItems = [
     { href: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
     { href: '/admin/banners', icon: ImageIcon, label: 'Banners' },
     { href: '/admin/leads', icon: Users, label: 'Leads Pipeline' },
     { href: '/admin/categories', icon: Tags, label: 'Categories' },
     { href: '/admin/products', icon: Package, label: 'Products' },
   ]
+
+  if (userRole === 'junior') {
+    navItems = [
+      { href: '/admin/leads', icon: Users, label: 'Leads Pipeline' },
+      { href: '/admin/products', icon: Package, label: 'Products' },
+    ]
+  }
+
+  if (userRole === 'super_admin') {
+    navItems.push({ href: '/admin/users', icon: Users, label: 'Manage Users' })
+  }
 
   return (
     <aside className="w-[260px] shrink-0 bg-white/70 backdrop-blur-2xl border-r border-black/5 flex flex-col h-screen z-20">
@@ -36,7 +48,7 @@ export default function AdminSidebar({ userEmail }: AdminSidebarProps) {
         </Link>
         <div className="mt-3 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/5 border border-black/5">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="text-[10px] font-semibold tracking-widest text-[#1d1d1f]/60 uppercase">Admin Portal</span>
+          <span className="text-[10px] font-semibold tracking-widest text-[#1d1d1f]/60 uppercase">{userRole.replace('_', ' ')} Portal</span>
         </div>
       </div>
 

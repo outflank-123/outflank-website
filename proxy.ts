@@ -27,17 +27,55 @@ export async function proxy(request: NextRequest) {
   // Refresh session — required by @supabase/ssr
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Always allow /admin/login through (no auth check — it IS the login page)
-  if (request.nextUrl.pathname.startsWith('/admin/login')) {
-    return supabaseResponse
+  const isAuthPage = request.nextUrl.pathname.startsWith('/admin/login')
+  const isAdminPage = request.nextUrl.pathname.startsWith('/admin') && !isAuthPage
+
+  // Not logged in -> Redirect to login
+  if (isAdminPage && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/login'
+    return NextResponse.redirect(url)
   }
 
-  // Protect /admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/admin/login'
-      return NextResponse.redirect(url)
+  // Logged in -> Try to access login page -> Redirect to admin dashboard
+  if (isAuthPage && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin'
+    return NextResponse.redirect(url)
+  }
+
+  // RBAC Enforcements
+  if (isAdminPage && user) {
+    const { data: profile } = await supabase
+      .from('admin_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    const role = profile?.role || 'admin' // fallback
+
+    // 1. Junior constraints
+    if (role === 'junior') {
+      const allowedPaths = ['/admin/leads', '/admin/products']
+      const isAllowed = allowedPaths.some(
+        (p) => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(`${p}/`)
+      )
+      
+      // If trying to access dashboard or disallowed route
+      if (!isAllowed || request.nextUrl.pathname === '/admin') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/admin/leads'
+        return NextResponse.redirect(url)
+      }
+    }
+
+    // 2. Admin constraints
+    if (role === 'admin') {
+      if (request.nextUrl.pathname.startsWith('/admin/users')) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/admin'
+        return NextResponse.redirect(url)
+      }
     }
   }
 
