@@ -1,13 +1,15 @@
 <div align="center">
+  <img src="public/logo/outflank-logo.png" alt="Outflank Logo" width="250" />
   
-# 🚀 Aluxa Portfolio
+  # 🚀 Outflank Corporate Gifting
+  
+  **A premium, high-performance corporate gifting e-commerce platform built with Next.js 16, Tailwind CSS v4, and Supabase.**
 
-**A premium, high-performance freelance portfolio built with Next.js and Tailwind CSS.**
-
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-black?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+  [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+  [![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)](https://react.dev/)
+  [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+  [![Supabase](https://img.shields.io/badge/Supabase-DB-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-13-black?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
 
 </div>
 
@@ -15,69 +17,77 @@
 
 ## ✨ Features
 
-- **Extreme Glassmorphism Aesthetic:** A modern, premium UI featuring frosted glass effects, subtle blurs, and floating iOS-style navigation.
-- **Fluid Animations:** Powered by `framer-motion` for buttery-smooth page transitions, scroll effects, and micro-interactions (like spotlight cursors).
-- **Fully Responsive:** Painstakingly crafted to look incredible on ultra-wide desktop monitors down to the smallest mobile phones.
-- **Dynamic Projects Showcase:** A filterable grid of selected works with modern category swiping.
-- **Integrated Backend SMTP:** A fully functioning contact form that securely emails inquiries directly to the developer using `nodemailer`.
+- **Modern Premium Storefront:** A beautiful, responsive user interface designed for corporate clients to explore catalogs and inquire about products.
+- **Admin Dashboard:** A fully protected internal CMS to manage categories, products, banners, and review corporate leads.
+- **Full-Stack Next.js 16 (App Router):** Leveraging Server Components, Server Actions, and dynamic routing for incredible performance.
+- **Supabase Backend:** Secure database integration, storage buckets, and authentication for the admin panel.
+- **Dynamic Catalog:** Browse through different gifting categories like Employee Kits, Tech Accessories, Drinkware, and more.
+- **Lead Capture System:** Built-in modal forms for corporate clients to request quotes and bulk orders directly into the database.
+- **Rich Animations:** Smooth page transitions and micro-interactions powered by `framer-motion`.
 
 ## 🛠️ Tech Stack
 
-- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Framework:** [Next.js 16](https://nextjs.org/)
+- **Language:** TypeScript
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Database & Auth:** [Supabase](https://supabase.com/)
 - **Animations:** [Framer Motion](https://www.framer.com/motion/)
 - **Icons:** [Lucide React](https://lucide.dev/)
-- **Language:** TypeScript
-- **Backend/Mail:** Node.js + Nodemailer
+- **Email:** Node.js + Nodemailer
 
 ## 🚀 Getting Started
 
-Follow these steps to run the portfolio locally on your machine.
+Follow these steps to run the Outflank platform locally on your machine.
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/alam01491625/aluxa.git
-cd aluxa
+git clone https://github.com/outflank12/outflank-website.git
+cd outflank-website
 ```
 
 ### 2. Install dependencies
 ```bash
 npm install
+# or
+yarn install
 ```
 
-### 3. Configure Environment Variables
-Create a `.env` file in the root of the project and add your SMTP credentials to enable the Contact Form:
+### 3. Setup Environment Variables
+Create a `.env` file in the root directory and add your Supabase and Email configurations:
+
 ```env
-SMTP_HOST=your_smtp_host
-SMTP_PORT=465
-SMTP_USER=your_email@domain.com
-SMTP_PASS="your_secure_password"
-SMTP_TO_EMAIL=where_to_receive_emails@gmail.com
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+SMTP_USER=your_email
+SMTP_PASSWORD=your_email_app_password
 ```
 
 ### 4. Run the development server
 ```bash
 npm run dev
+# or
+yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the storefront. 
+To access the admin panel, navigate to `/admin/login`.
 
-## 📱 Live Preview Details
+## 📂 Project Structure
 
-This portfolio contains multiple distinct routes:
-- `/` - The Home Page (Hero, Capabilities, Featured Work)
-- `/about` - About Me, Skills Arsenal, and Process Workflow
-- `/work` - Comprehensive filterable project gallery
-- `/services` - Detailed breakdowns of technical offerings
-- `/contact` - Direct API-integrated inquiry form
+- `app/(storefront)/`: The client-facing corporate gifting website.
+- `app/admin/`: The protected admin dashboard for content management.
+- `app/api/`: API routes for server-side logic (leads, etc).
+- `components/`: Reusable React components (catalog, layout, UI).
+- `lib/supabase/`: Supabase client and server configuration utilities.
+- `scripts/`: Assorted scripts for database migrations, seeding, and bulk uploads.
 
-## ✉️ Contact
+## 📄 License
 
-Built and maintained by **Faqr E Alam**.
-- **Email:** alam01491625@gmail.com
-- **GitHub:** [@itsalam149](https://github.com/itsalam149)
+This project is proprietary and confidential.
 
 ---
 <div align="center">
-  <i>Built with ❤️ using Next.js</i>
+  <i>Built with ❤️ for Outflank Corporate Gifting.</i>
 </div>
