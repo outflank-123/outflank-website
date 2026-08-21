@@ -63,7 +63,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
           {/* Category badge */}
           {product.categories?.name && (
-            <div className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-md border border-black/8 px-3 py-1 text-[10px] font-semibold text-[#6e6e73] uppercase tracking-wide">
+            <div className="absolute top-2 left-2 md:top-3 md:left-3 rounded-full bg-white/90 backdrop-blur-md border border-black/8 px-2 md:px-3 py-0.5 md:py-1 text-[8px] md:text-[10px] font-semibold text-[#6e6e73] uppercase tracking-wide max-w-[80%] truncate">
               {product.categories.name}
             </div>
           )}
@@ -71,15 +71,15 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         </Link>
 
         {/* Content */}
-        <div className="p-5 flex flex-col flex-grow gap-3">
+        <div className="p-3 md:p-5 flex flex-col flex-grow gap-2 md:gap-3">
           <div>
             <Link href={`/catalog/${product.slug}`}>
-              <h3 className="font-semibold text-[#1d1d1f] text-sm leading-tight line-clamp-2 mb-1 hover:text-[#e3231c] transition-colors">
+              <h3 className="font-semibold text-[#1d1d1f] text-xs md:text-sm leading-tight line-clamp-2 mb-1 hover:text-[#e3231c] transition-colors">
                 {product.name}
               </h3>
             </Link>
             {product.short_desc && (
-              <p className="text-xs text-[#6e6e73] line-clamp-2 leading-relaxed">
+              <p className="hidden md:block text-xs text-[#6e6e73] line-clamp-2 leading-relaxed">
                 {product.short_desc}
               </p>
             )}

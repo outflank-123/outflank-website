@@ -15,7 +15,6 @@ const navLinks = [
 
 export default function GiftingNavbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -77,47 +76,9 @@ export default function GiftingNavbar() {
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-full text-slate-800 hover:bg-white/50 transition-colors mr-1"
-            aria-label="Toggle menu"
-            id="navbar-mobile-toggle"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Mobile CTA (optional) or just rely on bottom nav */}
         </div>
       </header>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden">
-          <div
-            className="absolute inset-0 bg-black/20 backdrop-blur-sm"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute top-16 left-0 right-0 bg-white border-b border-black/8 shadow-xl p-4 flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className="px-4 py-3 text-base font-medium text-[#1d1d1f] rounded-xl hover:bg-[#f5f5f7] transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Link
-              href="/catalog"
-              onClick={() => setMobileOpen(false)}
-              className="mt-2 flex items-center justify-center gap-2 rounded-full bg-[#e3231c] text-white px-5 py-3 font-semibold text-sm"
-            >
-              View Products <ChevronRight size={14} />
-            </Link>
-          </div>
-        </div>
-      )}
-
     </>
   )
 }

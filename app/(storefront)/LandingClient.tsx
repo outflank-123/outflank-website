@@ -355,66 +355,60 @@ export default function LandingClient({
               </Link>
             </div>
 
-            {/* Draggable Slider */}
-            <div className="relative w-full overflow-hidden" ref={statsRef}>
-              <motion.div 
-                drag="x" 
-                dragConstraints={{ right: 0, left: -((featuredProducts.length * 320) - (typeof window !== 'undefined' ? window.innerWidth : 1000) + 100) }}
-                className="flex gap-6 cursor-grab active:cursor-grabbing pb-12 pt-4 px-4 -mx-4"
-              >
-                {featuredProducts.map((product, i) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1, duration: 0.4 }}
-                    className="min-w-[280px] md:min-w-[320px] bg-white rounded-3xl p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col group hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all"
-                  >
-                    <Link href={`/catalog/${product.slug}`} className="block flex-1 flex flex-col">
-                      <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[#f5f5f7] mb-4">
-                        {product.primary_image_url ? (
-                          <Image
-                            src={product.primary_image_url}
-                            alt={product.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center text-black/10">
-                            <Package size={48} />
-                          </div>
-                        )}
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <span className="bg-white/90 backdrop-blur-md text-black text-sm font-semibold px-4 py-2 rounded-full shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                            View Details
-                          </span>
+            {/* Featured Products Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mt-8">
+              {featuredProducts.map((product, i) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  className="bg-white rounded-2xl md:rounded-3xl p-2.5 md:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] md:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col group hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all"
+                >
+                  <Link href={`/catalog/${product.slug}`} className="block flex-1 flex flex-col">
+                    <div className="relative w-full aspect-square rounded-xl md:rounded-2xl overflow-hidden bg-[#f5f5f7] mb-3 md:mb-4">
+                      {product.primary_image_url ? (
+                        <Image
+                          src={product.primary_image_url}
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-black/10">
+                          <Package className="w-8 h-8 md:w-12 md:h-12" />
                         </div>
+                      )}
+                      {/* Hover Overlay - hidden on small mobile */}
+                      <div className="hidden md:flex absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center">
+                        <span className="bg-white/90 backdrop-blur-md text-black text-sm font-semibold px-4 py-2 rounded-full shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                          View Details
+                        </span>
                       </div>
-                      
-                      <div className="px-2 pb-2">
-                        {product.categories && (
-                          <p className="text-xs font-semibold text-[#6e6e73] mb-1.5 uppercase tracking-wider">
-                            {product.categories.name}
-                          </p>
+                    </div>
+                    
+                    <div className="px-1 md:px-2 pb-1 flex-1 flex flex-col">
+                      {product.categories && (
+                        <p className="text-[10px] md:text-xs font-semibold text-[#6e6e73] mb-1 md:mb-1.5 uppercase tracking-wider">
+                          {product.categories.name}
+                        </p>
+                      )}
+                      <h3 className="text-sm md:text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
+                        {product.base_price && (
+                          <span className="text-sm md:text-base font-semibold text-[#1d1d1f]">₹{product.base_price.toLocaleString('en-IN')}</span>
                         )}
-                        <h3 className="text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
-                          {product.name}
-                        </h3>
-                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
-                          {product.base_price && (
-                            <span className="text-base font-semibold text-[#1d1d1f]">₹{product.base_price.toLocaleString('en-IN')}</span>
-                          )}
-                          {product.min_order_qty && (
-                            <span className="text-xs text-[#6e6e73] font-medium border border-black/10 px-2 py-1 rounded-md">MOQ: {product.min_order_qty}</span>
-                          )}
-                        </div>
+                        {product.min_order_qty && (
+                          <span className="text-[10px] md:text-xs text-[#6e6e73] font-medium border border-black/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded-md">MOQ: {product.min_order_qty}</span>
+                        )}
                       </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
             
             <div className="flex justify-center md:hidden mt-4">
