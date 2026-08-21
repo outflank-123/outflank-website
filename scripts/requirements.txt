@@ -1,0 +1,6 @@
+# Outflank Product Upload Script — Python Requirements
+PyMuPDF>=1.24.0          # PDF extraction (pip name: pymupdf)
+Pillow>=10.3.0           # Image compression / WebP conversion
+supabase>=2.4.0          # Supabase Python client
+python-dotenv>=1.0.0     # .env file loading
+google-generativeai>=0.7.0  # Gemini Vision API
