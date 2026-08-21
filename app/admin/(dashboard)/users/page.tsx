@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Users, ShieldAlert, CheckCircle2, XCircle } from 'lucide-react'
+import { Plus, Users, ShieldAlert, CheckCircle2, XCircle, Trash2, Edit2 } from 'lucide-react'
 
 interface User {
   id: string
@@ -16,6 +16,7 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingUserId, setEditingUserId] = useState<string | null>(null)
 
   // Form State
   const [email, setEmail] = useState('')
@@ -44,6 +45,45 @@ export default function AdminUsersPage() {
     fetchUsers()
   }, [])
 
+  const openCreateModal = () => {
+    setEditingUserId(null)
+    setEmail('')
+    setPassword('')
+    setFullName('')
+    setRole('junior')
+    setError('')
+    setSuccess('')
+    setIsModalOpen(true)
+  }
+
+  const openEditModal = (u: User) => {
+    setEditingUserId(u.id)
+    setEmail(u.email) // Email cannot typically be updated directly without confirmation, we'll keep it read-only in edit mode
+    setPassword('')
+    setFullName(u.full_name)
+    setRole(u.role)
+    setError('')
+    setSuccess('')
+    setIsModalOpen(true)
+  }
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete ${name}? This cannot be undone.`)) return
+
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to delete user')
+      fetchUsers()
+    } catch (err: any) {
+      alert(err.message)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
@@ -51,26 +91,33 @@ export default function AdminUsersPage() {
     setSuccess('')
 
     try {
-      const res = await fetch('/api/admin/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, fullName, role }),
-      })
+      let res;
+      if (editingUserId) {
+        // Edit User
+        res = await fetch('/api/admin/users', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editingUserId, fullName, role }),
+        })
+      } else {
+        // Create User
+        res = await fetch('/api/admin/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, fullName, role }),
+        })
+      }
 
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to create user')
+        throw new Error(data.error || 'Failed to save user')
       }
 
-      setSuccess('User created successfully!')
-      setEmail('')
-      setPassword('')
-      setFullName('')
-      setRole('junior')
+      setSuccess(editingUserId ? 'User updated successfully!' : 'User created successfully!')
       fetchUsers()
       
-      setTimeout(() => setIsModalOpen(false), 2000)
+      setTimeout(() => setIsModalOpen(false), 1500)
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -88,7 +135,7 @@ export default function AdminUsersPage() {
           <p className="text-sm text-[#6e6e73] mt-1">Manage system administrators and junior staff</p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={openCreateModal}
           className="flex items-center gap-2 bg-[#1d1d1f] text-white px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition-colors"
         >
           <Plus size={16} /> Add User
@@ -105,11 +152,12 @@ export default function AdminUsersPage() {
                 <th className="px-6 py-4 text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">User</th>
                 <th className="px-6 py-4 text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Role</th>
                 <th className="px-6 py-4 text-xs font-semibold text-[#6e6e73] uppercase tracking-wider">Joined</th>
+                <th className="px-6 py-4 text-xs font-semibold text-[#6e6e73] uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-black/5">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-black/[0.02] transition-colors">
+                <tr key={u.id} className="hover:bg-black/[0.02] transition-colors group">
                   <td className="px-6 py-4">
                     <div className="font-semibold text-[#1d1d1f]">{u.full_name}</div>
                     <div className="text-sm text-[#6e6e73]">{u.email}</div>
@@ -125,6 +173,24 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="px-6 py-4 text-sm text-[#6e6e73]">
                     {new Date(u.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button 
+                        onClick={() => openEditModal(u)}
+                        className="text-[#6e6e73] hover:text-[#1d1d1f] transition-colors p-1"
+                        title="Edit User"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(u.id, u.full_name)}
+                        className="text-[#6e6e73] hover:text-[#e3231c] transition-colors p-1"
+                        title="Delete User"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -147,21 +213,35 @@ export default function AdminUsersPage() {
             >
               <XCircle size={24} />
             </button>
-            <h2 className="text-xl font-bold text-[#1d1d1f] mb-6">Add New User</h2>
+            <h2 className="text-xl font-bold text-[#1d1d1f] mb-6">
+              {editingUserId ? 'Edit User' : 'Add New User'}
+            </h2>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs font-semibold text-[#6e6e73] uppercase tracking-wider mb-1.5">Full Name</label>
                 <input type="text" required value={fullName} onChange={e => setFullName(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c]" />
               </div>
+              
               <div>
                 <label className="block text-xs font-semibold text-[#6e6e73] uppercase tracking-wider mb-1.5">Email</label>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c]" />
+                <input 
+                  type="email" 
+                  required 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  disabled={!!editingUserId}
+                  className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c] disabled:bg-gray-50 disabled:text-gray-500" 
+                />
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-[#6e6e73] uppercase tracking-wider mb-1.5">Temporary Password</label>
-                <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c]" />
-              </div>
+
+              {!editingUserId && (
+                <div>
+                  <label className="block text-xs font-semibold text-[#6e6e73] uppercase tracking-wider mb-1.5">Temporary Password</label>
+                  <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c]" />
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-semibold text-[#6e6e73] uppercase tracking-wider mb-1.5">Role</label>
                 <select value={role} onChange={e => setRole(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:outline-none focus:border-[#e3231c] bg-white">
@@ -187,7 +267,7 @@ export default function AdminUsersPage() {
                 disabled={submitting}
                 className="mt-4 w-full bg-[#e3231c] text-white py-3 rounded-xl font-semibold hover:bg-[#c91d17] transition-colors disabled:opacity-50"
               >
-                {submitting ? 'Creating...' : 'Create User'}
+                {submitting ? 'Saving...' : (editingUserId ? 'Save Changes' : 'Create User')}
               </button>
             </form>
           </motion.div>

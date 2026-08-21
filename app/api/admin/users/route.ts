@@ -137,3 +137,89 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const supabaseServer = await createServerClient()
+    const { data: { user } } = await supabaseServer.auth.getUser()
+
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const { data: callerProfile } = await supabaseServer
+      .from('admin_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (callerProfile?.role !== 'super_admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const { id } = await req.json()
+    if (!id) return NextResponse.json({ error: 'Missing user ID' }, { status: 400 })
+    if (id === user.id) return NextResponse.json({ error: 'Cannot delete yourself' }, { status: 400 })
+
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(id)
+    if (error) throw error
+
+    return NextResponse.json({ message: 'User deleted' })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const supabaseServer = await createServerClient()
+    const { data: { user } } = await supabaseServer.auth.getUser()
+
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const { data: callerProfile } = await supabaseServer
+      .from('admin_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (callerProfile?.role !== 'super_admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
+    const { id, fullName, role } = await req.json()
+    if (!id) return NextResponse.json({ error: 'Missing user ID' }, { status: 400 })
+    if (id === user.id && role !== 'super_admin') return NextResponse.json({ error: 'Cannot downgrade your own role' }, { status: 400 })
+
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    )
+
+    if (fullName) {
+      await supabaseAdmin.auth.admin.updateUserById(id, { user_metadata: { full_name: fullName } })
+    }
+
+    if (role || fullName) {
+      const updates: any = {}
+      if (role) updates.role = role
+      if (fullName) updates.full_name = fullName
+      
+      const { error } = await supabaseAdmin
+        .from('admin_profiles')
+        .update(updates)
+        .eq('id', id)
+      
+      if (error) throw error
+    }
+
+    return NextResponse.json({ message: 'User updated' })
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 })
+  }
+}
