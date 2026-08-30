@@ -632,7 +632,7 @@ export default function LandingClient({
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <a
-              href="https://wa.me/918447334407?text=Hi!%20I'd%20like%20to%20discuss%20corporate%20gifting."
+              href="https://wa.me/919999926273?text=Hi!%20I'd%20like%20to%20discuss%20corporate%20gifting."
               target="_blank"
               rel="noopener noreferrer"
               id="bottom-cta-whatsapp"

@@ -30,17 +30,17 @@ export default function GiftingFooter() {
               customizable gifts that leave a lasting impression.
             </p>
             <div className="flex flex-col gap-3">
-              <a href="mailto:hello@outflank.in" className="flex items-center gap-2.5 text-sm text-[#aeaeb2] hover:text-white transition-colors group">
+              <a href="mailto:info@outflank.in" className="flex items-center gap-2.5 text-sm text-[#aeaeb2] hover:text-white transition-colors group">
                 <Mail size={14} className="text-[#e3231c]" />
-                hello@outflank.in
+                info@outflank.in
               </a>
-              <a href="tel:+918447334407" className="flex items-center gap-2.5 text-sm text-[#aeaeb2] hover:text-white transition-colors">
+              <a href="tel:+919999926273" className="flex items-center gap-2.5 text-sm text-[#aeaeb2] hover:text-white transition-colors">
                 <Phone size={14} className="text-[#e3231c]" />
-                +91 84473 34407
+                +91 99999 26273
               </a>
               <span className="flex items-center gap-2.5 text-sm text-[#aeaeb2]">
                 <MapPin size={14} className="text-[#e3231c]" />
-                India · Serving Globally
+                New Delhi, India
               </span>
             </div>
           </div>

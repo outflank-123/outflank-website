@@ -40,7 +40,7 @@ export default function Contact() {
   const contactMethods = [
     { icon: Mail, label: "Sales & Inquiries", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
     { icon: Phone, label: "Direct Phone", value: siteConfig.phone, href: `tel:${siteConfig.phone}` },
-    { icon: MessageCircle, label: "WhatsApp Support", value: "+91-8447334407", href: siteConfig.whatsapp },
+    { icon: MessageCircle, label: "WhatsApp Support", value: siteConfig.phone, href: siteConfig.whatsapp },
     { icon: MapPin, label: "Head Office", value: "New Delhi, India", href: "#" },
   ];
 
