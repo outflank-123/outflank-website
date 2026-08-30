@@ -7,26 +7,25 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, ArrowDown, ChevronRight, Star, Package, Zap, Leaf, Coffee,
   Smartphone, Gift, ShieldCheck, Clock, Users, CheckCircle2,
-  Building2, Headphones, BadgeCheck
+  Building2, Headphones, BadgeCheck, Shirt, PenTool
 } from 'lucide-react'
 
-// ─── Category highlights (subset for homepage) ────────────
+// ─── Category highlights (7 core categories) ────────────
 const categories = [
-  { icon: Smartphone,   label: 'Electronics',       slug: 'electronics-and-mobile-accessories', color: '#0071e3' },
-  { icon: Coffee,       label: 'Drinkware',          slug: 'flasks-sippers-mugs',               color: '#8b5cf6' },
-  { icon: Package,      label: 'Joining Kits',       slug: 'employee-joining-kits',             color: '#e3231c' },
-  { icon: Gift,         label: 'Gift Sets',           slug: 'gift-sets',                         color: '#f59e0b' },
-  { icon: Leaf,         label: 'Eco-Friendly',        slug: 'eco-friendly-products',             color: '#22c55e' },
-  { icon: Zap,          label: 'Power Banks',         slug: 'power-banks',                       color: '#6366f1' },
-  { icon: ShieldCheck,  label: 'Prevention Kits',     slug: 'covid-corona-epidemic-prevention-items', color: '#14b8a6' },
-  { icon: Headphones,   label: 'Audio',               slug: 'speakers-headphones-earphones',    color: '#ec4899' },
+  { icon: Shirt,        label: 'Apparel & T-Shirts',   slug: 'apparel-t-shirts',        color: '#e3231c' },
+  { icon: Package,      label: 'Joining Kits & Sets',  slug: 'joining-kits-gift-sets',  color: '#f59e0b' },
+  { icon: Coffee,       label: 'Drinkware & Bottles',  slug: 'drinkware',               color: '#8b5cf6' },
+  { icon: Smartphone,   label: 'Tech & Power',         slug: 'tech-and-power',          color: '#0071e3' },
+  { icon: Headphones,   label: 'Audio & Lighting',     slug: 'audio-and-lighting',      color: '#ec4899' },
+  { icon: Leaf,         label: 'Eco-Friendly',         slug: 'eco-friendly-products',  color: '#22c55e' },
+  { icon: PenTool,      label: 'Office & Desk',        slug: 'office-and-desk',         color: '#6366f1' },
 ]
 
 // ─── Stats ────────────────────────────────────────────────
 const stats = [
   { value: '500+', label: 'Products Catalogued' },
   { value: '50+', label: 'Corporate Clients' },
-  { value: '17', label: 'Gift Categories' },
+  { value: '7', label: 'Core Categories' },
   { value: '15 Days', label: 'Avg. Lead Time' },
 ]
 
@@ -438,45 +437,59 @@ export default function LandingClient({
           >
             <p className="text-xs font-semibold uppercase tracking-widest text-[#e3231c] mb-3">Gift Categories</p>
             <h2 className="text-4xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight-xl mb-4">
-              17 Categories,<br className="hidden sm:block" /> Endless Impressions
+              Curated Collections,<br className="hidden sm:block" /> Endless Impressions
             </h2>
             <p className="text-lg text-[#6e6e73] max-w-xl mx-auto">
-              From premium electronics to eco-friendly kits — discover curated collections designed to impress.
+              From custom-branded apparel and premium electronics to eco-friendly kits — discover collections designed to impress.
             </p>
           </motion.div>
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 mb-12 auto-rows-[240px]">
-            {/* Main Featured Category */}
-            <Link href="/catalog?category=electronics-and-mobile-accessories" className="group relative col-span-1 md:col-span-2 lg:col-span-2 row-span-2 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+            {/* Apparel & T-Shirts Category */}
+            <Link href="/catalog?category=apparel-t-shirts" className="group relative col-span-1 md:col-span-2 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
               <Image 
-                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop" 
-                alt="Premium Electronics" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
+                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop" 
+                alt="Corporate Apparel & T-Shirts" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/80" />
-              <div className="absolute bottom-0 left-0 p-8 w-full flex flex-col justify-end">
-                <Smartphone size={32} className="text-white mb-4 opacity-80" />
-                <h3 className="text-3xl font-bold text-white mb-2">Premium Electronics</h3>
-                <p className="text-white/80 font-medium">Headphones, Power Banks, & Tech Gear</p>
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6 h-full flex flex-col justify-center">
+                <Shirt size={28} className="text-white mb-2 opacity-90" />
+                <h3 className="text-2xl font-bold text-white mb-1">Apparel & T-Shirts</h3>
+                <p className="text-white/80 text-sm font-medium max-w-[260px]">Custom branded polos, tees, and team hoodies</p>
               </div>
             </Link>
 
-            {/* Sub Category 1 */}
-            <Link href="/catalog?category=gift-sets" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+            {/* Sub Category 1 - Joining Kits & Gift Sets */}
+            <Link href="/catalog?category=joining-kits-gift-sets" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
               <Image 
                 src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800&auto=format&fit=crop" 
-                alt="Curated Gift Sets" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
+                alt="Joining Kits & Gift Sets" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
               <div className="absolute bottom-0 left-0 p-6 h-full flex flex-col justify-center">
-                <Gift size={24} className="text-white mb-3 opacity-80" />
-                <h3 className="text-2xl font-bold text-white mb-1">Curated Gift Sets</h3>
-                <p className="text-white/80 text-sm font-medium max-w-[200px]">Ready-to-gift premium combos</p>
+                <Package size={24} className="text-white mb-3 opacity-80" />
+                <h3 className="text-2xl font-bold text-white mb-1">Joining Kits & Gift Sets</h3>
+                <p className="text-white/80 text-sm font-medium max-w-[200px]">Curated onboarding hampers and gift sets</p>
               </div>
             </Link>
 
-            {/* Sub Category 2 */}
-            <Link href="/catalog?category=flasks-sippers-mugs" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#fbfbfd] border border-black/5 block">
+            {/* Sub Category 2 - Tech & Mobile Accessories */}
+            <Link href="/catalog?category=tech-and-power" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+              <Image 
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop" 
+                alt="Tech & Mobile Accessories" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/80" />
+              <div className="absolute bottom-0 left-0 p-6 w-full flex flex-col justify-end">
+                <Smartphone size={24} className="text-white mb-2 opacity-80" />
+                <h3 className="text-2xl font-bold text-white mb-1">Tech & Mobile Accessories</h3>
+                <p className="text-white/80 text-sm font-medium">Power Banks, Wireless Docks & Adapters</p>
+              </div>
+            </Link>
+
+            {/* Sub Category 3 - Drinkware */}
+            <Link href="/catalog?category=drinkware" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#fbfbfd] border border-black/5 block">
               <Image 
                 src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop" 
                 alt="Drinkware" fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" unoptimized 
@@ -488,7 +501,7 @@ export default function LandingClient({
               </div>
             </Link>
 
-            {/* Sub Category 3 */}
+            {/* Sub Category 4 - Eco Friendly */}
             <Link href="/catalog?category=eco-friendly-products" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#22c55e]/10 border border-[#22c55e]/20 block">
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 group-hover:scale-110 transition-transform duration-700">
                 <Leaf size={160} className="text-[#22c55e]" />
@@ -505,7 +518,7 @@ export default function LandingClient({
               href="/catalog"
               className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-semibold text-[#1d1d1f] hover:bg-[#f5f5f7] hover:border-black/20 transition-all duration-200"
             >
-              Browse All 17 Categories
+              Browse All Categories
               <ChevronRight size={16} />
             </Link>
           </div>

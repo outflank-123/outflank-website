@@ -76,11 +76,13 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ message: 'User created successfully', user: authData.user })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal Server Error'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
-export async function GET(req: Request) {
+
+export async function GET() {
   try {
     const supabaseServer = await createServerClient()
     const { data: { user } } = await supabaseServer.auth.getUser()
@@ -133,8 +135,9 @@ export async function GET(req: Request) {
     })
 
     return NextResponse.json({ users })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal Server Error'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
@@ -169,8 +172,9 @@ export async function DELETE(req: Request) {
     if (error) throw error
 
     return NextResponse.json({ message: 'User deleted' })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal Server Error'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
 
@@ -206,7 +210,7 @@ export async function PATCH(req: Request) {
     }
 
     if (role || fullName) {
-      const updates: any = {}
+      const updates: { role?: string; full_name?: string } = {}
       if (role) updates.role = role
       if (fullName) updates.full_name = fullName
       
@@ -219,7 +223,8 @@ export async function PATCH(req: Request) {
     }
 
     return NextResponse.json({ message: 'User updated' })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Internal Server Error'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

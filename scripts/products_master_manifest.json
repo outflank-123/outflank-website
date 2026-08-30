@@ -1,0 +1,3384 @@
+{
+  "metadata": {
+    "title": "Outflank Corporate Gifting - Master AI Product Manifest",
+    "version": "2.0.0",
+    "description": "Unified product registry across all 18 PDF catalog categories for AI image generation and Supabase synchronization.",
+    "total_categories": 7,
+    "completed_products_in_db": 82,
+    "storage_bucket": "product-images"
+  },
+  "categories_summary": {
+    "Joining Kits & Gift Sets": {
+      "total": 36,
+      "completed": 36,
+      "pending": 0,
+      "category_slug": "joining-kits-gift-sets",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    "Tech & Mobile Accessories": {
+      "total": 9,
+      "completed": 9,
+      "pending": 0,
+      "category_slug": "tech-and-power",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    "Audio & Desk Lighting": {
+      "total": 7,
+      "completed": 7,
+      "pending": 0,
+      "category_slug": "audio-and-lighting",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    "Drinkware & Bottles": {
+      "total": 6,
+      "completed": 6,
+      "pending": 0,
+      "category_slug": "drinkware",
+      "source_pdf": "drinkware.pdf"
+    },
+    "Eco-Friendly & Sustainable": {
+      "total": 7,
+      "completed": 7,
+      "pending": 0,
+      "category_slug": "eco-friendly-products",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    "Office & Desk Essentials": {
+      "total": 1,
+      "completed": 1,
+      "pending": 0,
+      "category_slug": "office-and-desk",
+      "source_pdf": "office-and-desk.pdf"
+    },
+    "Apparel & T-Shirts": {
+      "total": 16,
+      "completed": 16,
+      "pending": 0,
+      "category_slug": "apparel-t-shirts",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    "Electronics & Mobile Accessories": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "electronics-and-mobile-accessories",
+      "source_pdf": "electronics-and-mobile-accessories.pdf"
+    },
+    "Gift Sets": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "gift-sets",
+      "source_pdf": "gift-sets.pdf"
+    },
+    "Office Desk & Stationery": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "office-table-tops-and-stationery",
+      "source_pdf": "office-table-tops-and-stationery.pdf"
+    },
+    "Home & Kitchen": {
+      "total": 2,
+      "completed": 0,
+      "pending": 2,
+      "category_slug": "home-kitchen",
+      "source_pdf": "home-kitchen.pdf"
+    },
+    "Work From Home": {
+      "total": 2,
+      "completed": 0,
+      "pending": 2,
+      "category_slug": "work-from-home",
+      "source_pdf": "work-from-home.pdf"
+    },
+    "Table & Wall Clocks": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "table-wall-clocks",
+      "source_pdf": "table-wall-clocks.pdf"
+    },
+    "Multifunction Keychains": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "multifunction-keychains",
+      "source_pdf": "multifunction-keychains.pdf"
+    },
+    "Plastic Bottles & Shakers": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "plastic-bottles-sippers-shakers",
+      "source_pdf": "plastic-bottles-sippers-shakers.pdf"
+    },
+    "Doctor & Pharma Utility": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "doctor-utility-pharma",
+      "source_pdf": "doctor-utility-pharma.pdf"
+    },
+    "Covid & Prevention Items": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "covid-corona-epidemic-prevention-items",
+      "source_pdf": "covid-corona-epidemic-prevention-items.pdf"
+    },
+    "Customized Products": {
+      "total": 1,
+      "completed": 0,
+      "pending": 1,
+      "category_slug": "customized-products-made-to-order",
+      "source_pdf": "customized-products-made-to-order.pdf"
+    }
+  },
+  "products": [
+    {
+      "id": "148f8b6b-1078-4a0b-892c-b352f439dfbc",
+      "sku": "P001",
+      "name": "Q200 Mini Eco Set",
+      "slug": "q200-mini-eco-set-p001",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q200",
+      "short_desc": "Source Code: Q200",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P001/standard-P001_Standard.webp",
+      "color_variants": [
+        {
+          "name": "Standard",
+          "hex": "#888888",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P001/standard-P001_Standard.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "c7e94d27-460b-4cda-b0f7-41b5be67d7b8",
+      "sku": "P002",
+      "name": "Q198 A5 Bamboo Notebook with Bamboo Duo Pen",
+      "slug": "q198-a5-bamboo-notebook-with-bamboo-duo-pen-p002",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q198",
+      "short_desc": "Source Code: Q198",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P002/standard-P002_Standard.webp",
+      "color_variants": [
+        {
+          "name": "Standard",
+          "hex": "#888888",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P002/standard-P002_Standard.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "11967f6b-514f-4580-a805-e63a3e242814",
+      "sku": "P003",
+      "name": "Q191 Cork & Linen A5 Notebook with Cork/Bamboo Fiber Pen",
+      "slug": "q191-cork-linen-a5-notebook-with-corkbamboo-fiber-pen-p003",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q191",
+      "short_desc": "Source Code: Q191",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P003/standard-P003_Standard.webp",
+      "color_variants": [
+        {
+          "name": "Standard",
+          "hex": "#888888",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P003/standard-P003_Standard.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "d71a488d-2038-428f-b063-9e8ed0de730a",
+      "sku": "P004",
+      "name": "Q192 2-in-1 Black Timeless Notebook Set",
+      "slug": "q192-2-in-1-black-timeless-notebook-set-p004",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q192",
+      "short_desc": "Source Code: Q192",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P004/black-P004_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P004/black-P004_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "ca2341b9-b015-4525-a650-0dc8e70ccd60",
+      "sku": "P005",
+      "name": "Q196 A5 Notebook with Luster Metal Pen",
+      "slug": "q196-a5-notebook-with-luster-metal-pen-p005",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q196",
+      "short_desc": "Source Code: Q196",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P005/grey-P005_Grey.webp",
+      "color_variants": [
+        {
+          "name": "Grey",
+          "hex": "#8e8e93",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P005/grey-P005_Grey.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ff9500",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P005/orange-P005_Orange.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "c050cf04-656f-4a16-85af-b0c6f7452d29",
+      "sku": "P007",
+      "name": "Q160 2-in-1 3-Fold Notebook with Metal Pen",
+      "slug": "q160-2-in-1-3-fold-notebook-with-metal-pen-p007",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q160",
+      "short_desc": "Source Code: Q160",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P007/dark-P007_Dark.webp",
+      "color_variants": [
+        {
+          "name": "Dark",
+          "hex": "#888888",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P007/dark-P007_Dark.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "f49fad63-cfae-42f0-b21b-d17781d01da5",
+      "sku": "P009",
+      "name": "Compact 5 PC Gift Set",
+      "slug": "compact-5-pc-gift-set-p009",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q151",
+      "short_desc": "Source Code: Q151",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P009/black-P009_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P009/black-P009_Black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Brown",
+          "hex": "#a2845e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P009/brown-P009_Brown.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "5bdd0de5-6193-432a-89de-9643012b9c11",
+      "sku": "P010",
+      "name": "Q153 Compact 5 PC Cork Gift Set",
+      "slug": "q153-compact-5-pc-cork-gift-set-p010",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q153",
+      "short_desc": "Source Code: Q153",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P010/cork-P010_Cork.webp",
+      "color_variants": [
+        {
+          "name": "Cork",
+          "hex": "#d4b58e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P010/cork-P010_Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "32e8a3a1-0675-4662-9935-74ab498bc3a5",
+      "sku": "P011",
+      "name": "Q155 Compact 3 PC Cork Gift Set",
+      "slug": "q155-compact-3-pc-cork-gift-set-p011",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q155",
+      "short_desc": "Source Code: Q155",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P011/cork-P011_Cork.webp",
+      "color_variants": [
+        {
+          "name": "Cork",
+          "hex": "#d4b58e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P011/cork-P011_Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "2a0d740e-bda5-4f14-b84d-68ccc22542c9",
+      "sku": "P012",
+      "name": "Q156 Compact 3 PC Gift Set",
+      "slug": "q156-compact-3-pc-gift-set-p012",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q156",
+      "short_desc": "Source Code: Q156",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P012/brown-P012_Brown.webp",
+      "color_variants": [
+        {
+          "name": "Brown",
+          "hex": "#a2845e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P012/brown-P012_Brown.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "18196316-8588-4f0c-8fa1-3a649e691ffc",
+      "sku": "P013",
+      "name": "Q129 Globe A5 Notebook & Loop Metal Pen",
+      "slug": "q129-globe-a5-notebook-loop-metal-pen-p013",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q129",
+      "short_desc": "Source Code: Q129",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P013/black-P013_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P013/black-P013_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "c4118451-773d-438b-8b5e-53f53ec8602c",
+      "sku": "P014",
+      "name": "Q130 A5 Notebook & Loop Metal Pen",
+      "slug": "q130-a5-notebook-loop-metal-pen-p014",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q130",
+      "short_desc": "Source Code: Q130",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P014/black-P014_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P014/black-P014_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "b0e8697b-d7b6-43b3-ad26-2f3ef577907d",
+      "sku": "P031",
+      "name": "Q51 SS Bottle + Notebook + Mobile Stand Gift Set",
+      "slug": "q51-ss-bottle-notebook-mobile-stand-gift-set-p031",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q51",
+      "short_desc": "Source Code: Q51",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P031/black-P031_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P031/black-P031_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "8ce73aa3-6789-4e20-940e-0849a1ecb1a9",
+      "sku": "P016",
+      "name": "Q150 Ecofelt Notebook & Gel Pen Gift Set",
+      "slug": "q150-ecofelt-notebook-gel-pen-gift-set-p016",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q150",
+      "short_desc": "Source Code: Q150",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P016/grey-P016_Grey.webp",
+      "color_variants": [
+        {
+          "name": "Grey",
+          "hex": "#8e8e93",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P016/grey-P016_Grey.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "801ccb44-2b80-4909-9847-5aad11bb4d86",
+      "sku": "P017",
+      "name": "Q126 4-in-1 Textured PU Notebook & Loop Metal Pen",
+      "slug": "q126-4-in-1-textured-pu-notebook-loop-metal-pen-p017",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q126",
+      "short_desc": "Source Code: Q126",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P017/grey-P017_Grey.webp",
+      "color_variants": [
+        {
+          "name": "Grey",
+          "hex": "#8e8e93",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P017/grey-P017_Grey.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "97e0069e-1fd5-4d7c-8a71-45cf2f9246fb",
+      "sku": "P018",
+      "name": "Q128 Ribbon A5 Notebook & Classy Metal Pen",
+      "slug": "q128-ribbon-a5-notebook-classy-metal-pen-p018",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q128",
+      "short_desc": "Source Code: Q128",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P018/blackred-P018_Black-Red.webp",
+      "color_variants": [
+        {
+          "name": "Black/Red",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P018/blackred-P018_Black-Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "2e2a0302-e542-4b01-b31b-6764c05cf372",
+      "sku": "P019",
+      "name": "Compact 4 PC Gift Set",
+      "slug": "compact-4-pc-gift-set-p019",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q121",
+      "short_desc": "Source Code: Q121",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P019/black-P019_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P019/black-P019_Black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black Textured",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P019/black-textured-P019_Black_Textured.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Brown",
+          "hex": "#a2845e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P019/brown-P019_Brown.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "dfef0e32-95be-460c-99b0-9b7d29d2df29",
+      "sku": "P020",
+      "name": "Q124 Cork A5 Notebook with Bamboo/Cork Pen",
+      "slug": "q124-cork-a5-notebook-with-bamboocork-pen-p020",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q124",
+      "short_desc": "Source Code: Q124",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P020/cork-P020_Cork.webp",
+      "color_variants": [
+        {
+          "name": "Cork",
+          "hex": "#d4b58e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P020/cork-P020_Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "f3607fe7-9191-4cd4-89a4-c67732da82ba",
+      "sku": "P021",
+      "name": "Q125 2-in-1 Multipurpose PU Notebook",
+      "slug": "q125-2-in-1-multipurpose-pu-notebook-p021",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q125",
+      "short_desc": "Source Code: Q125",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P021/black-P021_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P021/black-P021_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "8427e499-e26a-41b5-9455-9d716712d182",
+      "sku": "P022",
+      "name": "Q110 Cork Notebook + 2 Eco Coffee Mugs Gift Box",
+      "slug": "q110-cork-notebook-2-eco-coffee-mugs-gift-box-p022",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q110",
+      "short_desc": "Source Code: Q110",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P022/coffee-mug-P022_Coffee_Mug.webp",
+      "color_variants": [
+        {
+          "name": "Coffee Mug",
+          "hex": "#888888",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P022/coffee-mug-P022_Coffee_Mug.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "cdbbf8c7-171b-479e-95ed-d081e8917001",
+      "sku": "P032",
+      "name": "Q53 5-in-1 Foggy SS Coffee Mug Gift Set",
+      "slug": "q53-5-in-1-foggy-ss-coffee-mug-gift-set-p032",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q53",
+      "short_desc": "Source Code: Q53",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P032/black-P032_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P032/black-P032_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "ca49cc16-e24f-4373-b342-7c58507abb88",
+      "sku": "P024",
+      "name": "Q118 4-in-1 Gift Set with Phone Stand",
+      "slug": "q118-4-in-1-gift-set-with-phone-stand-p024",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q118",
+      "short_desc": "Source Code: Q118",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P024/black-P024_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P024/black-P024_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "4a45d076-a740-4ab9-a285-609bb5ef8bab",
+      "sku": "P025",
+      "name": "Q80 Set of 2 Flexible Pocket Notebooks",
+      "slug": "q80-set-of-2-flexible-pocket-notebooks-p025",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q80",
+      "short_desc": "Source Code: Q80",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P025/red-P025_Red.webp",
+      "color_variants": [
+        {
+          "name": "Red",
+          "hex": "#e3231c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P025/red-P025_Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "7c163650-3c1a-412f-a8ab-5558f2823e7d",
+      "sku": "P026",
+      "name": "Q90 Set of 2 Colorful Laser-Engraved Notebooks",
+      "slug": "q90-set-of-2-colorful-laser-engraved-notebooks-p026",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q90",
+      "short_desc": "Source Code: Q90",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P026/blackred-P026_Black-Red.webp",
+      "color_variants": [
+        {
+          "name": "Black/Red",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P026/blackred-P026_Black-Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "110a7a36-14b4-46e2-9bf6-6a1f71908750",
+      "sku": "P027",
+      "name": "Q107 Cork Notebook + 2 Eco Steel Mugs Gift Box",
+      "slug": "q107-cork-notebook-2-eco-steel-mugs-gift-box-p027",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q107",
+      "short_desc": "Source Code: Q107",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P027/steel-mug-P027_Steel_Mug.webp",
+      "color_variants": [
+        {
+          "name": "Steel Mug",
+          "hex": "#d1d1d6",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P027/steel-mug-P027_Steel_Mug.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "83cc60bb-3b3d-4d2c-9b4c-817488370be6",
+      "sku": "P028",
+      "name": "Q57A SS Bottle + Notebook Gift Set",
+      "slug": "q57a-ss-bottle-notebook-gift-set-p028",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q57A",
+      "short_desc": "Source Code: Q57A",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P028/blackred-P028_Black-Red.webp",
+      "color_variants": [
+        {
+          "name": "Black/Red",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P028/blackred-P028_Black-Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "8cf9f499-e977-401f-9787-7daad2236a67",
+      "sku": "P029",
+      "name": "Q59 Bamboo Cover Notebook + Bamboo Pen Gift Set",
+      "slug": "q59-bamboo-cover-notebook-bamboo-pen-gift-set-p029",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q59",
+      "short_desc": "Source Code: Q59",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P029/bamboo-P029_Bamboo.webp",
+      "color_variants": [
+        {
+          "name": "Bamboo",
+          "hex": "#d1bfae",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P029/bamboo-P029_Bamboo.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "e7f2b852-18f7-4da2-83f3-5af8ce3dc7e2",
+      "sku": "P030",
+      "name": "Q60/Q60A Cork Eco Notebook + Bamboo Stylus Gift Set",
+      "slug": "q60q60a-cork-eco-notebook-bamboo-stylus-gift-set-p030",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q60",
+      "short_desc": "Source Code: Q60",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P030/black-box-P030_Black_Box.webp",
+      "color_variants": [
+        {
+          "name": "Black Box",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P030/black-box-P030_Black_Box.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black Texture Box",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P030/black-texture-box-P030_Black_Texture_Box.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "53834096-9983-47ac-9b4c-679f0e24a71f",
+      "sku": "P034",
+      "name": "B206 Cork Fabric Notebook with 4-Refill Cork Pen",
+      "slug": "b206-cork-fabric-notebook-with-4-refill-cork-pen-p034",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: B206",
+      "short_desc": "Source Code: B206",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P034/bluecork-P034_Blue-Cork.webp",
+      "color_variants": [
+        {
+          "name": "Blue/Cork",
+          "hex": "#007aff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P034/bluecork-P034_Blue-Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "1d0e47a7-a651-4464-a2f5-f8f8a0547cea",
+      "sku": "P035",
+      "name": "Cork Fabric Notebook with Cork Pen",
+      "slug": "cork-fabric-notebook-with-cork-pen-p035",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: N/A",
+      "short_desc": "Source Code: N/A",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P035/naturalcork-P035_Natural-Cork.webp",
+      "color_variants": [
+        {
+          "name": "Natural/Cork",
+          "hex": "#d4b58e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P035/naturalcork-P035_Natural-Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "deeba9c5-a75d-4c25-88dc-b553b87aa7cc",
+      "sku": "C214",
+      "name": "MagKick 10 - Magnetic Power Bank",
+      "slug": "magkick-10-magnetic-power-bank-c214",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "10,000 mAh Mini Magnetic Power Bank with Wireless Charger & Magnetic Kickstand",
+      "short_desc": "10,000 mAh Mini Magnetic Power Bank with Wireless Charger & Magnetic Kickstand",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C214/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C214/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "332e95d8-65f5-45f7-88f5-45b50c71747f",
+      "sku": "C211",
+      "name": "Swiftcharge 10 Power Bank",
+      "slug": "swiftcharge-10-power-bank-c211",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "10,000 mAh Power Bank with Black Display Panel & Integrated Cables",
+      "short_desc": "10,000 mAh Power Bank with Black Display Panel & Integrated Cables",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C211/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C211/black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "63e3f099-d144-47aa-ae67-648d44cead29",
+      "sku": "C213",
+      "name": "VoltDot 20 Power Bank",
+      "slug": "voltdot-20-power-bank-c213",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "20,000 mAh Mini Power Bank with Pinstripe Design and High Capacity",
+      "short_desc": "20,000 mAh Mini Power Bank with Pinstripe Design and High Capacity",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C213/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C213/black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "9b8be7cb-1127-4680-b8f4-3b9fc9971c30",
+      "sku": "C190",
+      "name": "StriX 10 Thin Power Bank",
+      "slug": "strix-10-thin-power-bank-c190",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "10,000 mAh Power Bank with Strips Design and Ultra-Thin Body",
+      "short_desc": "10,000 mAh Power Bank with Strips Design and Ultra-Thin Body",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C190/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C190/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "a48cb4ef-92c7-46ff-865b-f54b8d0393a5",
+      "sku": "C192",
+      "name": "ZapX 10 Power Bank",
+      "slug": "zapx-10-power-bank-c192",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "10,000 mAh Power Bank with Display, Built-in Cables, and High Capacity",
+      "short_desc": "10,000 mAh Power Bank with Display, Built-in Cables, and High Capacity",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C192/yellow.webp",
+      "color_variants": [
+        {
+          "name": "Yellow",
+          "hex": "#ffcc00",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/power-banks/C192/yellow.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "4e6d7a18-6091-4b9a-8e6c-0d7122db9cbc",
+      "sku": "S100",
+      "name": "S100 True Wireless Earbuds",
+      "slug": "s100-true-wireless-earbuds-s100",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Minimalist true wireless earbuds with matte charging case and pristine sound.",
+      "short_desc": "Minimalist true wireless earbuds with matte charging case and pristine sound.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S100/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S100/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "4551467a-e442-42bd-953b-501d88baacf7",
+      "sku": "S200",
+      "name": "S200 ANC Headphones",
+      "slug": "s200-anc-headphones-s200",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Premium over-ear active noise cancelling headphones with soft earcups.",
+      "short_desc": "Premium over-ear active noise cancelling headphones with soft earcups.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S200/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S200/black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "65b0e448-b102-4b37-bb5d-f11f57f7cafb",
+      "sku": "F100",
+      "name": "Vacuum Insulated Flask",
+      "slug": "vacuum-insulated-flask-f100",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "Sleek matte black stainless steel vacuum insulated flask for keeping beverages hot or cold.",
+      "short_desc": "Sleek matte black stainless steel vacuum insulated flask for keeping beverages hot or cold.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F100/matte-black.webp",
+      "color_variants": [
+        {
+          "name": "Matte Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F100/matte-black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "4fe77d9b-9c7d-491c-a83b-2508c7c955bc",
+      "sku": "F200",
+      "name": "Bamboo Tumbler",
+      "slug": "bamboo-tumbler-f200",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "Insulated tumbler wrapped in natural bamboo wood finish with a stainless steel lid.",
+      "short_desc": "Insulated tumbler wrapped in natural bamboo wood finish with a stainless steel lid.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F200/natural-bamboo.webp",
+      "color_variants": [
+        {
+          "name": "Natural Bamboo",
+          "hex": "#d1bfae",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F200/natural-bamboo.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "e90315a1-c3ac-457d-afcf-f9e049bf8a4c",
+      "sku": "F300",
+      "name": "Glass Water Bottle",
+      "slug": "glass-water-bottle-f300",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "Clear glass water bottle wrapped in a pastel mint green silicone sleeve for grip.",
+      "short_desc": "Clear glass water bottle wrapped in a pastel mint green silicone sleeve for grip.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F300/mint-green.webp",
+      "color_variants": [
+        {
+          "name": "Mint Green",
+          "hex": "#98ff98",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F300/mint-green.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "71075a42-d1cb-4cf5-aa83-5affae5c2d71",
+      "sku": "S300",
+      "name": "S300 Portable Bluetooth Speaker",
+      "slug": "s300-portable-bluetooth-speaker-s300",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Compact, rugged waterproof bluetooth speaker in deep navy blue with woven mesh.",
+      "short_desc": "Compact, rugged waterproof bluetooth speaker in deep navy blue with woven mesh.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S300/navy-blue.webp",
+      "color_variants": [
+        {
+          "name": "Navy Blue",
+          "hex": "#000080",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S300/navy-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "5a49fcc9-8432-462e-a3e0-5af1505369ff",
+      "sku": "S400",
+      "name": "S400 Aluminum Desktop Speaker",
+      "slug": "s400-aluminum-desktop-speaker-s400",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Premium desktop bluetooth speaker machined from a single block of brushed silver aluminum.",
+      "short_desc": "Premium desktop bluetooth speaker machined from a single block of brushed silver aluminum.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S400/silver.webp",
+      "color_variants": [
+        {
+          "name": "Silver",
+          "hex": "#c0c0c0",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S400/silver.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "381c5df1-384c-49a1-8219-8dc91c8c3fbd",
+      "sku": "S500",
+      "name": "S500 Retro Wood Speaker",
+      "slug": "s500-retro-wood-speaker-s500",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Retro-inspired desktop speaker with a rich walnut wood grain finish and sleek black grille.",
+      "short_desc": "Retro-inspired desktop speaker with a rich walnut wood grain finish and sleek black grille.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S500/walnut.webp",
+      "color_variants": [
+        {
+          "name": "Walnut",
+          "hex": "#5c4033",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/speakers-headphones/S500/walnut.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "af0b2a04-cb40-47a9-9832-0e1f5c71c8b6",
+      "sku": "E393",
+      "name": "Lumibloc Rechargeable Metal Table Lamp",
+      "slug": "lumibloc-rechargeable-metal-table-lamp-e393",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Sleek minimalist metal table lamp with square shade, touch sensor, and Type-C charging.",
+      "short_desc": "Sleek minimalist metal table lamp with square shade, touch sensor, and Type-C charging.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E393/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E393/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E393/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "4f02ff45-25b8-4b70-b773-22f2fd8e08ed",
+      "sku": "E365",
+      "name": "Versabeam Mini Torch",
+      "slug": "versabeam-mini-torch-e365",
+      "category_name": "Audio & Desk Lighting",
+      "category_slug": "audio-and-lighting",
+      "description": "Compact rechargeable torch and emergency lamp with 3 light modes and a pocket holder.",
+      "short_desc": "Compact rechargeable torch and emergency lamp with 3 light modes and a pocket holder.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E365/yellow.webp",
+      "color_variants": [
+        {
+          "name": "Yellow",
+          "hex": "#ffcc00",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E365/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Blue",
+          "hex": "#003366",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/lamps-torches/E365/blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "audio-and-lighting.pdf"
+    },
+    {
+      "id": "da226df5-aa8b-455d-b216-8455b4513b19",
+      "sku": "P015",
+      "name": "Q131 Classic A5 Notebook & Oval Flat Pen",
+      "slug": "q131-classic-a5-notebook-oval-flat-pen-p015",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q131",
+      "short_desc": "Source Code: Q131",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P015/black-P015_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P015/black-P015_Black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#e3231c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P015/red-P015_Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "19909138-8af6-4c75-b733-7cc0e9265ba6",
+      "sku": "P023",
+      "name": "4-in-1 Gift Set: Bottle, Notebook, Pen & Keychain",
+      "slug": "4-in-1-gift-set-bottle-notebook-pen-keychain-p023",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q113",
+      "short_desc": "Source Code: Q113",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P023/black-bottle-P023_Black_Bottle.webp",
+      "color_variants": [
+        {
+          "name": "Black Bottle",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P023/black-bottle-P023_Black_Bottle.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Silver Bottle",
+          "hex": "#d1d1d6",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P023/silver-bottle-P023_Silver_Bottle.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Two-Tone / Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P023/two-tone-black-P023_Two-Tone_-_Black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White Bottle",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P023/white-bottle-P023_White_Bottle.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "3f58f5a9-242c-401a-a25f-50999a75c513",
+      "sku": "E238",
+      "name": "Foldy Flat Mobile Stand",
+      "slug": "foldy-flat-mobile-stand-e238",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "Compact design mobile stand with 5 angle adjustment that can be folded flat to store.",
+      "short_desc": "Compact design mobile stand with 5 angle adjustment that can be folded flat to store.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/E238/red.webp",
+      "color_variants": [
+        {
+          "name": "Red",
+          "hex": "#ff3b30",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/E238/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Blue",
+          "hex": "#007aff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/E238/blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ff9500",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/E238/orange.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "5cbdebc6-210b-4ebf-8bc0-cb2a51163e1d",
+      "sku": "C194",
+      "name": "TidyCord Retractable Box",
+      "slug": "tidycord-retractable-box-c194",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "Retractable fast charging cable box with SIM card slots and USB/Lightning connectors.",
+      "short_desc": "Retractable fast charging cable box with SIM card slots and USB/Lightning connectors.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/C194/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/C194/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#f5f5f5",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-accessories/C194/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "e938503f-ff91-4261-bb3b-44213e49f84d",
+      "sku": "H288",
+      "name": "Eco Brew Coffee Fiber Mug",
+      "slug": "eco-brew-coffee-fiber-mug-h288",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Sustainable and responsible beautiful mug made of Eco friendly Coffee fiber.",
+      "short_desc": "Sustainable and responsible beautiful mug made of Eco friendly Coffee fiber.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/H288/brown.webp",
+      "color_variants": [
+        {
+          "name": "Brown",
+          "hex": "#5c4033",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/H288/brown.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Blue",
+          "hex": "#003366",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/H288/blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#2e8b57",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/H288/green.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "309180fe-ce5b-402e-88fa-82f194fea761",
+      "sku": "F500",
+      "name": "HydroShield Double-Wall Vacuum Sports Bottle 750ml",
+      "slug": "hydroshield-double-wall-vacuum-sports-bottle-750ml-f500",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "Premium 750ml double-wall insulated stainless steel sports bottle with carabiner loop cap.",
+      "short_desc": "Premium 750ml double-wall insulated stainless steel sports bottle with carabiner loop cap.",
+      "base_price": 650.0,
+      "min_order_qty": 50,
+      "lead_time_days": 14,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F500/midnight-black.webp",
+      "color_variants": [
+        {
+          "name": "Midnight Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F500/midnight-black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Cobalt Blue",
+          "hex": "#0047ab",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F500/cobalt-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "0439ef0d-23bd-409b-918c-9f53ce8411ea",
+      "sku": "B152",
+      "name": "Cork PU A5 Notebook",
+      "slug": "cork-pu-a5-notebook-b152",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Lightweight A5 notebook with natural cork and PU leather. Features an elastic band and pen loop.",
+      "short_desc": "Lightweight A5 notebook with natural cork and PU leather. Features an elastic band and pen loop.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/B152/red.webp",
+      "color_variants": [
+        {
+          "name": "Red",
+          "hex": "#cc0000",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/B152/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Blue",
+          "hex": "#000080",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/B152/blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "8be185f3-0a31-4438-81f6-3b32d69b6d72",
+      "sku": "L182",
+      "name": "Bamboo Duo Pen with Stylus",
+      "slug": "bamboo-duo-pen-with-stylus-l182",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Classy eco-friendly bamboo pen with metallic parts and a rubber stylus for touchscreens.",
+      "short_desc": "Classy eco-friendly bamboo pen with metallic parts and a rubber stylus for touchscreens.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/L182/natural-bamboo.webp",
+      "color_variants": [
+        {
+          "name": "Natural Bamboo",
+          "hex": "#d2b48c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/L182/natural-bamboo.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "e514dafc-3884-4ddb-ad87-420b3b27861c",
+      "sku": "E98",
+      "name": "Silicon Vacuum Mobile Stand",
+      "slug": "silicon-vacuum-mobile-stand-e98",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Compact silicon stand with a powerful vacuum base. Doubles as an earphone holder to keep wires untangled.",
+      "short_desc": "Compact silicon stand with a powerful vacuum base. Doubles as an earphone holder to keep wires untangled.",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/E98/red.webp",
+      "color_variants": [
+        {
+          "name": "Red",
+          "hex": "#cc0000",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/E98/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Blue",
+          "hex": "#007aff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/E98/blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/E98/black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "bf2a5056-6685-4a6e-83cb-ada209e210cc",
+      "sku": "101",
+      "name": "Executive Luxe Corporate 4-in-1 Gift Box",
+      "slug": "executive-luxe-corporate-4-in-1-gift-box-gs-101",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Curated executive hamper containing a faux-leather A5 diary, metal stylus pen, 500ml vacuum flask, and leather keychain.",
+      "short_desc": "Curated executive hamper containing a faux-leather A5 diary, metal stylus pen, 500ml vacuum flask, and leather keychain.",
+      "base_price": 1250.0,
+      "min_order_qty": 30,
+      "lead_time_days": 15,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/gift-sets/GS-101/executive-black-box.webp",
+      "color_variants": [
+        {
+          "name": "Executive Black Box",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/gift-sets/GS-101/executive-black-box.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "bda6a969-8987-4aa7-ac31-1881ec58766c",
+      "sku": "101",
+      "name": "Multi-Device 3-in-1 Magnetic Foldable Wireless Charging Station",
+      "slug": "multi-device-3-in-1-magnetic-foldable-wireless-charging-station-el-101",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "Foldable 3-in-1 MagSafe compatible charger for iPhone, Apple Watch, and AirPods in a compact travel form factor.",
+      "short_desc": "Foldable 3-in-1 MagSafe compatible charger for iPhone, Apple Watch, and AirPods in a compact travel form factor.",
+      "base_price": 1450.0,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-and-mobile-accessories/EL-101/space-grey.webp",
+      "color_variants": [
+        {
+          "name": "Space Grey",
+          "hex": "#383838",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-and-mobile-accessories/EL-101/space-grey.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "bf5326f4-8d76-4747-bd4f-7c348bf49e69",
+      "sku": "103",
+      "name": "Universal International Travel Adapter with Dual USB-C PD",
+      "slug": "universal-international-travel-adapter-with-dual-usb-c-pd-el-103",
+      "category_name": "Tech & Mobile Accessories",
+      "category_slug": "tech-and-power",
+      "description": "All-in-one worldwide travel adapter supporting US, EU, UK, AU plugs with 35W GaN fast charging ports.",
+      "short_desc": "All-in-one worldwide travel adapter supporting US, EU, UK, AU plugs with 35W GaN fast charging ports.",
+      "base_price": 890.0,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-and-mobile-accessories/EL-103/matte-black.webp",
+      "color_variants": [
+        {
+          "name": "Matte Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/electronics-and-mobile-accessories/EL-103/matte-black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "tech-and-power.pdf"
+    },
+    {
+      "id": "50e8d331-95c8-4669-a737-2e7bb9298173",
+      "sku": "101",
+      "name": "Plantable Seed Paper Stationery Gift Set",
+      "slug": "plantable-seed-paper-stationery-gift-set-eco-101",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "100% biodegradable stationery set with plantable seed pencils, notebook, and plantable gift box.",
+      "short_desc": "100% biodegradable stationery set with plantable seed pencils, notebook, and plantable gift box.",
+      "base_price": 380.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-101/kraft-natural.webp",
+      "color_variants": [
+        {
+          "name": "Kraft Natural",
+          "hex": "#c8ad8d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-101/kraft-natural.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "7af8f0be-108d-4472-a426-575996a97ff7",
+      "sku": "102",
+      "name": "Wheat Straw Fast Wireless Charging Pad",
+      "slug": "wheat-straw-fast-wireless-charging-pad-eco-102",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Eco-conscious 15W Qi fast wireless charger crafted from natural biodegradable wheat straw composite.",
+      "short_desc": "Eco-conscious 15W Qi fast wireless charger crafted from natural biodegradable wheat straw composite.",
+      "base_price": 520.0,
+      "min_order_qty": 50,
+      "lead_time_days": 14,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-102/natural-oatmeal.webp",
+      "color_variants": [
+        {
+          "name": "Natural Oatmeal",
+          "hex": "#e3dac9",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-102/natural-oatmeal.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "b27c92cc-a22d-472f-804b-ea6119fb17a4",
+      "sku": "103",
+      "name": "Bamboo Desktop Organizer with Phone Stand",
+      "slug": "bamboo-desktop-organizer-with-phone-stand-eco-103",
+      "category_name": "Eco-Friendly & Sustainable",
+      "category_slug": "eco-friendly-products",
+      "description": "Crafted from sustainable solid bamboo with dedicated slots for smartphone, pens, business cards, and sticky notes.",
+      "short_desc": "Crafted from sustainable solid bamboo with dedicated slots for smartphone, pens, business cards, and sticky notes.",
+      "base_price": 590.0,
+      "min_order_qty": 50,
+      "lead_time_days": 12,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-103/natural-bamboo.webp",
+      "color_variants": [
+        {
+          "name": "Natural Bamboo",
+          "hex": "#d2b48c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/eco-friendly-products/ECO-103/natural-bamboo.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "eco-friendly-products.pdf"
+    },
+    {
+      "id": "cf36d601-04e1-40c6-8227-9e3a2aee2493",
+      "sku": "101",
+      "name": "Executive PU Leather Desk Mat with Magnetic Cable Organizer",
+      "slug": "executive-pu-leather-desk-mat-with-magnetic-cable-organizer-of-101",
+      "category_name": "Office & Desk Essentials",
+      "category_slug": "office-and-desk",
+      "description": "90x40cm waterproof dual-sided faux leather desk blotter pad with integrated magnetic cable holder.",
+      "short_desc": "90x40cm waterproof dual-sided faux leather desk blotter pad with integrated magnetic cable holder.",
+      "base_price": 550.0,
+      "min_order_qty": 50,
+      "lead_time_days": 12,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [],
+      "status": "completed",
+      "source_pdf": "office-and-desk.pdf"
+    },
+    {
+      "id": "42bf230a-6086-4f62-a8cb-ea3c91a93f67",
+      "sku": "P033",
+      "name": "Q54 SS Bottle + Notebook + Metal Pen + Keychain",
+      "slug": "q54-ss-bottle-notebook-metal-pen-keychain-p033",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q54",
+      "short_desc": "Source Code: Q54",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P033/black-P033_Black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P033/black-P033_Black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "206a5544-08c0-4f7b-ab7f-71c268eea95f",
+      "sku": "P008",
+      "name": "Q185 Compact 4 PC Cork Gift Set",
+      "slug": "q185-compact-4-pc-cork-gift-set-p008",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q185",
+      "short_desc": "Source Code: Q185",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P008/natural-cork-P008_Natural_Cork.webp",
+      "color_variants": [
+        {
+          "name": "Natural Cork",
+          "hex": "#d4b58e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P008/natural-cork-P008_Natural_Cork.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "4e5da535-fce3-4c30-8ea3-5f377838c667",
+      "sku": "P006",
+      "name": "Q159 2-in-1 Origami Notebook with Metal Pen",
+      "slug": "q159-2-in-1-origami-notebook-with-metal-pen-p006",
+      "category_name": "Joining Kits & Gift Sets",
+      "category_slug": "joining-kits-gift-sets",
+      "description": "Source Code: Q159",
+      "short_desc": "Source Code: Q159",
+      "base_price": null,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": false,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P006/red-P006_Red.webp",
+      "color_variants": [
+        {
+          "name": "Red",
+          "hex": "#e3231c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/employee-joining-kits/P006/red-P006_Red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "joining-kits-gift-sets.pdf"
+    },
+    {
+      "id": "9f84f9b4-bf01-4490-bafe-f4f7ece16671",
+      "sku": "F400",
+      "name": "Nordic Matte Ceramic Coffee Mug with Wooden Handle",
+      "slug": "nordic-matte-ceramic-coffee-mug-with-wooden-handle-f400",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "Modern Scandinavian ceramic mug with natural beechwood handle and spill-resistant lid.",
+      "short_desc": "Modern Scandinavian ceramic mug with natural beechwood handle and spill-resistant lid.",
+      "base_price": 450.0,
+      "min_order_qty": 50,
+      "lead_time_days": 12,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F400/matte-white.webp",
+      "color_variants": [
+        {
+          "name": "Matte White",
+          "hex": "#f8f8f8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F400/matte-white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Charcoal Grey",
+          "hex": "#2d3748",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F400/charcoal-grey.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Forest Green",
+          "hex": "#1b4d3e",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F400/forest-green.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "0543660c-c70d-4aa3-bde4-b89ab2001b23",
+      "sku": "F600",
+      "name": "Smart Temperature Display Vacuum Flask",
+      "slug": "smart-temperature-display-vacuum-flask-f600",
+      "category_name": "Drinkware & Bottles",
+      "category_slug": "drinkware",
+      "description": "500ml vacuum insulated bottle featuring an integrated LED touch temperature readout lid.",
+      "short_desc": "500ml vacuum insulated bottle featuring an integrated LED touch temperature readout lid.",
+      "base_price": 550.0,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F600/onyx-black.webp",
+      "color_variants": [
+        {
+          "name": "Onyx Black",
+          "hex": "#111111",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F600/onyx-black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Ruby Red",
+          "hex": "#c41e3a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/drinkware/F600/ruby-red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "drinkware.pdf"
+    },
+    {
+      "id": "94549713-47cd-4158-a012-ae858514acd2",
+      "sku": "799",
+      "name": "Men's Poly Cotton (PC) Corporate Polo T-Shirt",
+      "slug": "mens-poly-cotton-corporate-polo-t-shirt-799",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Poly Cotton Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "Heavy-duty 220 GSM poly-cotton pique knit polo t-shirt with ribbed collar, 2-button placket, and superior breathability.",
+      "base_price": 799.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": true,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/grey-melange.webp",
+      "color_variants": [
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Charcoal Grey",
+          "hex": "#374151",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/charcoal-grey.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Carrot",
+          "hex": "#f97316",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/carrot.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-corporate-polo-t-shirt-799/navy-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "c92c6e2d-b892-4d65-9b95-ef62b79f2b12",
+      "sku": "799",
+      "name": "Women's Poly Cotton (PC) Corporate Polo T-Shirt",
+      "slug": "womens-poly-cotton-corporate-polo-t-shirt-799",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Poly Cotton Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "Tailored women's silhouette 220 GSM poly-cotton pique polo t-shirt with contoured fit and soft collar.",
+      "base_price": 799.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/grey-melange.webp",
+      "color_variants": [
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Charcoal Grey",
+          "hex": "#374151",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/charcoal-grey.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Carrot",
+          "hex": "#f97316",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/carrot.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-corporate-polo-t-shirt-799/navy-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "4353d391-909e-428a-9a33-23f034aac5bb",
+      "sku": "799",
+      "name": "Men's Performance Dry-Fit Polo T-Shirt",
+      "slug": "mens-performance-dry-fit-polo-t-shirt-799",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Dry-Fit Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 8 vibrant colors.",
+      "short_desc": "Moisture-wicking micro-polyester athletic polo designed for active workforce, sports events, and corporate teams.",
+      "base_price": 799.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-performance-dry-fit-polo-t-shirt-799/sky-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "6865ff83-b525-4356-9c7b-2640813d62d9",
+      "sku": "799",
+      "name": "Women's Performance Dry-Fit Polo T-Shirt",
+      "slug": "womens-performance-dry-fit-polo-t-shirt-799",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Dry-Fit Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 8 vibrant colors.",
+      "short_desc": "Breathable moisture-wicking women's activewear polo with ergonomic side seams and anti-microbial finish.",
+      "base_price": 799.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-performance-dry-fit-polo-t-shirt-799/sky-blue.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "82414518-080b-4a22-a127-c9e901da1be5",
+      "sku": "499",
+      "name": "Men's Poly Cotton Round Neck T-Shirt",
+      "slug": "mens-poly-cotton-round-neck-t-shirt-499",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Poly Cotton Round Neck T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 8 vibrant colors.",
+      "short_desc": "Bio-washed 180 GSM cotton blend crew neck t-shirt with Lycra-ribbed collar and seamless side stitching.",
+      "base_price": 499.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-poly-cotton-round-neck-t-shirt-499/red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "aabc8b73-e219-474f-a2b2-ffb082e8f1a0",
+      "sku": "1599",
+      "name": "Men's Heavyweight Fleece Full-Zip Hoodie",
+      "slug": "mens-heavyweight-fleece-full-zip-hoodie-1599",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Fleece Hoodie. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 2 vibrant colors.",
+      "short_desc": "320 GSM brushed thermal fleece zip-up hoodie with front kangaroo pockets and heavy-duty metal zipper.",
+      "base_price": 1599.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-heavyweight-fleece-full-zip-hoodie-1599/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-heavyweight-fleece-full-zip-hoodie-1599/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-heavyweight-fleece-full-zip-hoodie-1599/grey-melange.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "1abe4a7b-6b5c-4bfa-8f2f-f1a0245ebff6",
+      "sku": "599",
+      "name": "Men's Cotton Poly Combed (CPC) Polo T-Shirt",
+      "slug": "mens-cotton-poly-combed-cpc-polo-t-shirt-599",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's CPC Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 8 vibrant colors.",
+      "short_desc": "Refined 200 GSM combed cotton-poly blend pique polo t-shirt with pre-shrunk fabric and reinforced taped neck.",
+      "base_price": 599.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-cotton-poly-combed-cpc-polo-t-shirt-599/yellow.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "6ae44e29-7fac-4107-bbe3-6a254917c908",
+      "sku": "399",
+      "name": "Men's Spun Polyester Polo T-Shirt",
+      "slug": "mens-spun-polyester-polo-t-shirt-399",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Spun Polyester Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "High-durability promotional spun polyester polo t-shirt designed for large corporate events and campaign rollouts.",
+      "base_price": 399.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-spun-polyester-polo-t-shirt-399/red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "ca29bfe7-fcee-41ee-9212-c4949ce67437",
+      "sku": "299",
+      "name": "Men's Dry-Fit Round Neck Sports T-Shirt",
+      "slug": "mens-dry-fit-round-neck-sports-t-shirt-299",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Dry-Fit Round Neck T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 6 vibrant colors.",
+      "short_desc": "Lightweight breathable dri-fit sports crew neck t-shirt with quick-drying micro-knit construction.",
+      "base_price": 299.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-dry-fit-round-neck-sports-t-shirt-299/green.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "ddb8b5f8-da01-4764-86a4-e86d30a6cadc",
+      "sku": "499",
+      "name": "Women's Poly Cotton Round Neck T-Shirt",
+      "slug": "womens-poly-cotton-round-neck-t-shirt-499",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Poly Cotton Round Neck T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 4 vibrant colors.",
+      "short_desc": "Ultra-soft women's crew neck tee crafted from bio-washed combed cotton blend with contoured waist.",
+      "base_price": 499.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-round-neck-t-shirt-499/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-round-neck-t-shirt-499/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-round-neck-t-shirt-499/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-round-neck-t-shirt-499/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-poly-cotton-round-neck-t-shirt-499/black.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "1a104987-85f8-4b75-a746-29f14376d52a",
+      "sku": "1599",
+      "name": "Women's Heavyweight Fleece Full-Zip Hoodie",
+      "slug": "womens-heavyweight-fleece-full-zip-hoodie-1599",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Fleece Hoodie. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 2 vibrant colors.",
+      "short_desc": "Cozy 320 GSM fleece zip hoodie for women with brushed interior, lined hood, and ribbed cuffs.",
+      "base_price": 1599.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-heavyweight-fleece-full-zip-hoodie-1599/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-heavyweight-fleece-full-zip-hoodie-1599/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-heavyweight-fleece-full-zip-hoodie-1599/grey-melange.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "d9b40893-4c8f-4007-9719-b6921ea47f6c",
+      "sku": "599",
+      "name": "Women's Cotton Poly Combed (CPC) Polo T-Shirt",
+      "slug": "womens-cotton-poly-combed-cpc-polo-t-shirt-599",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's CPC Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 8 vibrant colors.",
+      "short_desc": "Women's elegant combed cotton-poly blend pique polo tee with sleek 3-button placket.",
+      "base_price": 599.0,
+      "min_order_qty": 50,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/black.webp",
+      "color_variants": [
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/green.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-cotton-poly-combed-cpc-polo-t-shirt-599/yellow.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "9d2a2b88-235a-4dc2-88dd-faeea4ef65cd",
+      "sku": "399",
+      "name": "Women's Spun Polyester Polo T-Shirt",
+      "slug": "womens-spun-polyester-polo-t-shirt-399",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Spun Polyester Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "Durable and wrinkle-resistant women's spun polyester polo t-shirt for corporate campaigns and team events.",
+      "base_price": 399.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-spun-polyester-polo-t-shirt-399/red.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "75f93141-8794-4031-b974-efe48a7fbbe7",
+      "sku": "299",
+      "name": "Women's Dry-Fit Round Neck Sports T-Shirt",
+      "slug": "womens-dry-fit-round-neck-sports-t-shirt-299",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Dry-Fit Round Neck T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 6 vibrant colors.",
+      "short_desc": "Women's lightweight quick-drying athletic crew neck tee for fitness days and sports events.",
+      "base_price": 299.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/white.webp",
+      "color_variants": [
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/white.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Green",
+          "hex": "#15803d",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-dry-fit-round-neck-sports-t-shirt-299/green.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "0ca746f3-4095-4459-889b-e8e8ed6a043e",
+      "sku": "299",
+      "name": "Men's Everyday Spun Polyester Polo T-Shirt",
+      "slug": "mens-everyday-spun-polyester-polo-t-shirt-299",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Men's Spun Polyester Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "Budget-friendly durable spun polyester collar t-shirt with ribbed collar and easy-wash fabric.",
+      "base_price": 299.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/orange.webp",
+      "color_variants": [
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/men/mens-everyday-spun-polyester-polo-t-shirt-299/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "id": "420453ed-1627-4c3b-9f5f-66a3764fe393",
+      "sku": "299",
+      "name": "Women's Everyday Spun Polyester Polo T-Shirt",
+      "slug": "womens-everyday-spun-polyester-polo-t-shirt-299",
+      "category_name": "Apparel & T-Shirts",
+      "category_slug": "apparel-t-shirts",
+      "description": "Official Outflank Women's Spun Polyester Polo T-Shirt. Features premium stitch quality, pre-shrunk fabric, and custom corporate logo embroidery/screen printing. Available in 9 vibrant colors.",
+      "short_desc": "Women's comfortable spun polyester polo t-shirt available in 9 vivid shades for company uniforms.",
+      "base_price": 299.0,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/orange.webp",
+      "color_variants": [
+        {
+          "name": "Orange",
+          "hex": "#ea580c",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/orange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Grey Melange",
+          "hex": "#9ca3af",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/grey-melange.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Sky Blue",
+          "hex": "#38bdf8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/sky-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Royal Blue",
+          "hex": "#1d4ed8",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/royal-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#facc15",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/yellow.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#0a192f",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/navy-blue.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Red",
+          "hex": "#dc2626",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/red.webp",
+          "status": "completed"
+        },
+        {
+          "name": "Black",
+          "hex": "#1a1a1a",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/black.webp",
+          "status": "completed"
+        },
+        {
+          "name": "White",
+          "hex": "#ffffff",
+          "image_url": "https://goowpzynxlohbbrfqqng.supabase.co/storage/v1/object/public/product-images/apparel/women/womens-everyday-spun-polyester-polo-t-shirt-299/white.webp",
+          "status": "completed"
+        }
+      ],
+      "status": "completed",
+      "source_pdf": "apparel-t-shirts.pdf"
+    },
+    {
+      "sku": "EL-102",
+      "name": "OmniCharge 6-in-1 Fast Charging Cable with Keyring",
+      "slug": "omnicharge-6-in-1-fast-charging-cable-with-keyring-el-102",
+      "category_name": "Electronics & Mobile Accessories",
+      "category_slug": "electronics-and-mobile-accessories",
+      "description": "Compact universal charging cable with USB-C, Lightning, Micro-USB, and USB-A connectors encased in a magnetic carry clip.",
+      "short_desc": "Compact universal charging cable with USB-C, Lightning, Micro-USB, and USB-A connectors encased in a magnetic carry clip.",
+      "base_price": 280,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Matte Black",
+          "hex": "#1a1a1a",
+          "image_url": null,
+          "image_prompt": "Compact braided black multi-head universal charging cable with magnetic keychain adapter, studio product photography",
+          "status": "pending"
+        },
+        {
+          "name": "Vibrant Red",
+          "hex": "#e3231c",
+          "image_url": null,
+          "image_prompt": "Braided red nylon 6-in-1 multi-connector keychain cable with aluminum connectors, clean white studio background",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "electronics-and-mobile-accessories.pdf",
+      "ai_prompt_template": "Compact braided black multi-head universal charging cable with magnetic keychain adapter, studio product photography"
+    },
+    {
+      "sku": "GS-102",
+      "name": "Tech Enthusiast Power & Audio Duo Gift Set",
+      "slug": "tech-enthusiast-power-audio-duo-gift-set-gs-102",
+      "category_name": "Gift Sets",
+      "category_slug": "gift-sets",
+      "description": "High-impact tech gift pairing a 10,000mAh magnetic power bank and true wireless stereo earbuds in a hard-shell gift box.",
+      "short_desc": "High-impact tech gift pairing a 10,000mAh magnetic power bank and true wireless stereo earbuds in a hard-shell gift box.",
+      "base_price": 1850,
+      "min_order_qty": 30,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Midnight Black",
+          "hex": "#1a1a1a",
+          "image_url": null,
+          "image_prompt": "Tech gift set unboxed with matte black wireless power bank and matching TWS earbuds inside custom EVA foam presentation box, studio lighting",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "gift-sets.pdf",
+      "ai_prompt_template": "Tech gift set unboxed with matte black wireless power bank and matching TWS earbuds inside custom EVA foam presentation box, studio lighting"
+    },
+    {
+      "sku": "OF-102",
+      "name": "Rotary Metal Perpetual Calendar Desk Clock & Pen Stand",
+      "slug": "rotary-metal-perpetual-calendar-desk-clock-pen-stand-of-102",
+      "category_name": "Office Desk & Stationery",
+      "category_slug": "office-table-tops-and-stationery",
+      "description": "Multi-function brushed metal desk accessory with manual wheel perpetual calendar, quartz clock, and heavy pen stand.",
+      "short_desc": "Multi-function brushed metal desk accessory with manual wheel perpetual calendar, quartz clock, and heavy pen stand.",
+      "base_price": 680,
+      "min_order_qty": 50,
+      "lead_time_days": 14,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Brushed Silver",
+          "hex": "#c0c0c0",
+          "image_url": null,
+          "image_prompt": "Brushed silver aluminum perpetual calendar desk accessory with quartz clock dial and pen rest, clean modern office studio lighting",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "office-table-tops-and-stationery.pdf",
+      "ai_prompt_template": "Brushed silver aluminum perpetual calendar desk accessory with quartz clock dial and pen rest, clean modern office studio lighting"
+    },
+    {
+      "sku": "HK-101",
+      "name": "Electric Salt & Pepper Gravity Grinder Set",
+      "slug": "electric-salt-pepper-gravity-grinder-set-hk-101",
+      "category_name": "Home & Kitchen",
+      "category_slug": "home-kitchen",
+      "description": "Automatic one-handed gravity-tilt electric spice mill set with LED light and adjustable ceramic coarseness.",
+      "short_desc": "Automatic one-handed gravity-tilt electric spice mill set with LED light and adjustable ceramic coarseness.",
+      "base_price": 850,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Brushed Stainless",
+          "hex": "#d4d4d8",
+          "image_url": null,
+          "image_prompt": "Set of 2 modern automatic electric gravity spice grinders in brushed stainless steel with clear acrylic spice chamber and blue LED light, studio product photo",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "home-kitchen.pdf",
+      "ai_prompt_template": "Set of 2 modern automatic electric gravity spice grinders in brushed stainless steel with clear acrylic spice chamber and blue LED light, studio product photo"
+    },
+    {
+      "sku": "HK-102",
+      "name": "Insulated Stainless Steel Lunch Box with Thermal Bag",
+      "slug": "insulated-stainless-steel-lunch-box-with-thermal-bag-hk-102",
+      "category_name": "Home & Kitchen",
+      "category_slug": "home-kitchen",
+      "description": "Leakproof 3-tier vacuum insulated bento lunch box with stainless steel cutlery and insulated neoprene carrier.",
+      "short_desc": "Leakproof 3-tier vacuum insulated bento lunch box with stainless steel cutlery and insulated neoprene carrier.",
+      "base_price": 720,
+      "min_order_qty": 50,
+      "lead_time_days": 14,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Graphite Grey",
+          "hex": "#374151",
+          "image_url": null,
+          "image_prompt": "3-tier insulated stainless steel modern bento box with matte grey exterior and matching insulated zip carry tote, clean studio photography",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "home-kitchen.pdf",
+      "ai_prompt_template": "3-tier insulated stainless steel modern bento box with matte grey exterior and matching insulated zip carry tote, clean studio photography"
+    },
+    {
+      "sku": "WFH-101",
+      "name": "Ergonomic Adjustable Aluminum Laptop Riser Stand",
+      "slug": "ergonomic-adjustable-aluminum-laptop-riser-stand-wfh-101",
+      "category_name": "Work From Home",
+      "category_slug": "work-from-home",
+      "description": "Fully collapsible heavy-duty aluminum laptop stand with dual-hinge angle adjustment and heat-dissipation ventilation.",
+      "short_desc": "Fully collapsible heavy-duty aluminum laptop stand with dual-hinge angle adjustment and heat-dissipation ventilation.",
+      "base_price": 950,
+      "min_order_qty": 50,
+      "lead_time_days": 12,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Space Grey",
+          "hex": "#4b5563",
+          "image_url": null,
+          "image_prompt": "Sleek ergonomic space grey aluminum laptop riser stand with silicone protective pads, studio lighting on clean white background",
+          "status": "pending"
+        },
+        {
+          "name": "Silver",
+          "hex": "#e5e7eb",
+          "image_url": null,
+          "image_prompt": "Silver anodized aluminum folding laptop stand, studio product photography, clean shadows",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "work-from-home.pdf",
+      "ai_prompt_template": "Sleek ergonomic space grey aluminum laptop riser stand with silicone protective pads, studio lighting on clean white background"
+    },
+    {
+      "sku": "WFH-102",
+      "name": "USB-Powered LED Monitor Light Bar with Touch Dimmer",
+      "slug": "usb-powered-led-monitor-light-bar-with-touch-dimmer-wfh-102",
+      "category_name": "Work From Home",
+      "category_slug": "work-from-home",
+      "description": "Screen-hanging desk light bar with asymmetric optical design, no screen glare, 3 color temperatures, and touch brightness controls.",
+      "short_desc": "Screen-hanging desk light bar with asymmetric optical design, no screen glare, 3 color temperatures, and touch brightness controls.",
+      "base_price": 1150,
+      "min_order_qty": 50,
+      "lead_time_days": 15,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Matte Black",
+          "hex": "#1a1a1a",
+          "image_url": null,
+          "image_prompt": "Slim matte black LED monitor light bar mounted over a computer screen with touch controls, warm ambient light, studio setting",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "work-from-home.pdf",
+      "ai_prompt_template": "Slim matte black LED monitor light bar mounted over a computer screen with touch controls, warm ambient light, studio setting"
+    },
+    {
+      "sku": "CLK-101",
+      "name": "Nordic Wooden LED Digital Alarm Clock with Wireless Charging",
+      "slug": "nordic-wooden-led-digital-alarm-clock-with-wireless-charging-clk-101",
+      "category_name": "Table & Wall Clocks",
+      "category_slug": "table-wall-clocks",
+      "description": "Triangular wooden desk clock with hidden white LED time/temperature display and built-in Qi wireless charging top surface.",
+      "short_desc": "Triangular wooden desk clock with hidden white LED time/temperature display and built-in Qi wireless charging top surface.",
+      "base_price": 790,
+      "min_order_qty": 50,
+      "lead_time_days": 14,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Walnut Wood",
+          "hex": "#5c4033",
+          "image_url": null,
+          "image_prompt": "Minimalist triangular dark walnut wood digital desk clock with bright white LED time readout shining through wood grain and top wireless charging pad, studio shot",
+          "status": "pending"
+        },
+        {
+          "name": "Light Bamboo",
+          "hex": "#d2b48c",
+          "image_url": null,
+          "image_prompt": "Light natural bamboo wooden digital desk alarm clock with white digital LED numbers, modern studio product photography",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "table-wall-clocks.pdf",
+      "ai_prompt_template": "Minimalist triangular dark walnut wood digital desk clock with bright white LED time readout shining through wood grain and top wireless charging pad, studio shot"
+    },
+    {
+      "sku": "KC-101",
+      "name": "Precision Titanium 8-in-1 EDC Multi-Tool Keychain",
+      "slug": "precision-titanium-8-in-1-edc-multi-tool-keychain-kc-101",
+      "category_name": "Multifunction Keychains",
+      "category_slug": "multifunction-keychains",
+      "description": "Compact aircraft-grade metal pocket multi-tool featuring bottle opener, pry bar, hex wrenches, and box cutter.",
+      "short_desc": "Compact aircraft-grade metal pocket multi-tool featuring bottle opener, pry bar, hex wrenches, and box cutter.",
+      "base_price": 190,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Titanium Grey",
+          "hex": "#555555",
+          "image_url": null,
+          "image_prompt": "Precision CNC machined titanium pocket multi-tool keychain with laser-etched ruler and bottle opener, studio product photo on white background",
+          "status": "pending"
+        },
+        {
+          "name": "Matte Black",
+          "hex": "#1a1a1a",
+          "image_url": null,
+          "image_prompt": "Matte black coated steel multi-tool keychain tool with heavy-duty key ring, clean commercial studio lighting",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "multifunction-keychains.pdf",
+      "ai_prompt_template": "Precision CNC machined titanium pocket multi-tool keychain with laser-etched ruler and bottle opener, studio product photo on white background"
+    },
+    {
+      "sku": "PBS-101",
+      "name": "Tritan Pro Gym Shaker Bottle with Wire Whisk Ball 700ml",
+      "slug": "tritan-pro-gym-shaker-bottle-with-wire-whisk-ball-700ml-pbs-101",
+      "category_name": "Plastic Bottles & Shakers",
+      "category_slug": "plastic-bottles-sippers-shakers",
+      "description": "BPA-free durable Eastman Tritan fitness shaker with leak-proof flip cap, measurement markings, and stainless blending ball.",
+      "short_desc": "BPA-free durable Eastman Tritan fitness shaker with leak-proof flip cap, measurement markings, and stainless blending ball.",
+      "base_price": 260,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Smoked Black",
+          "hex": "#222222",
+          "image_url": null,
+          "image_prompt": "700ml smoked translucent tritan gym protein shaker bottle with matte black leakproof lid and stainless steel mixer ball inside, studio product shot",
+          "status": "pending"
+        },
+        {
+          "name": "Clear & Cyan",
+          "hex": "#00bcd4",
+          "image_url": null,
+          "image_prompt": "Clear tritan fitness shaker bottle with cyan blue sports cap and silicone carrying loop, clean white studio background",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "plastic-bottles-sippers-shakers.pdf",
+      "ai_prompt_template": "700ml smoked translucent tritan gym protein shaker bottle with matte black leakproof lid and stainless steel mixer ball inside, studio product shot"
+    },
+    {
+      "sku": "DR-101",
+      "name": "Medical Grade Stylus Pen with Integrated LED Pupil Torch",
+      "slug": "medical-grade-stylus-pen-with-integrated-led-pupil-torch-dr-101",
+      "category_name": "Doctor & Pharma Utility",
+      "category_slug": "doctor-utility-pharma",
+      "description": "High-precision diagnostic penlight for medical professionals with pupil gauge scale, touch stylus, and rollerball tip.",
+      "short_desc": "High-precision diagnostic penlight for medical professionals with pupil gauge scale, touch stylus, and rollerball tip.",
+      "base_price": 220,
+      "min_order_qty": 100,
+      "lead_time_days": 12,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Hospital Silver",
+          "hex": "#d1d5db",
+          "image_url": null,
+          "image_prompt": "Sleek stainless steel medical diagnostic penlight with pupil measurement scale printed on barrel, LED tip light, clean medical studio shot",
+          "status": "pending"
+        },
+        {
+          "name": "Navy Blue",
+          "hex": "#1e3a8a",
+          "image_url": null,
+          "image_prompt": "Navy blue aluminum medical utility pen with integrated LED diagnostic light and silver pocket clip, studio lighting",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "doctor-utility-pharma.pdf",
+      "ai_prompt_template": "Sleek stainless steel medical diagnostic penlight with pupil measurement scale printed on barrel, LED tip light, clean medical studio shot"
+    },
+    {
+      "sku": "COV-101",
+      "name": "Automatic Touchless Mist Hand Sanitizer Dispenser 45ml",
+      "slug": "automatic-touchless-mist-hand-sanitizer-dispenser-45ml-cov-101",
+      "category_name": "Covid & Prevention Items",
+      "category_slug": "covid-corona-epidemic-prevention-items",
+      "description": "Pocket-sized USB rechargeable infrared sensor nano-mist sanitizer sprayer with ambient LED indicator.",
+      "short_desc": "Pocket-sized USB rechargeable infrared sensor nano-mist sanitizer sprayer with ambient LED indicator.",
+      "base_price": 320,
+      "min_order_qty": 100,
+      "lead_time_days": 10,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Pure White",
+          "hex": "#ffffff",
+          "image_url": null,
+          "image_prompt": "Pocket-size white touchless infrared hand sanitizer nano mist sprayer with clear reservoir base, studio product photography",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "covid-corona-epidemic-prevention-items.pdf",
+      "ai_prompt_template": "Pocket-size white touchless infrared hand sanitizer nano mist sprayer with clear reservoir base, studio product photography"
+    },
+    {
+      "sku": "CUST-101",
+      "name": "Custom 3D Soft PVC Molded USB Flash Drive",
+      "slug": "custom-3d-soft-pvc-molded-usb-flash-drive-cust-101",
+      "category_name": "Customized Products",
+      "category_slug": "customized-products-made-to-order",
+      "description": "Bespoke 3D molded rubber USB memory drive manufactured to match custom corporate logos and mascots.",
+      "short_desc": "Bespoke 3D molded rubber USB memory drive manufactured to match custom corporate logos and mascots.",
+      "base_price": 340,
+      "min_order_qty": 200,
+      "lead_time_days": 20,
+      "is_featured": false,
+      "is_customizable": true,
+      "primary_image_url": null,
+      "color_variants": [
+        {
+          "name": "Custom 3D Multi-Color",
+          "hex": "#e3231c",
+          "image_url": null,
+          "image_prompt": "Custom 3D molded soft PVC corporate USB flash drive shaped like a branded mascot with removable cap, colorful commercial studio photography",
+          "status": "pending"
+        }
+      ],
+      "status": "pending",
+      "source_pdf": "customized-products-made-to-order.pdf",
+      "ai_prompt_template": "Custom 3D molded soft PVC corporate USB flash drive shaped like a branded mascot with removable cap, colorful commercial studio photography"
+    }
+  ]
+}

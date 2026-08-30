@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
 import ColorVariantPicker from '@/components/catalog/ColorVariantPicker'
 import LeadModal from '@/components/catalog/LeadModal'
 import type { ColorVariant } from '@/components/catalog/ProductCard'
@@ -52,107 +52,188 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     setActiveImage(0)
   }
 
+  const prevImage = () => {
+    setActiveImage((prev) => (prev > 0 ? prev - 1 : images.length - 1))
+  }
+
+  const nextImage = () => {
+    setActiveImage((prev) => (prev < images.length - 1 ? prev + 1 : 0))
+  }
+
   return (
     <>
       <main className="min-h-screen bg-[#fbfbfd] pt-24 md:pt-28">
-        {/* Simple Back Button */}
-        <div className="max-w-[1400px] mx-auto px-6 pb-4 flex items-center">
-          <Link 
-            href="/catalog" 
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#e5e5ea] shadow-sm text-sm font-semibold text-[#1d1d1f] hover:bg-[#f5f5f7] hover:border-black/10 hover:shadow-md transition-all"
-          >
-            <ChevronLeft size={16} className="text-[#86868b]" />
-            Back to Catalog
-          </Link>
+        {/* Breadcrumb Navigation */}
+        <div className="max-w-[1400px] mx-auto px-6 pb-4 flex items-center justify-between">
+          <nav className="flex items-center gap-2 text-xs md:text-sm font-medium text-[#86868b]">
+            <Link href="/catalog" className="hover:text-black transition-colors flex items-center gap-1.5">
+              <ChevronLeft size={16} />
+              Catalog
+            </Link>
+            {product.categories && (
+              <>
+                <span>/</span>
+                <Link href={`/catalog?category=${product.categories.slug}`} className="hover:text-black transition-colors">
+                  {product.categories.name}
+                </Link>
+              </>
+            )}
+            <span>/</span>
+            <span className="text-[#1d1d1f] font-semibold truncate max-w-[200px] sm:max-w-none">{product.name}</span>
+          </nav>
         </div>
 
         {/* Hero Section */}
-        <section className="max-w-[1400px] mx-auto px-6 pt-4 pb-12 md:pt-8 md:pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <section className="max-w-[1400px] mx-auto px-6 pt-2 pb-12 md:pt-4 md:pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            {/* ── Left Column: Sticky Image Gallery ── */}
-            <div className="lg:sticky lg:top-24 flex flex-col gap-6">
-              <motion.div
-                layoutId="product-main-image"
-                className="relative aspect-square md:aspect-[4/3] w-full rounded-[40px] overflow-hidden bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-black/[0.03]"
-              >
-                <AnimatePresence mode="wait">
-                  {mainImage ? (
-                    <motion.div
-                      key={mainImage}
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.02 }}
-                      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={mainImage}
-                        alt={`${product.name} Preview`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        priority
-                        unoptimized
-                      />
-                    </motion.div>
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#f5f5f7]">
-                      <Package size={64} className="text-[#aeaeb2]" />
-                    </div>
-                  )}
-                </AnimatePresence>
-                
-                {product.categories && (
-                  <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/50 text-[11px] font-bold text-[#1d1d1f] tracking-widest uppercase shadow-sm">
-                    {product.categories.name}
-                  </div>
-                )}
-              </motion.div>
-
-              {/* Minimalist Thumbnails */}
+            {/* ── Left Column: E-Commerce Product Gallery (Thumbnails on Left + Large Hero) ── */}
+            <div className="lg:col-span-7 lg:sticky lg:top-24 flex flex-col md:flex-row gap-4 md:gap-5 items-start">
+              
+              {/* Vertical Thumbnail Strip (Desktop) / Horizontal Row (Mobile) */}
               {images.length > 1 && (
-                <div className="flex gap-4 justify-center mt-2">
-                  {images.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
-                        activeImage === i ? 'bg-[#1d1d1f] scale-125' : 'bg-[#d2d2d7] hover:bg-[#86868b]'
-                      }`}
-                      aria-label={`View image ${i + 1}`}
-                    />
-                  ))}
+                <div className="order-2 md:order-1 flex md:flex-col gap-3 shrink-0 overflow-x-auto md:overflow-y-auto max-h-[520px] p-1 w-full md:w-auto scrollbar-none">
+                  {images.map((img, i) => {
+                    const isSelected = activeImage === i
+                    const label = i === 0 ? "Front" : i === 1 ? "Side" : `Angle ${i + 1}`
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setActiveImage(i)}
+                        onMouseEnter={() => setActiveImage(i)}
+                        className={`group relative w-16 h-20 md:w-20 md:h-24 rounded-2xl bg-white transition-all duration-200 shrink-0 overflow-hidden flex flex-col items-center justify-center p-1 cursor-pointer ${
+                          isSelected
+                            ? 'border-2 border-[#e3231c] shadow-[0_4px_16px_rgba(227,35,28,0.18)] scale-[1.03]'
+                            : 'border border-black/10 hover:border-black/30 shadow-xs hover:shadow-sm opacity-75 hover:opacity-100'
+                        }`}
+                        aria-label={`Select ${label} view`}
+                      >
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={img}
+                            alt={`${product.name} - ${label}`}
+                            fill
+                            className="object-contain p-1"
+                            sizes="80px"
+                            unoptimized
+                          />
+                        </div>
+                        <span className={`text-[10px] font-bold tracking-tight pb-0.5 ${
+                          isSelected ? 'text-[#e3231c]' : 'text-[#86868b] group-hover:text-[#1d1d1f]'
+                        }`}>
+                          {label}
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
               )}
+
+              {/* Main Hero Showcase Card */}
+              <div className="order-1 md:order-2 flex-1 w-full">
+                <motion.div
+                  layoutId="product-main-image"
+                  className="relative aspect-square md:aspect-[4/3] w-full rounded-[32px] overflow-hidden bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] border border-black/[0.04] group"
+                >
+                  <AnimatePresence mode="wait">
+                    {mainImage ? (
+                      <motion.div
+                        key={mainImage}
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.02 }}
+                        transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={mainImage}
+                          alt={`${product.name} Preview`}
+                          fill
+                          className="object-contain p-4 md:p-6"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                          priority
+                          unoptimized
+                        />
+                      </motion.div>
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#f5f5f7]">
+                        <Package size={64} className="text-[#aeaeb2]" />
+                      </div>
+                    )}
+                  </AnimatePresence>
+                  
+                  {/* Category Pill Tag */}
+                  {product.categories && (
+                    <div className="absolute top-5 left-5 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-black/5 text-[11px] font-bold text-[#1d1d1f] tracking-wider uppercase shadow-sm z-10">
+                      {product.categories.name}
+                    </div>
+                  )}
+
+                  {/* Angle Label Badge */}
+                  {images.length > 1 && (
+                    <div className="absolute bottom-5 left-5 bg-black/70 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-sm z-10">
+                      {activeImage === 0 ? "Front View" : activeImage === 1 ? "Side Profile" : `Angle ${activeImage + 1}`}
+                    </div>
+                  )}
+
+                  {/* Left & Right Chevron Navigation Buttons */}
+                  {images.length > 1 && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          prevImage()
+                        }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-[#1d1d1f] shadow-lg hover:shadow-2xl backdrop-blur-md border border-black/8 flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 z-20 cursor-pointer"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft size={22} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          nextImage()
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-[#1d1d1f] shadow-lg hover:shadow-2xl backdrop-blur-md border border-black/8 flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 z-20 cursor-pointer"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight size={22} />
+                      </button>
+                    </>
+                  )}
+                </motion.div>
+              </div>
             </div>
 
-            {/* ── Right Column: Product Intelligence ── */}
-            <div className="flex flex-col pt-4 lg:pt-10">
+            {/* ── Right Column: Product Intelligence & Options ── */}
+            <div className="lg:col-span-5 flex flex-col pt-2 lg:pt-4">
               
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
-                <h1 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-[#1d1d1f] tracking-tighter leading-[1.05] mb-6">
+                <h1 className="text-3xl md:text-4xl lg:text-[44px] font-bold text-[#1d1d1f] tracking-tight leading-[1.1] mb-4">
                   {product.name}
                 </h1>
 
                 {product.short_desc && (
-                  <p className="text-xl md:text-2xl text-[#86868b] font-medium leading-snug tracking-tight mb-12 max-w-xl">
+                  <p className="text-base md:text-lg text-[#6e6e73] font-medium leading-relaxed mb-8 max-w-xl">
                     {product.short_desc}
                   </p>
                 )}
               </motion.div>
 
-              {/* Apple-Style Color Variants */}
+              {/* Color Swatches */}
               {variants.length > 0 && (
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                  className="mb-14 pb-14 border-b border-black/5"
+                  transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                  className="mb-8 pb-8 border-b border-black/8"
                 >
                   <ColorVariantPicker
                     variants={variants}
@@ -168,104 +249,90 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                className="grid grid-cols-2 gap-4 mb-12"
+                transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                className="grid grid-cols-2 gap-3 mb-8"
               >
-                <div className="bg-white rounded-3xl p-6 border border-black/5 shadow-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-2 text-[#86868b]">
-                    <Users size={16} />
-                    <span className="text-[11px] font-bold uppercase tracking-widest">Min. Order</span>
+                <div className="bg-white rounded-2xl p-5 border border-black/6 shadow-xs flex flex-col gap-1 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center gap-1.5 text-[#86868b]">
+                    <Users size={15} />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Min. Order</span>
                   </div>
-                  <span className="text-3xl font-bold text-[#1d1d1f] tracking-tight">
-                    {product.min_order_qty ? `${product.min_order_qty}` : '--'} <span className="text-lg text-[#86868b] font-medium">units</span>
+                  <span className="text-2xl font-bold text-[#1d1d1f] tracking-tight">
+                    {product.min_order_qty ? `${product.min_order_qty}` : '--'} <span className="text-sm text-[#86868b] font-medium">units</span>
                   </span>
                 </div>
 
-                <div className="bg-white rounded-3xl p-6 border border-black/5 shadow-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-2 text-[#86868b]">
-                    <Clock size={16} />
-                    <span className="text-[11px] font-bold uppercase tracking-widest">Lead Time</span>
+                <div className="bg-white rounded-2xl p-5 border border-black/6 shadow-xs flex flex-col gap-1 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center gap-1.5 text-[#86868b]">
+                    <Clock size={15} />
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Lead Time</span>
                   </div>
-                  <span className="text-3xl font-bold text-[#1d1d1f] tracking-tight">
-                    {product.lead_time_days ? `${product.lead_time_days}` : '--'} <span className="text-lg text-[#86868b] font-medium">days</span>
+                  <span className="text-2xl font-bold text-[#1d1d1f] tracking-tight">
+                    {product.lead_time_days ? `${product.lead_time_days}` : '--'} <span className="text-sm text-[#86868b] font-medium">days</span>
                   </span>
                 </div>
               </motion.div>
 
-              {/* Call to Action */}
+              {/* Action Buttons */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-                className="flex flex-col gap-4 mb-16"
+                transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+                className="flex flex-col gap-3"
               >
                 <button
+                  type="button"
                   onClick={() => setModalOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 rounded-full bg-[#1d1d1f] text-white py-5 px-8 font-semibold text-lg hover:bg-[#333336] transition-all hover:scale-[1.01] shadow-xl shadow-black/10"
+                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#e3231c] text-white font-bold text-base shadow-[0_8px_24px_rgba(227,35,28,0.28)] hover:bg-[#c91d17] hover:shadow-[0_12px_32px_rgba(227,35,28,0.38)] active:scale-[0.98] transition-all cursor-pointer"
                 >
-                  <MessageSquare size={20} />
-                  Request a Formal Quote
+                  <MessageSquare size={18} />
+                  Request Corporate Quote
                 </button>
-                <p className="text-center text-xs font-medium text-[#86868b]">
-                  No upfront payment. Secure checkout process. Fast turnaround.
-                </p>
+
+                {product.is_customizable && (
+                  <Link
+                    href={`/branding?slug=${product.slug}`}
+                    className="w-full flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white text-[#1d1d1f] font-semibold text-sm border border-black/10 hover:border-black/20 hover:bg-[#f5f5f7] active:scale-[0.98] transition-all shadow-xs"
+                  >
+                    <Sparkles size={16} className="text-[#e3231c]" />
+                    Preview Custom Logo on Product
+                  </Link>
+                )}
               </motion.div>
 
-              {/* Long Description & Features */}
-              {product.description && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-                  className="prose prose-lg max-w-none prose-p:text-[#6e6e73] prose-p:leading-relaxed prose-headings:text-[#1d1d1f] prose-headings:tracking-tight"
-                >
-                  <h3 className="text-2xl font-bold mb-4">Product Overview</h3>
-                  <div className="text-[15px] whitespace-pre-wrap">{product.description}</div>
-                </motion.div>
-              )}
-
-              {/* Tags */}
-              {product.tags && product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-black/5">
-                  {product.tags.map((tag) => (
-                    <span key={tag} className="bg-black/5 px-4 py-2 rounded-full text-xs font-semibold text-[#6e6e73]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-            </div>
-          </div>
-        </section>
-
-        {/* Live Branding Preview Section (If applicable) */}
-        {product.is_customizable && product.branding_config && (
-          <section className="bg-white py-20 md:py-32 border-t border-black/5">
-            <div className="max-w-[1400px] mx-auto px-6">
-              <div className="max-w-2xl mx-auto text-center mb-16">
-                <div className="inline-flex items-center justify-center p-3 bg-red-50 rounded-2xl text-[#e3231c] mb-6">
-                  <Sparkles size={28} />
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight mb-4">
-                  Make it yours.
-                </h2>
-                <p className="text-xl text-[#86868b] tracking-tight">
-                  Experience our live branding studio. Type your company name to see exactly how it looks on the {product.name}.
-                </p>
+              {/* Guarantees */}
+              <div className="mt-8 pt-6 border-t border-black/8 flex items-center justify-between text-xs text-[#86868b]">
+                <span className="flex items-center gap-1.5"><ShieldCheck size={14} className="text-[#34c759]" /> 100% Quality Guaranteed</span>
+                <span>•</span>
+                <span>Pan-India Delivery</span>
+                <span>•</span>
+                <span>Bulk GST Invoicing</span>
               </div>
-              
-              <ProductBrandingClient product={product as any} />
             </div>
-          </section>
-        )}
+
+          </div>
+
+          {/* Interactive Branding Studio */}
+          {product.is_customizable && product.branding_config && (
+            <div className="mt-16 md:mt-24">
+              <ProductBrandingClient 
+                product={{
+                  name: product.name,
+                  primary_image_url: product.primary_image_url ?? null,
+                  branding_config: product.branding_config ?? null
+                }} 
+              />
+            </div>
+          )}
+        </section>
       </main>
 
+      {/* Lead Inquiry Modal */}
       <LeadModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        productId={product.id}
         productName={product.name}
+        productId={product.id}
       />
     </>
   )

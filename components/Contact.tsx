@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, GitBranch, Briefcase, MessageCircle, Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MessageCircle, Send, CheckCircle2, AlertCircle, MapPin } from 'lucide-react';
 import { siteConfig } from '@/lib/site-config';
 
 export default function Contact() {
@@ -30,59 +30,49 @@ export default function Contact() {
       } else {
         setStatus('error');
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
     }
 
-    // Reset after 3 seconds
-    setTimeout(() => setStatus('idle'), 3000);
+    setTimeout(() => setStatus('idle'), 4000);
   };
 
   const contactMethods = [
-    { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
-    { icon: GitBranch, label: "GitHub", value: "Follow", href: siteConfig.github },
-    { icon: MessageCircle, label: "WhatsApp", value: "+91-8447334407", href: siteConfig.whatsapp },
+    { icon: Mail, label: "Sales & Inquiries", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+    { icon: Phone, label: "Direct Phone", value: siteConfig.phone, href: `tel:${siteConfig.phone}` },
+    { icon: MessageCircle, label: "WhatsApp Support", value: "+91-8447334407", href: siteConfig.whatsapp },
+    { icon: MapPin, label: "Head Office", value: "New Delhi, India", href: "#" },
   ];
 
   return (
-    <section id="contact" className="pt-20 pb-12 md:py-24 relative overflow-hidden bg-slate-50 border-t border-slate-200">
-      {/* Background Accent */}
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-200/50 rounded-full blur-[120px] pointer-events-none mix-blend-multiply" />
-
+    <section id="contact" className="pt-20 pb-16 md:py-24 relative overflow-hidden bg-[#fafafa]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Large CTA Header */}
-        <div className="text-center mb-12 md:mb-20">
-          <motion.h2 
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <p className="text-xs font-bold uppercase tracking-widest text-[#e3231c] mb-3">Get in Touch</p>
+          <motion.h1 
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-4 md:mb-6"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#1d1d1f] tracking-tight mb-4"
           >
-            Let's build something <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">incredible together.</span>
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto"
-          >
-            Currently accepting new projects. Let's discuss your requirements and see how we can turn your idea into a production-ready product.
-          </motion.p>
+            Start Your Corporate <br className="hidden sm:block" />
+            <span className="text-[#e3231c]">Gifting Project</span>
+          </motion.h1>
+          <p className="text-base md:text-lg text-[#6e6e73] max-w-xl mx-auto">
+            Looking for customized joining kits, team apparel, or executive client hampers? Our corporate gifting specialists are here to help.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
           
           {/* Contact Info Sidebar */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="order-2 lg:order-1 lg:col-span-4 flex flex-col gap-6"
+            className="order-2 lg:order-1 lg:col-span-4 flex flex-col gap-4"
           >
             {contactMethods.map((method, index) => {
               const Icon = method.icon;
@@ -90,16 +80,16 @@ export default function Contact() {
                 <a 
                   key={index}
                   href={method.href}
-                  target={method.label !== "Email" ? "_blank" : undefined}
-                  rel={method.label !== "Email" ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-4 p-6 rounded-3xl bg-white/70 backdrop-blur-xl border border-slate-200 hover:border-indigo-200 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(59,130,246,0.1)] hover:-translate-y-1"
+                  target={method.href.startsWith("http") ? "_blank" : undefined}
+                  rel={method.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="group flex items-center gap-4 p-5 rounded-2xl bg-white border border-black/5 hover:border-[#e3231c]/20 transition-all shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(227,35,28,0.08)] hover:-translate-y-0.5"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                    <Icon size={24} />
+                  <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#e3231c] group-hover:bg-[#e3231c] group-hover:text-white transition-all duration-300">
+                    <Icon size={20} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">{method.label}</h4>
-                    <p className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                    <h4 className="text-xs font-semibold text-[#86868b] uppercase tracking-wider">{method.label}</h4>
+                    <p className="text-sm md:text-base font-bold text-[#1d1d1f] group-hover:text-[#e3231c] transition-colors">
                       {method.value}
                     </p>
                   </div>
@@ -111,71 +101,125 @@ export default function Contact() {
           {/* Contact Form */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="order-1 lg:order-2 lg:col-span-8 bg-white/80 border border-slate-200 rounded-[2rem] p-8 sm:p-12 backdrop-blur-xl shadow-xl relative overflow-hidden"
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="order-1 lg:order-2 lg:col-span-8 bg-white border border-black/8 rounded-3xl p-8 sm:p-10 shadow-sm relative"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-100/50 rounded-full blur-[80px] pointer-events-none" />
+            <h3 className="text-2xl font-bold text-[#1d1d1f] mb-2">Request a Corporate Quote</h3>
+            <p className="text-sm text-[#6e6e73] mb-6">Fill in the details below and our team will get back to you within 2-4 business hours.</p>
 
-            <h3 className="text-3xl font-bold text-slate-900 mb-2 relative z-10">Start a Project</h3>
-            <p className="text-slate-600 mb-10 relative z-10">
-              Tell me what you're building and where you need help.
-            </p>
-
-            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2 flex flex-col">
-                  <label htmlFor="name" className="text-sm font-bold text-slate-700 ml-1">Name</label>
-                  <input required type="text" id="name" name="name" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all" placeholder="John Doe" />
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Your Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="e.g. Rahul Sharma"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                  />
                 </div>
-                <div className="space-y-2 flex flex-col">
-                  <label htmlFor="email" className="text-sm font-bold text-slate-700 ml-1">Email</label>
-                  <input required type="email" id="email" name="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all" placeholder="john@example.com" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2 flex flex-col">
-                  <label htmlFor="mobile" className="text-sm font-bold text-slate-700 ml-1">Mobile Number</label>
-                  <input required type="tel" id="mobile" name="mobile" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all" placeholder="+91 98765 43210" />
-                </div>
-                <div className="space-y-2 flex flex-col">
-                  <label htmlFor="company" className="text-sm font-bold text-slate-700 ml-1">Company / Business (Optional)</label>
-                  <input type="text" id="company" name="company" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all" placeholder="Your Company" />
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Company / Organization *</label>
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    placeholder="e.g. Acme Technologies"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                  />
                 </div>
               </div>
 
-              <div className="space-y-2 flex flex-col">
-                <label htmlFor="projectType" className="text-sm font-bold text-slate-700 ml-1">Project Type</label>
-                <select id="projectType" name="projectType" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all appearance-none cursor-pointer">
-                  <option>Website</option>
-                  <option>Web Application</option>
-                  <option>Mobile App</option>
-                  <option>E-commerce</option>
-                  <option>AI Application</option>
-                  <option>Other</option>
-                </select>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Work Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="rahul@company.com"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Phone / WhatsApp *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    placeholder="+91 98765 43210"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2 flex flex-col">
-                <label htmlFor="message" className="text-sm font-bold text-slate-700 ml-1">Project Description</label>
-                <textarea required id="message" name="message" rows={5} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-indigo-600/50 transition-all resize-none custom-scrollbar" placeholder="Tell me about your goals and what you want to build..."></textarea>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Product Category</label>
+                  <select
+                    name="category"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] bg-white transition-colors"
+                  >
+                    <option value="Apparel & T-Shirts">Apparel & T-Shirts</option>
+                    <option value="Joining Kits & Gift Sets">Joining Kits & Gift Sets</option>
+                    <option value="Drinkware & Bottles">Drinkware & Bottles</option>
+                    <option value="Tech & Mobile Accessories">Tech & Mobile Accessories</option>
+                    <option value="Audio & Desk Lighting">Audio & Desk Lighting</option>
+                    <option value="Eco-Friendly & Sustainable">Eco-Friendly & Sustainable</option>
+                    <option value="Office & Desk Essentials">Office & Desk Essentials</option>
+                    <option value="Multiple / Custom Project">Multiple / Custom Project</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Estimated Quantity</label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    min="20"
+                    defaultValue="50"
+                    className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                  />
+                </div>
               </div>
 
-              <button 
+              <div>
+                <label className="block text-xs font-semibold text-[#1d1d1f] mb-1">Project Details / Customization Requirements</label>
+                <textarea
+                  name="message"
+                  rows={3}
+                  placeholder="Mention any specific logo requirements, delivery timeline, or packaging preferences..."
+                  className="w-full px-4 py-3 rounded-xl border border-black/10 text-sm focus:outline-none focus:border-[#e3231c] transition-colors"
+                />
+              </div>
+
+              {/* Honeypot */}
+              <input type="text" name="_gotcha" className="hidden" tabIndex={-1} autoComplete="off" />
+
+              <button
                 type="submit"
-                disabled={status === 'loading' || status === 'success'}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white px-6 py-4 mt-2 font-semibold hover:bg-slate-800 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg hover:-translate-y-1"
+                disabled={status === 'loading'}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#e3231c] text-white px-8 py-3 text-sm font-bold shadow-[0_4px_14px_rgba(227,35,28,0.3)] hover:bg-[#c91d17] hover:shadow-[0_6px_20px_rgba(227,35,28,0.4)] transition-all duration-200 disabled:opacity-50"
               >
-                {status === 'idle' && <>Send Message <Send size={18} /></>}
-                {status === 'loading' && <span className="animate-pulse">Sending...</span>}
-                {status === 'success' && <>Message Sent <CheckCircle2 size={18} className="text-emerald-400" /></>}
-                {status === 'error' && <>Error <AlertCircle size={18} className="text-rose-400" /></>}
+                {status === 'loading' ? (
+                  <>Sending Inquiry...</>
+                ) : status === 'success' ? (
+                  <>
+                    <CheckCircle2 size={16} /> Inquiry Submitted!
+                  </>
+                ) : status === 'error' ? (
+                  <>
+                    <AlertCircle size={16} /> Something went wrong. Try again.
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} /> Submit Corporate Inquiry
+                  </>
+                )}
               </button>
             </form>
           </motion.div>
-
         </div>
       </div>
     </section>

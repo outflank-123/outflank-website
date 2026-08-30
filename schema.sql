@@ -142,7 +142,7 @@ create table public.admin_profiles (
   id         uuid        primary key references auth.users(id) on delete cascade,
   full_name  text,
   role       text        not null default 'admin'
-               check (role in ('admin', 'super_admin')),
+               check (role in ('admin', 'super_admin', 'junior')),
   created_at timestamptz not null default now()
 );
 
@@ -231,21 +231,21 @@ create policy "product_images_public_read"
   on storage.objects for select
   using (bucket_id = 'product-images');
 
--- Storage RLS: authenticated/service role can upload
+-- Storage RLS: authenticated users can upload
 drop policy if exists "product_images_upload" on storage.objects;
 create policy "product_images_upload"
   on storage.objects for insert
-  with check (bucket_id = 'product-images');
+  with check (bucket_id = 'product-images' and auth.role() = 'authenticated');
 
 drop policy if exists "product_images_update" on storage.objects;
 create policy "product_images_update"
   on storage.objects for update
-  using (bucket_id = 'product-images');
+  using (bucket_id = 'product-images' and auth.role() = 'authenticated');
 
 drop policy if exists "product_images_delete" on storage.objects;
 create policy "product_images_delete"
   on storage.objects for delete
-  using (bucket_id = 'product-images');
+  using (bucket_id = 'product-images' and auth.role() = 'authenticated');
 
 
 -- ─────────────────────────────────────────
