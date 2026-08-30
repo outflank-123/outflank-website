@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
 import ColorVariantPicker from '@/components/catalog/ColorVariantPicker'
@@ -30,6 +31,7 @@ interface ProductDetailClientProps {
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+  const router = useRouter()
   const variants: ColorVariant[] = product.color_variants ?? []
   const [activeVariant, setActiveVariant] = useState(0)
   const [activeImage, setActiveImage] = useState(0)
@@ -59,18 +61,29 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     setActiveImage((prev) => (prev < images.length - 1 ? prev + 1 : 0))
   }
 
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back()
+    } else {
+      const fallbackCategory = product.categories?.slug
+      router.push(fallbackCategory ? `/catalog?category=${fallbackCategory}` : '/catalog')
+    }
+  }
+
   return (
     <>
       <main className="min-h-screen bg-[#fbfbfd] pt-24 md:pt-28">
-        {/* Clean Back Button */}
+        {/* Clean Back Button preserving scroll & category */}
         <div className="max-w-[1400px] mx-auto px-6 pb-2 flex items-center">
-          <Link 
-            href="/catalog" 
+          <button
+            type="button"
+            onClick={handleBack}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#86868b] hover:text-[#1d1d1f] transition-colors py-1 cursor-pointer group"
           >
             <ChevronLeft size={18} className="transition-transform group-hover:-translate-x-1" />
             Back
-          </Link>
+          </button>
         </div>
 
         {/* Hero Section */}
