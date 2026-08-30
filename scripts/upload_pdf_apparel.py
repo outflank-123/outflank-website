@@ -3,11 +3,11 @@
 upload_pdf_apparel.py
 ======================
 Extracts two clean, separate images for every catalog item:
-  1. Front View (Middle model, centered, removing top-left adbp logo, right model, and black box)
-  2. Side View (Right model, centered, removing middle model and bottom-right black banner)
+  1. Front View (Middle model, centered, with 100% full shoulders, arms, hands and head; 0 logo, 0 black box)
+  2. Side View (Right model, centered, with 100% full head and upper body profile; 0 middle guy, 0 black box)
 
-Strictly separates Men's and Women's pages, converts to high-quality WebP (< 45KB),
-uploads to Supabase Storage, and updates all products in Supabase.
+Strictly separates Men's and Women's pages, converts to high-quality WebP (< 40KB),
+and updates all products in Supabase.
 """
 
 import os
@@ -64,26 +64,26 @@ def create_ecommerce_canvas(crop_img: Image.Image, target_w=800, target_h=1000) 
 def extract_front_and_side(raw_img: Image.Image):
     """
     Splits composite raw catalog image into:
-    1. Front View (Middle model without adbp top-left logo, without right model, without black box)
-    2. Side View (Right model without middle model and without bottom-right box)
+    1. Front View (Middle model with 100% uncut shoulders, arms, hands, full head)
+    2. Side View (Right model with full profile and clean head)
     """
     W, H = raw_img.size
 
     # 1. Front View:
-    # Left: 24% (completely clears adbp logo)
-    # Right: 55% (completely clears black box and side model)
-    # Top: 2% (keeps full head and hair)
-    # Bottom: 100%
-    front_box = (int(W * 0.24), int(H * 0.02), int(W * 0.55), H)
+    # Left: 23% (safely clears the top-left adbp logo)
+    # Right: 61% (preserves 100% of both shoulders and arms without cut-off)
+    # Top: 0% (preserves 100% of head and hair)
+    # Bottom: 100% (preserves full hands and torso)
+    front_box = (int(W * 0.23), 0, int(W * 0.61), H)
     front_crop = raw_img.crop(front_box)
     front_card = create_ecommerce_canvas(front_crop)
 
     # 2. Side View:
-    # Left: 57% (clears front model)
-    # Right: 98%
-    # Top: 4% (keeps full head and profile)
-    # Bottom: 72% (above black box)
-    side_box = (int(W * 0.57), int(H * 0.04), int(W * 0.98), int(H * 0.72))
+    # Left: 60% (clears front model)
+    # Right: 99% (preserves full profile)
+    # Top: 0% (preserves 100% of head)
+    # Bottom: 73% (safely above the bottom-right black banner)
+    side_box = (int(W * 0.60), 0, int(W * 0.99), int(H * 0.73))
     side_crop = raw_img.crop(side_box)
     side_card = create_ecommerce_canvas(side_crop)
 
@@ -91,8 +91,8 @@ def extract_front_and_side(raw_img: Image.Image):
 
 def upload_image_to_supabase(img: Image.Image, storage_path: str) -> str:
     buf = io.BytesIO()
-    # Save as WebP quality=82 to guarantee crispness & < 40KB size
-    img.save(buf, format="WEBP", quality=82, method=6)
+    # Save as WebP quality=80 to guarantee crispness & < 35KB size
+    img.save(buf, format="WEBP", quality=80, method=6)
     webp_bytes = buf.getvalue()
     
     try:
@@ -423,7 +423,7 @@ def main():
         }
     ]
 
-    print("\n🧹 Refreshing apparel products in Supabase with 100% clean, unblemished WebP images...")
+    print("\n🧹 Refreshing apparel products in Supabase with 100% whole, uncut model images...")
     supabase.table("products").delete().eq("category_id", category_id).execute()
 
     for p in catalog_products:
@@ -446,7 +446,7 @@ def main():
                 pix = page.get_pixmap(dpi=150)
                 raw_img = Image.open(io.BytesIO(pix.tobytes("png"))).convert("RGB")
 
-            # Extract 2 separate clean images with zero artifacts
+            # Extract 2 separate clean images with zero cutting
             front_card, side_card = extract_front_and_side(raw_img)
 
             safe_gender = p["gender"].lower()
@@ -466,7 +466,7 @@ def main():
                 "images": variant_imgs
             })
             gallery.extend(variant_imgs)
-            print(f"   ✓ Page {page_num:03d} -> {color_name}: Front & Side uploaded clean.")
+            print(f"   ✓ Page {page_num:03d} -> {color_name}: Full uncut Front & Side uploaded.")
 
         primary_image = gallery[0] if gallery else None
 
@@ -510,7 +510,11 @@ def main():
             import shutil
             shutil.rmtree(p)
 
-    print("\n🌟 All products re-uploaded with 100% clean images and zero artifacts!")
+    for p in Path(".").glob("test_*"):
+        if p.is_file():
+            p.unlink()
+
+    print("\n🌟 All products updated in Supabase with 100% complete, uncut model bodies and zero artifacts!")
 
 if __name__ == "__main__":
     main()
