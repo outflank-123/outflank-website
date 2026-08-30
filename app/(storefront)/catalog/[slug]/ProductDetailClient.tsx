@@ -8,7 +8,6 @@ import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, S
 import ColorVariantPicker from '@/components/catalog/ColorVariantPicker'
 import LeadModal from '@/components/catalog/LeadModal'
 import type { ColorVariant } from '@/components/catalog/ProductCard'
-import ProductBrandingClient from './ProductBrandingClient'
 
 interface ProductDetailClientProps {
   product: {
@@ -302,19 +301,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </div>
 
           </div>
-
-          {/* Interactive Branding Studio */}
-          {product.is_customizable && product.branding_config && (
-            <div className="mt-16 md:mt-24">
-              <ProductBrandingClient 
-                product={{
-                  name: product.name,
-                  primary_image_url: product.primary_image_url ?? null,
-                  branding_config: product.branding_config ?? null
-                }} 
-              />
-            </div>
-          )}
         </section>
       </main>
 
