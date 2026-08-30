@@ -63,24 +63,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   return (
     <>
       <main className="min-h-screen bg-[#fbfbfd] pt-24 md:pt-28">
-        {/* Breadcrumb Navigation */}
-        <div className="max-w-[1400px] mx-auto px-6 pb-4 flex items-center justify-between">
-          <nav className="flex items-center gap-2 text-xs md:text-sm font-medium text-[#86868b]">
-            <Link href="/catalog" className="hover:text-black transition-colors flex items-center gap-1.5">
-              <ChevronLeft size={16} />
-              Catalog
-            </Link>
-            {product.categories && (
-              <>
-                <span>/</span>
-                <Link href={`/catalog?category=${product.categories.slug}`} className="hover:text-black transition-colors">
-                  {product.categories.name}
-                </Link>
-              </>
-            )}
-            <span>/</span>
-            <span className="text-[#1d1d1f] font-semibold truncate max-w-[200px] sm:max-w-none">{product.name}</span>
-          </nav>
+        {/* Clean Back Button */}
+        <div className="max-w-[1400px] mx-auto px-6 pb-2 flex items-center">
+          <Link 
+            href="/catalog" 
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#86868b] hover:text-[#1d1d1f] transition-colors py-1 cursor-pointer group"
+          >
+            <ChevronLeft size={18} className="transition-transform group-hover:-translate-x-1" />
+            Back
+          </Link>
         </div>
 
         {/* Hero Section */}
