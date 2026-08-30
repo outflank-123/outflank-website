@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { SlidersHorizontal } from 'lucide-react'
 
 interface Category {
   id: string
@@ -36,12 +35,10 @@ export default function CategoryFilter({ categories }: CategoryFilterProps) {
   )
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap scroll-smooth pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      <SlidersHorizontal size={14} className="text-[#aeaeb2] shrink-0" />
-
+    <div className="flex flex-wrap items-center gap-2 md:gap-2.5">
       {/* "All" pill */}
       <FilterPill
-        label="All"
+        label="All Products"
         active={!activeSlug}
         onClick={() => setCategory('')}
         id="filter-all"
@@ -75,12 +72,13 @@ function FilterPill({
     <motion.button
       layout
       id={id}
+      type="button"
       onClick={onClick}
       whileTap={{ scale: 0.96 }}
-      className={`relative rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ${
+      className={`relative rounded-full px-4 py-2 text-xs md:text-sm font-semibold transition-all duration-200 cursor-pointer ${
         active
-          ? 'bg-[#e3231c] text-white shadow-[0_2px_8px_rgba(227,35,28,0.30)]'
-          : 'bg-white border border-black/10 text-[#6e6e73] hover:border-black/20 hover:text-[#1d1d1f]'
+          ? 'bg-[#e3231c] text-white shadow-[0_4px_14px_rgba(227,35,28,0.30)] scale-[1.02]'
+          : 'bg-white border border-black/10 text-[#6e6e73] hover:border-black/25 hover:text-[#1d1d1f] shadow-xs'
       }`}
     >
       {label}

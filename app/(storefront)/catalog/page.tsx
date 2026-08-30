@@ -70,9 +70,9 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             Click &quot;Inquire&quot; on any product to request a quote.
           </p>
 
-          {/* Filters row */}
-          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 justify-between mt-8">
-            <div className="flex-1 w-full overflow-hidden">
+          {/* Filters & Search Toolbar */}
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-5 justify-between mt-8 pt-6 border-t border-black/5">
+            <div className="flex-1">
               <Suspense fallback={<div className="h-8 w-64 rounded-full bg-[#f5f5f7] animate-pulse" />}>
                 <CategoryFilter categories={categories ?? []} />
               </Suspense>
@@ -81,7 +81,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
             {/* Search */}
             <form method="GET" className="flex items-center gap-2 shrink-0">
               {category && <input type="hidden" name="category" value={category} />}
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#aeaeb2]" />
                 <input
                   id="catalog-search"
@@ -89,13 +89,13 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
                   name="q"
                   defaultValue={q}
                   placeholder="Search products..."
-                  className="pl-9 pr-4 py-2 rounded-full border border-black/10 bg-white text-sm text-[#1d1d1f] placeholder-[#aeaeb2] focus:outline-none focus:border-[#e3231c] transition-colors w-48 md:w-64"
+                  className="pl-9 pr-4 py-2 rounded-full border border-black/10 bg-white text-sm text-[#1d1d1f] placeholder-[#aeaeb2] focus:outline-none focus:border-[#e3231c] transition-colors w-full sm:w-56 md:w-64 shadow-xs"
                 />
               </div>
               <button
                 type="submit"
                 id="catalog-search-submit"
-                className="rounded-full bg-[#1d1d1f] text-white px-4 py-2 text-xs font-semibold hover:bg-[#3a3a3c] transition-colors"
+                className="rounded-full bg-[#1d1d1f] text-white px-5 py-2 text-xs font-semibold hover:bg-[#3a3a3c] transition-colors shadow-xs cursor-pointer shrink-0"
               >
                 Search
               </button>
