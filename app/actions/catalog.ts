@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { Product } from '@/components/catalog/ProductCard'
+import { Product } from '@/components/products/ProductCard'
 
 const PAGE_SIZE = 24
 

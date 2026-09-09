@@ -2,7 +2,8 @@ import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import CategoryFilter from '@/components/products/CategoryFilter'
-import { Search, Package } from 'lucide-react'
+import LiveSearch from '@/components/products/LiveSearch'
+import { Package } from 'lucide-react'
 import CatalogGridClient from './CatalogGridClient'
 import { Product } from '@/components/products/ProductCard'
 
@@ -90,28 +91,12 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
               </Suspense>
             </div>
 
-            {/* Search */}
-            <form method="GET" className="flex items-center gap-2 shrink-0">
-              {category && <input type="hidden" name="category" value={category} />}
-              <div className="relative w-full sm:w-auto">
-                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#aeaeb2]" />
-                <input
-                  id="catalog-search"
-                  type="search"
-                  name="q"
-                  defaultValue={q}
-                  placeholder="Search products..."
-                  className="pl-9 pr-4 py-2 rounded-full border border-black/10 bg-white text-sm text-[#1d1d1f] placeholder-[#aeaeb2] focus:outline-none focus:border-[#e3231c] transition-colors w-full sm:w-56 md:w-64 shadow-xs"
-                />
-              </div>
-              <button
-                type="submit"
-                id="catalog-search-submit"
-                className="rounded-full bg-[#1d1d1f] text-white px-5 py-2 text-xs font-semibold hover:bg-[#3a3a3c] transition-colors shadow-xs cursor-pointer shrink-0"
-              >
-                Search
-              </button>
-            </form>
+            {/* Live Search */}
+            <div className="flex items-center shrink-0">
+              <Suspense fallback={<div className="h-9 w-56 rounded-full bg-[#f5f5f7] animate-pulse" />}>
+                <LiveSearch initialQuery={q} />
+              </Suspense>
+            </div>
           </div>
         </div>
       </section>

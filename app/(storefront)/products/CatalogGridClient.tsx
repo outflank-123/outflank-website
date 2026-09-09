@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useInView } from 'react-intersection-observer'
-import ProductCard, { Product } from '@/components/catalog/ProductCard'
+import ProductCard, { Product } from '@/components/products/ProductCard'
 import { fetchProductsPage } from '@/app/actions/catalog'
 import { Loader2 } from 'lucide-react'
 

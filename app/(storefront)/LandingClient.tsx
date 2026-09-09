@@ -55,7 +55,7 @@ const whyItems = [
 
 // ─── Floating badge component ──────────────────────────────
 function FloatingBadge({ icon: Icon, label, delay = 0, className = '' }: {
-  icon: React.ElementType; label: string; delay?: number; className?: string
+  icon: React.FC<{ size?: number; className?: string }>; label: string; delay?: number; className?: string
 }) {
   return (
     <motion.div
