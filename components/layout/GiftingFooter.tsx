@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 
 const catalogLinks = [
-  { href: '/catalog?category=electronics-and-mobile-accessories', label: 'Electronics' },
-  { href: '/catalog?category=employee-joining-kits', label: 'Joining Kits' },
-  { href: '/catalog?category=flasks-sippers-mugs', label: 'Drinkware' },
-  { href: '/catalog?category=gift-sets', label: 'Gift Sets' },
-  { href: '/catalog?category=eco-friendly-products', label: 'Eco-Friendly' },
+  { href: '/products?category=electronics-and-mobile-accessories', label: 'Electronics' },
+  { href: '/products?category=employee-joining-kits', label: 'Joining Kits' },
+  { href: '/products?category=flasks-sippers-mugs', label: 'Drinkware' },
+  { href: '/products?category=gift-sets', label: 'Gift Sets' },
+  { href: '/products?category=eco-friendly-products', label: 'Eco-Friendly' },
 ]
 
 export default function GiftingFooter() {
@@ -63,7 +63,7 @@ export default function GiftingFooter() {
                 </li>
               ))}
               <li>
-                <Link href="/catalog" className="text-sm text-[#e3231c] hover:text-[#ff4038] font-medium transition-colors">
+                <Link href="/products" className="text-sm text-[#e3231c] hover:text-[#ff4038] font-medium transition-colors">
                   View All Categories →
                 </Link>
               </li>

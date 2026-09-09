@@ -76,7 +76,7 @@ export async function createCategory(rawData: any) {
   }
 
   revalidatePath('/admin/categories')
-  revalidatePath('/catalog')
+  revalidatePath('/products')
   return { success: true }
 }
 
@@ -93,7 +93,7 @@ export async function updateCategory(id: string, rawData: any) {
   }
 
   revalidatePath('/admin/categories')
-  revalidatePath('/catalog')
+  revalidatePath('/products')
   return { success: true }
 }
 
@@ -108,7 +108,7 @@ export async function deleteCategory(id: string) {
   }
 
   revalidatePath('/admin/categories')
-  revalidatePath('/catalog')
+  revalidatePath('/products')
   return { success: true }
 }
 
@@ -167,7 +167,7 @@ export async function createProduct(rawData: any) {
   }
 
   revalidatePath('/admin/products')
-  revalidatePath('/catalog')
+  revalidatePath('/products')
   revalidatePath('/')
   return { success: true }
 }
@@ -185,8 +185,8 @@ export async function updateProduct(id: string, rawData: any) {
   }
 
   revalidatePath('/admin/products')
-  revalidatePath('/catalog')
-  if (payload.slug) revalidatePath(`/catalog/${payload.slug}`)
+  revalidatePath('/products')
+  if (payload.slug) revalidatePath(`/products/${payload.slug}`)
   revalidatePath('/')
   return { success: true }
 }
@@ -202,7 +202,7 @@ export async function deleteProduct(id: string) {
   }
 
   revalidatePath('/admin/products')
-  revalidatePath('/catalog')
+  revalidatePath('/products')
   revalidatePath('/')
   return { success: true }
 }

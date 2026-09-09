@@ -210,7 +210,7 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
                     className="w-full px-5 py-4 rounded-2xl bg-black/[0.02] border border-black/5 text-[15px] font-medium text-[#86868b] focus:outline-none focus:ring-4 focus:ring-[#e3231c]/10 transition-all"
                     placeholder="premium-corporate-gifts"
                   />
-                  <p className="mt-2 text-[12px] font-medium text-[#86868b]">This will be used in the URL: /catalog/category/<span className="text-[#1d1d1f]">{formData.slug || 'slug'}</span></p>
+                  <p className="mt-2 text-[12px] font-medium text-[#86868b]">This will be used in the URL: /products/category/<span className="text-[#1d1d1f]">{formData.slug || 'slug'}</span></p>
                 </div>
 
                 <div>

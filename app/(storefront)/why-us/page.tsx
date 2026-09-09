@@ -72,7 +72,7 @@ export default function WhyUsPage() {
           className="mt-20 text-center"
         >
           <Link
-            href="/catalog"
+            href="/products"
             className="inline-flex items-center gap-2 rounded-full bg-[#1d1d1f] text-white px-8 py-4 text-base font-semibold hover:bg-black transition-all duration-200 hover:scale-[1.03] shadow-lg shadow-black/10"
           >
             Explore the Catalog

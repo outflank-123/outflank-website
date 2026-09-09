@@ -6,9 +6,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
-import ColorVariantPicker from '@/components/catalog/ColorVariantPicker'
-import LeadModal from '@/components/catalog/LeadModal'
-import type { ColorVariant } from '@/components/catalog/ProductCard'
+import ColorVariantPicker from '@/components/products/ColorVariantPicker'
+import LeadModal from '@/components/products/LeadModal'
+import type { ColorVariant } from '@/components/products/ProductCard'
 
 interface ProductDetailClientProps {
   product: {
@@ -67,7 +67,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       router.back()
     } else {
       const fallbackCategory = product.categories?.slug
-      router.push(fallbackCategory ? `/catalog?category=${fallbackCategory}` : '/catalog')
+      router.push(fallbackCategory ? `/products?category=${fallbackCategory}` : '/products')
     }
   }
 

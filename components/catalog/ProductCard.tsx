@@ -45,13 +45,12 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         className="group relative bg-white rounded-3xl border border-[#f0f0f2] shadow-[0_4px_24px_rgba(0,0,0,0.02)] overflow-hidden hover:border-[#e5e5ea] hover:shadow-[0_24px_54px_rgba(0,0,0,0.07)] hover:-translate-y-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col"
       >
         {/* Image */}
-        <Link href={`/catalog/${product.slug}`} className="relative aspect-square bg-[#f5f5f7] overflow-hidden block">
+        <Link href={`/products/${product.slug}`} className="relative aspect-square bg-[#f5f5f7] overflow-hidden block">
           {displayImage ? (
             <Image
               src={displayImage}
               alt={product.name}
               fill
-              unoptimized
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
@@ -73,7 +72,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         {/* Content */}
         <div className="p-3 md:p-5 flex flex-col flex-grow gap-2 md:gap-3">
           <div>
-            <Link href={`/catalog/${product.slug}`}>
+            <Link href={`/products/${product.slug}`}>
               <h3 className="font-semibold text-[#1d1d1f] text-xs md:text-sm leading-tight line-clamp-2 mb-1 hover:text-[#e3231c] transition-colors">
                 {product.name}
               </h3>

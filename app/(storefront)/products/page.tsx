@@ -1,9 +1,10 @@
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
-import ProductCard from '@/components/catalog/ProductCard'
-import CategoryFilter from '@/components/catalog/CategoryFilter'
+import CategoryFilter from '@/components/products/CategoryFilter'
 import { Search, Package } from 'lucide-react'
+import CatalogGridClient from './CatalogGridClient'
+import { Product } from '@/components/products/ProductCard'
 
 export const metadata: Metadata = {
   title: 'Product Catalog | Outflank Corporate Gifting',
@@ -52,9 +53,20 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
     query = query.ilike('name', `%${q}%`)
   }
 
-  const { data: products } = await query
+  // Only fetch first 24 products
+  query = query.range(0, 23)
+
+  const { data: products, count } = await query
 
   const activeCategory = categories?.find((c) => c.slug === category)
+
+  // Map categories array to single object if needed
+  const formattedProducts: Product[] = (products ?? []).map((product: any) => ({
+    ...product,
+    categories: Array.isArray(product.categories)
+      ? (product.categories[0] ?? null)
+      : (product.categories ?? null),
+  }))
 
   return (
     <main className="min-h-screen bg-[#fbfbfd]">
@@ -106,17 +118,13 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
 
       {/* Products grid */}
       <section className="max-w-7xl mx-auto px-5 md:px-8 py-10 md:py-14">
-        {products && products.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
-            {products.map((product, i) => (
-          <ProductCard key={product.id} product={{
-              ...product,
-              categories: Array.isArray(product.categories)
-                ? (product.categories[0] ?? null)
-                : (product.categories ?? null),
-            }} index={i} />
-            ))}
-          </div>
+        {formattedProducts.length > 0 ? (
+          <CatalogGridClient
+            initialProducts={formattedProducts}
+            categoryId={activeCategory?.id}
+            searchQuery={q}
+            totalCount={count ?? 0}
+          />
         ) : (
           <div className="flex flex-col items-center justify-center py-32 text-center">
             <div className="w-20 h-20 rounded-full bg-[#f5f5f7] flex items-center justify-center mb-5">
@@ -129,7 +137,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
                 : 'No products in this category yet. Check back soon!'}
             </p>
             <a
-              href="/catalog"
+              href="/products"
               className="rounded-full bg-[#e3231c] text-white px-6 py-2.5 text-sm font-semibold hover:bg-[#b91a14] transition-colors"
             >
               View All Products

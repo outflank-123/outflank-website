@@ -6,7 +6,7 @@ import { Home, LayoutGrid, Wand2, Info } from 'lucide-react'
 
 const navItems = [
   { href: '/', label: 'Home', icon: Home },
-  { href: '/catalog', label: 'Catalog', icon: LayoutGrid },
+  { href: '/products', label: 'Catalog', icon: LayoutGrid },
   { href: '/branding', label: 'Branding', icon: Wand2 },
   { href: '/why-us', label: 'Why Us', icon: Info },
 ]

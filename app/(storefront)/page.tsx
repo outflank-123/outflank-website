@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import LandingClient from './LandingClient'
 
-export const revalidate = 60 // Revalidate every minute
+export const revalidate = 3600 // Revalidate every hour
 
 export default async function StorefrontPage() {
   const supabase = await createClient()

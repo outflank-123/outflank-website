@@ -319,7 +319,7 @@ export default function BannersClient({ initialBanners }: { initialBanners: Bann
                       type="text" value={formData.cta_link}
                       onChange={(e) => setFormData({ ...formData, cta_link: e.target.value })}
                       className="w-full px-5 py-4 rounded-2xl bg-white border border-black/10 text-[15px] font-medium text-[#1d1d1f] focus:outline-none focus:ring-4 focus:ring-[#e3231c]/10 focus:border-[#e3231c]/30 transition-all shadow-sm"
-                      placeholder="e.g. /catalog?category=gift-sets"
+                      placeholder="e.g. /products?category=gift-sets"
                     />
                   </div>
                 </div>

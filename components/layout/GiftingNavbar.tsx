@@ -8,7 +8,7 @@ import { Menu, X, ChevronRight } from 'lucide-react'
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/catalog', label: 'Products' },
+  { href: '/products', label: 'Products' },
   { href: '/branding', label: 'Branding Preview' },
   { href: '/why-us', label: 'Why Us' },
 ]
@@ -68,7 +68,7 @@ export default function GiftingNavbar() {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center pr-1">
             <Link
-              href="/catalog"
+              href="/products"
               className="inline-flex items-center rounded-full px-6 py-2.5 text-[14px] font-medium transition-all duration-200 bg-[#0B1120] text-white hover:bg-black"
               id="navbar-cta-btn"
             >

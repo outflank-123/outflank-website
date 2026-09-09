@@ -260,7 +260,7 @@ export default function LandingClient({
                 className="flex flex-col sm:flex-row items-center justify-center gap-4"
               >
                 <Link
-                  href="/catalog"
+                  href="/products"
                   id="hero-cta-catalog"
                   className="group inline-flex items-center gap-2 rounded-full bg-[#e3231c] text-white px-8 py-4 text-base font-semibold hover:bg-[#b91a14] transition-all duration-200 hover:scale-[1.03] shadow-[0_4px_20px_rgba(227,35,28,0.35)]"
                 >
@@ -346,7 +346,7 @@ export default function LandingClient({
                 </h2>
               </motion.div>
               <Link
-                href="/catalog"
+                href="/products"
                 className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-[#e3231c] hover:text-[#b91a14] transition-colors group"
               >
                 View Full Catalog
@@ -365,7 +365,7 @@ export default function LandingClient({
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   className="bg-white rounded-2xl md:rounded-3xl p-2.5 md:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] md:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col group hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all"
                 >
-                  <Link href={`/catalog/${product.slug}`} className="block flex-1 flex flex-col">
+                  <Link href={`/products/${product.slug}`} className="block flex-1 flex flex-col">
                     <div className="relative w-full aspect-square rounded-xl md:rounded-2xl overflow-hidden bg-[#f5f5f7] mb-3 md:mb-4">
                       {product.primary_image_url ? (
                         <Image
@@ -412,7 +412,7 @@ export default function LandingClient({
             
             <div className="flex justify-center md:hidden mt-4">
               <Link
-                href="/catalog"
+                href="/products"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-[#e3231c]"
               >
                 View Full Catalog <ChevronRight size={16} />
@@ -447,7 +447,7 @@ export default function LandingClient({
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 mb-12 auto-rows-[240px]">
             {/* Apparel & T-Shirts Category */}
-            <Link href="/catalog?category=apparel-t-shirts" className="group relative col-span-1 md:col-span-2 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+            <Link href="/products?category=apparel-t-shirts" className="group relative col-span-1 md:col-span-2 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
               <Image 
                 src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop" 
                 alt="Corporate Apparel & T-Shirts" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
@@ -461,7 +461,7 @@ export default function LandingClient({
             </Link>
 
             {/* Sub Category 1 - Joining Kits & Gift Sets */}
-            <Link href="/catalog?category=joining-kits-gift-sets" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+            <Link href="/products?category=joining-kits-gift-sets" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
               <Image 
                 src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800&auto=format&fit=crop" 
                 alt="Joining Kits & Gift Sets" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
@@ -475,7 +475,7 @@ export default function LandingClient({
             </Link>
 
             {/* Sub Category 2 - Tech & Mobile Accessories */}
-            <Link href="/catalog?category=tech-and-power" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
+            <Link href="/products?category=tech-and-power" className="group relative col-span-1 md:col-span-1 lg:col-span-2 row-span-1 rounded-[32px] overflow-hidden bg-[#f5f5f7] block">
               <Image 
                 src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop" 
                 alt="Tech & Mobile Accessories" fill className="object-cover transition-transform duration-700 group-hover:scale-105" unoptimized 
@@ -489,7 +489,7 @@ export default function LandingClient({
             </Link>
 
             {/* Sub Category 3 - Drinkware */}
-            <Link href="/catalog?category=drinkware" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#fbfbfd] border border-black/5 block">
+            <Link href="/products?category=drinkware" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#fbfbfd] border border-black/5 block">
               <Image 
                 src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=600&auto=format&fit=crop" 
                 alt="Drinkware" fill className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-105" unoptimized 
@@ -502,7 +502,7 @@ export default function LandingClient({
             </Link>
 
             {/* Sub Category 4 - Eco Friendly */}
-            <Link href="/catalog?category=eco-friendly-products" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#22c55e]/10 border border-[#22c55e]/20 block">
+            <Link href="/products?category=eco-friendly-products" className="group relative col-span-1 md:col-span-1 lg:col-span-1 row-span-1 rounded-[32px] overflow-hidden bg-[#22c55e]/10 border border-[#22c55e]/20 block">
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 group-hover:scale-110 transition-transform duration-700">
                 <Leaf size={160} className="text-[#22c55e]" />
               </div>
@@ -515,7 +515,7 @@ export default function LandingClient({
 
           <div className="flex justify-center">
             <Link
-              href="/catalog"
+              href="/products"
               className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-6 py-3 text-sm font-semibold text-[#1d1d1f] hover:bg-[#f5f5f7] hover:border-black/20 transition-all duration-200"
             >
               Browse All Categories
@@ -624,7 +624,7 @@ export default function LandingClient({
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/catalog"
+              href="/products"
               id="bottom-cta-catalog"
               className="group inline-flex items-center gap-2 rounded-full bg-[#e3231c] text-white px-8 py-4 text-base font-semibold hover:bg-[#ff4038] transition-all duration-200 hover:scale-[1.03] shadow-[0_4px_24px_rgba(227,35,28,0.40)]"
             >
