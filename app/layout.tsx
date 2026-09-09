@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import NavigationProgressBar from "@/components/layout/NavigationProgressBar";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,6 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased bg-[#fbfbfd] text-[#1d1d1f] flex flex-col min-h-screen">
+        <Suspense fallback={null}>
+          <NavigationProgressBar />
+        </Suspense>
         {children}
       </body>
     </html>
