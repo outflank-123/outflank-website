@@ -1,0 +1,125 @@
+[
+  {
+    "code": "Z 03",
+    "name": "Kitchen Brush WITH DETERGENT HOLDER",
+    "description": "A versatile household tool that makes cleaning utensils, wash basins, and floors quick and easy.",
+    "features": [
+      "Ergonomic Non-Slip Grip - Comfortable hold with built-in soap reservoir",
+      "One-Press Dispensing - Push button releases soap smoothly",
+      "Time & Soap Saving - Single press gives effective cleaning with minimal soap usage",
+      "Easy Refill Design - Open top to fill soap or detergent easily",
+      "Gentle Nylon Bristles - Safe for dinnerware & non-stick cookware"
+    ],
+    "colors": [
+      "Blue",
+      "Red"
+    ],
+    "image_source": "scratch_home_kitchen/page_02.jpg"
+  },
+  {
+    "code": "H 363",
+    "name": "Zippy Go LUNCH BAG WITH 2 SS ROUND CONTAINERS",
+    "description": "Compact and lightweight lunch bag featuring 2 stainless steel round containers, ideal for quick on-the-go meals.",
+    "features": [
+      "2 SS round containers ideal for quick, on-the-go meals",
+      "Compact & lightweight, Fits easily in any bag",
+      "BPA-free, safe and healthy",
+      "Great for festive, home, or office gifting",
+      "Leak proof",
+      "Air tight lids",
+      "Easy to carry"
+    ],
+    "colors": [],
+    "image_source": "scratch_home_kitchen/page_03.jpg"
+  },
+  {
+    "code": "H 364",
+    "name": "Zippy Trio Lunch Bag",
+    "description": "Lunch bag coming with 2 stainless steel round containers and 1 stainless steel long container, ideal for quick, on-the-go meals.",
+    "features": [
+      "2 SS round containers & 1 SS long container ideal for quick, on-the-go meals",
+      "Compact & lightweight, fits easily in any bag",
+      "BPA-free, safe and healthy",
+      "Great for festive, home, or office gifting",
+      "Leak proof",
+      "Air tight lids",
+      "Easy to carry"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "image_source": "scratch_home_kitchen/page_04.jpg"
+  },
+  {
+    "code": "H 358",
+    "name": "TokuBox Trio",
+    "description": "PU Insulated Slim SS Lunch Box",
+    "features": [
+      "Large size with 3 stainless steel compartments to keep meals separate and fresh",
+      "Comes with a spoon included",
+      "Comes with extra side locks for added durability",
+      "Leakproof and airtight seal prevents spills and mess",
+      "Silicon partition to prevent content from mixing",
+      "PU insulation keeps your food hot for hours"
+    ],
+    "colors": [],
+    "image_source": "scratch_home_kitchen/page_05.jpg"
+  },
+  {
+    "code": "H 359",
+    "name": "TokuBox Stack",
+    "description": "PU Insulated Slim Lunch Box with Detachable SS Containers",
+    "features": [
+      "Leak proof",
+      "Anti rust",
+      "Air tight locking lids",
+      "3 Removable food grade steel containers can be used separately",
+      "Square shape outer body gives a unique appeal",
+      "Keeps food warm / cold for long time",
+      "Separate locks for containers and lunch box provide double locking"
+    ],
+    "colors": [
+      "Black",
+      "Grey"
+    ],
+    "image_source": "scratch_home_kitchen/page_06.jpg"
+  },
+  {
+    "code": "H 357",
+    "name": "TokuBox Split",
+    "description": "PU Insulated Slim SS Lunch Box",
+    "features": [
+      "Sleek and stylish design, perfect for people on the go",
+      "Large size with 2 stainless steel compartments to keep meals separate and fresh",
+      "Leakproof and airtight seal prevents spills and mess",
+      "Ideal for school, office, travel, or outdoor adventures",
+      "PU insulation keeps your food hot for hours",
+      "Comes with a spoon included",
+      "BPA Free",
+      "Leak Proof",
+      "Air Tight Lids"
+    ],
+    "colors": [
+      "Brown"
+    ],
+    "image_source": "scratch_home_kitchen/page_07.jpg"
+  },
+  {
+    "code": "H 351",
+    "name": "Clearsip Wrap Borosilicate Bottle",
+    "description": "Borosilicate glass bottle featuring a bamboo cap with a carrying loop and a protective silicon sleeve with teardrop cutouts. Capacity approx. 600ml.",
+    "features": [
+      "Superior quality ensures it can withstand high boiling temperatures easily",
+      "Silicon sleeve keeps the bottle safe from bumps and breakage",
+      "Easy to use, carry and store",
+      "Non Toxic, Lead Free, and BPA Free",
+      "Dishwasher safe",
+      "High temperature resistance",
+      "Capacity: 600ml approx"
+    ],
+    "colors": [
+      "Grey"
+    ],
+    "image_source": "scratch_home_kitchen/page_08.jpg"
+  }
+]

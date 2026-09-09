@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import sharp from 'sharp'
 
 type AdminRole = 'super_admin' | 'admin' | 'junior'
 
@@ -218,22 +219,66 @@ export async function uploadProductImage(formData: FormData) {
     throw new Error('Invalid file type. Only JPEG, PNG, WEBP, and SVG are supported.')
   }
 
-  // Validate file size (max 5MB)
+  // Validate file size (max 5MB initial)
   const MAX_FILE_SIZE = 5 * 1024 * 1024
   if (file.size > MAX_FILE_SIZE) {
     throw new Error('File size exceeds the 5MB limit.')
   }
 
   const bytes = await file.arrayBuffer()
-  const buffer = Buffer.from(bytes)
+  let buffer = Buffer.from(bytes)
 
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'webp'
+  // Skip compression for SVG
+  if (file.type !== 'image/svg+xml') {
+    const targetBytes = 30 * 1024 // 30 KB
+    let quality = 85
+    let isUnderTarget = false
+    
+    // First, try adjusting quality while keeping original dimensions
+    while (quality >= 30) {
+      const tempBuffer = await sharp(buffer)
+        .webp({ quality })
+        .toBuffer()
+      
+      if (tempBuffer.length <= targetBytes) {
+        buffer = tempBuffer
+        isUnderTarget = true
+        break
+      }
+      quality -= 5
+    }
+
+    // If still over 30KB, try scaling down resolution iteratively
+    if (!isUnderTarget) {
+      let scale = 0.85
+      const metadata = await sharp(buffer).metadata()
+      const originalWidth = metadata.width || 800
+      
+      while (!isUnderTarget) {
+        const targetWidth = Math.max(Math.round(originalWidth * scale), 100) // prevent getting too small
+        const tempBuffer = await sharp(buffer)
+          .resize({ width: targetWidth })
+          .webp({ quality: 50 })
+          .toBuffer()
+          
+        if (tempBuffer.length <= targetBytes || targetWidth <= 100) {
+          buffer = tempBuffer
+          isUnderTarget = true
+          break
+        }
+        scale *= 0.85
+      }
+    }
+  }
+
+  const ext = file.type === 'image/svg+xml' ? 'svg' : 'webp'
+  const contentType = file.type === 'image/svg+xml' ? 'image/svg+xml' : 'image/webp'
   const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`
 
   const { data, error } = await supabase.storage
     .from('product-images')
     .upload(fileName, buffer, {
-      contentType: file.type,
+      contentType: contentType,
       upsert: false,
     })
 
