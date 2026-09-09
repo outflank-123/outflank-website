@@ -397,12 +397,13 @@ export default function LandingClient({
                         {product.name}
                       </h3>
                       <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
-                        {product.base_price && (
-                          <span className="text-sm md:text-base font-semibold text-[#1d1d1f]">₹{product.base_price.toLocaleString('en-IN')}</span>
-                        )}
-                        {product.min_order_qty && (
-                          <span className="text-[10px] md:text-xs text-[#6e6e73] font-medium border border-black/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded-md">MOQ: {product.min_order_qty}</span>
-                        )}
+                        <span className="text-[10px] md:text-xs text-[#6e6e73] font-medium border border-black/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded-md">
+                          {product.min_order_qty ? `MOQ: ${product.min_order_qty}` : 'Custom MOQ'}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#e3231c] group-hover:translate-x-0.5 transition-transform">
+                          Inquire
+                          <ChevronRight size={12} />
+                        </span>
                       </div>
                     </div>
                   </Link>
