@@ -95,7 +95,17 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           )}
 
           {/* Footer row */}
-          <div className="mt-auto flex items-center justify-end pt-2 border-t border-black/5">
+          <div className="mt-auto flex items-center justify-between pt-2 border-t border-black/5">
+            <div className="flex flex-col">
+              {product.base_price ? (
+                <span className="text-sm md:text-base font-bold text-[#1d1d1f]">
+                  ₹{product.base_price.toLocaleString('en-IN')}
+                </span>
+              ) : (
+                <span className="text-xs text-[#86868b]">Price on request</span>
+              )}
+            </div>
+            
             <button
               onClick={() => setModalOpen(true)}
               id={`product-inquire-${product.id}`}
