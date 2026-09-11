@@ -177,6 +177,12 @@ export default function CheckoutClient() {
         throw new Error(data.error || 'Failed to initiate payment')
       }
 
+      console.log("RAZORPAY OPTIONS:", {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: data.amount,
+        order_id: data.razorpayOrderId
+      })
+
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
         amount: data.amount,
@@ -213,6 +219,24 @@ export default function CheckoutClient() {
         theme: {
           color: '#e3231c',
         },
+        config: {
+          display: {
+            blocks: {
+              upi: {
+                name: "Pay via UPI",
+                instruments: [{ method: "upi" }]
+              },
+              other: {
+                name: "Other Payment Modes",
+                instruments: [{ method: "card" }, { method: "netbanking" }, { method: "wallet" }]
+              }
+            },
+            sequence: ["block.upi", "block.other"],
+            preferences: {
+              show_default_blocks: true
+            }
+          }
+        }
       }
 
       // @ts-ignore
