@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, ExternalLink, Tags, Package, Image as ImageIcon } from 'lucide-react'
+import { LayoutDashboard, Users, ExternalLink, Tags, Package, Image as ImageIcon, Settings, ShoppingBag } from 'lucide-react'
 import AdminLogoutButton from './AdminLogoutButton'
 
 interface AdminSidebarProps {
@@ -20,6 +20,8 @@ export default function AdminSidebar({ userEmail, userRole = 'admin' }: AdminSid
     { href: '/admin/leads', icon: Users, label: 'Leads Pipeline' },
     { href: '/admin/categories', icon: Tags, label: 'Categories' },
     { href: '/admin/products', icon: Package, label: 'Products' },
+    { href: '/admin/orders', icon: ShoppingBag, label: 'Retail Orders' },
+    { href: '/admin/settings', icon: Settings, label: 'Store Settings' },
   ]
 
   if (userRole === 'junior') {

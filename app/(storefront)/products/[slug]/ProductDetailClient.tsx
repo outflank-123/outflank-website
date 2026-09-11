@@ -5,10 +5,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package, Clock, Users, Tag, MessageSquare, ShieldCheck, Sparkles, ShoppingCart, Plus, Minus, Phone } from 'lucide-react'
 import ColorVariantPicker from '@/components/products/ColorVariantPicker'
 import LeadModal from '@/components/products/LeadModal'
 import type { ColorVariant } from '@/components/products/ProductCard'
+import { useCartStore } from '@/lib/store/useCartStore'
+import { siteConfig } from '@/lib/site-config'
 
 interface ProductDetailClientProps {
   product: {
@@ -36,6 +38,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [activeVariant, setActiveVariant] = useState(0)
   const [activeImage, setActiveImage] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  
+  const { addItem, setIsCartOpen } = useCartStore()
 
   const currentVariant = variants[activeVariant]
   const images = currentVariant?.images?.length
@@ -69,6 +74,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       const fallbackCategory = product.categories?.slug
       router.push(fallbackCategory ? `/products?category=${fallbackCategory}` : '/products')
     }
+  }
+
+  const handleWhatsApp = () => {
+    const text = `Hi, I'm interested in purchasing the following product in bulk: ${product.name}. I'm looking for approximately ${product.min_order_qty || 50} pieces. Please share the wholesale pricing, MOQ, availability, and delivery details. Thank you.`
+    const encodedText = encodeURIComponent(text)
+    const cleanPhone = siteConfig.phone.replace(/\s+/g, '')
+    window.open(`https://wa.me/${cleanPhone}?text=${encodedText}`, '_blank')
+  }
+
+  const handleAddToCart = () => {
+    addItem({
+      productId: product.id,
+      name: product.name,
+      slug: product.slug,
+      price: product.base_price || 0,
+      quantity,
+      colorName: currentVariant?.name,
+      imageUrl: mainImage || undefined,
+    })
+    setIsCartOpen(true)
   }
 
   return (
@@ -224,9 +249,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </h1>
 
                 {product.short_desc && (
-                  <p className="text-base md:text-lg text-[#6e6e73] font-medium leading-relaxed mb-8 max-w-xl">
+                  <p className="text-base md:text-lg text-[#6e6e73] font-medium leading-relaxed mb-6 max-w-xl">
                     {product.short_desc}
                   </p>
+                )}
+
+                {/* Retail Price Display */}
+                {product.base_price && (
+                  <div className="mb-6">
+                    <div className="text-3xl font-bold text-[#1d1d1f]">
+                      ₹{product.base_price.toLocaleString('en-IN')}
+                    </div>
+                    <div className="text-sm text-[#86868b] mt-1">Incl. of all taxes</div>
+                  </div>
                 )}
               </motion.div>
 
@@ -276,31 +311,107 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </div>
               </motion.div>
 
-              {/* Action Buttons */}
+              {/* ── Action Sections: Retail & Bulk ── */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-                className="flex flex-col gap-3"
+                className="flex flex-col gap-6"
               >
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(true)}
-                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#e3231c] text-white font-bold text-base shadow-[0_8px_24px_rgba(227,35,28,0.28)] hover:bg-[#c91d17] hover:shadow-[0_12px_32px_rgba(227,35,28,0.38)] active:scale-[0.98] transition-all cursor-pointer"
-                >
-                  <MessageSquare size={18} />
-                  Request Corporate Quote
-                </button>
+                {/* Retail Section */}
+                <div className="bg-white p-5 rounded-3xl border border-black/8 shadow-sm">
+                  <div className="flex items-center gap-2 mb-4">
+                    <ShoppingCart size={18} className="text-[#1d1d1f]" />
+                    <h3 className="font-bold text-[#1d1d1f] text-lg">Buy Retail</h3>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    {/* Quantity Selector */}
+                    <div className="flex flex-col gap-2 w-full sm:w-auto">
+                      <label className="text-xs font-semibold text-[#86868b] uppercase tracking-wider">Quantity</label>
+                      <div className="flex items-center bg-[#f5f5f7] rounded-full p-1 border border-black/5">
+                        <button 
+                          onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm text-[#1d1d1f] hover:bg-[#e3231c] hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Minus size={16} />
+                        </button>
+                        <span className="w-12 text-center font-bold text-[#1d1d1f]">{quantity}</span>
+                        <button 
+                          onClick={() => setQuantity(q => q + 1)}
+                          className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm text-[#1d1d1f] hover:bg-[#e3231c] hover:text-white transition-colors cursor-pointer"
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                    </div>
 
-                {product.is_customizable && (
-                  <Link
-                    href={`/branding?slug=${product.slug}`}
-                    className="w-full flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white text-[#1d1d1f] font-semibold text-sm border border-black/10 hover:border-black/20 hover:bg-[#f5f5f7] active:scale-[0.98] transition-all shadow-xs"
-                  >
-                    <Sparkles size={16} className="text-[#e3231c]" />
-                    Preview Custom Logo on Product
-                  </Link>
-                )}
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={!product.base_price}
+                      className="flex-1 flex items-center justify-center gap-2 h-[48px] rounded-full bg-[#1d1d1f] text-white font-bold text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <ShoppingCart size={16} />
+                      {product.base_price ? 'Add to Cart' : 'Price Unavailable'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bulk Section */}
+                <div className="bg-[#fcf5f5] p-5 rounded-3xl border border-[#e3231c]/10 shadow-sm relative overflow-hidden">
+                  <div className="absolute -right-4 -top-4 text-[#e3231c]/5 pointer-events-none">
+                    <Package size={120} />
+                  </div>
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <Package size={18} className="text-[#e3231c]" />
+                        <h3 className="font-bold text-[#1d1d1f] text-lg">Buy in Bulk / Wholesale</h3>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setModalOpen(true)}
+                        className="w-full flex items-center justify-center gap-2.5 h-[48px] rounded-full bg-[#e3231c] text-white font-bold text-sm shadow-[0_4px_14px_rgba(227,35,28,0.25)] hover:bg-[#c91d17] hover:shadow-[0_6px_20px_rgba(227,35,28,0.35)] active:scale-[0.98] transition-all cursor-pointer"
+                      >
+                        <MessageSquare size={16} />
+                        Fill Inquiry Form
+                      </button>
+
+                      <div className="flex gap-3">
+                        <button
+                          onClick={handleWhatsApp}
+                          className="flex-1 flex items-center justify-center gap-2 h-[44px] rounded-full bg-white text-[#25D366] font-bold text-sm border border-[#25D366]/30 hover:border-[#25D366] hover:bg-[#25D366]/5 active:scale-[0.98] transition-all cursor-pointer"
+                        >
+                          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                          </svg>
+                          WhatsApp Us
+                        </button>
+                        
+                        <a
+                          href={`tel:${siteConfig.phone}`}
+                          className="flex-1 flex items-center justify-center gap-2 h-[44px] rounded-full bg-white text-[#1d1d1f] font-bold text-sm border border-black/10 hover:border-black/20 hover:bg-[#f5f5f7] active:scale-[0.98] transition-all cursor-pointer"
+                        >
+                          <Phone size={16} />
+                          Call Us
+                        </a>
+                      </div>
+
+                      {product.is_customizable && (
+                        <Link
+                          href={`/branding?slug=${product.slug}`}
+                          className="w-full mt-2 flex items-center justify-center gap-2.5 px-8 py-3 rounded-full bg-transparent text-[#e3231c] font-semibold text-xs border border-[#e3231c]/20 hover:bg-[#e3231c]/5 active:scale-[0.98] transition-all cursor-pointer"
+                        >
+                          <Sparkles size={14} />
+                          Preview Custom Logo on Product
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
 
               {/* Guarantees */}

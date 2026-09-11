@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, ChevronRight } from 'lucide-react'
+import { Menu, X, ChevronRight, ShoppingCart, User as UserIcon } from 'lucide-react'
+import { useCartStore } from '@/lib/store/useCartStore'
+import { useAuth } from '@/lib/AuthContext'
+import AuthModal from '@/components/auth/AuthModal'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -15,8 +18,13 @@ const navLinks = [
 export default function GiftingNavbar() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const { items, setIsCartOpen } = useCartStore()
+  const { user } = useAuth()
+  const [mounted, setMounted] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const onScroll = () => setScrolled(window.scrollY > 12)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -65,7 +73,36 @@ export default function GiftingNavbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center pr-1">
+          <div className="hidden md:flex items-center gap-3 pr-1">
+            {user ? (
+              <Link
+                href="/account"
+                className="p-2 text-[#1d1d1f] hover:bg-black/5 rounded-full transition-colors cursor-pointer"
+                aria-label="My Account"
+              >
+                <UserIcon size={20} />
+              </Link>
+            ) : (
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="p-2 text-[#1d1d1f] hover:bg-black/5 rounded-full transition-colors cursor-pointer"
+                aria-label="Sign In"
+              >
+                <UserIcon size={20} />
+              </button>
+            )}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2 text-[#1d1d1f] hover:bg-black/5 rounded-full transition-colors cursor-pointer"
+              aria-label="Open cart"
+            >
+              <ShoppingCart size={20} />
+              {mounted && items.length > 0 && (
+                <span className="absolute top-0 right-0 w-4 h-4 bg-[#e3231c] text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">
+                  {items.length}
+                </span>
+              )}
+            </button>
             <Link
               href="/contact"
               className="inline-flex items-center rounded-full px-6 py-2.5 text-[14px] font-medium transition-all duration-200 bg-[#0B1120] text-white hover:bg-black"
@@ -78,6 +115,7 @@ export default function GiftingNavbar() {
           {/* Mobile CTA (optional) or just rely on bottom nav */}
         </div>
       </header>
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </>
   )
 }

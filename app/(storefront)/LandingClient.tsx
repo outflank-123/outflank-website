@@ -250,7 +250,7 @@ export default function LandingClient({
                 className="text-lg md:text-xl text-[#6e6e73] mb-10 max-w-2xl mx-auto leading-relaxed text-balance"
               >
                 Outflank delivers curated, custom-branded corporate gifts across 17 categories — 
-                from premium electronics to eco-friendly kits. Minimum 50 units. Maximum impact.
+                from premium electronics to eco-friendly kits. Maximum impact.
               </motion.p>
 
               <motion.div
@@ -282,7 +282,7 @@ export default function LandingClient({
                 transition={{ delay: 0.75, duration: 0.6 }}
                 className="mt-12 flex flex-wrap items-center justify-center gap-6"
               >
-                {['500+ Products', 'MOQ from 50 units', 'Custom Branding', 'Pan-India Delivery'].map((item) => (
+                {['500+ Products', 'Custom Branding', 'Pan-India Delivery', 'Premium Quality'].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-sm text-[#6e6e73]">
                     <CheckCircle2 size={14} className="text-[#22c55e]" />
                     {item}
@@ -396,10 +396,7 @@ export default function LandingClient({
                       <h3 className="text-sm md:text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
                         {product.name}
                       </h3>
-                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
-                        <span className="text-[10px] md:text-xs text-[#6e6e73] font-medium border border-black/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded-md">
-                          {product.min_order_qty ? `MOQ: ${product.min_order_qty}` : 'Custom MOQ'}
-                        </span>
+                      <div className="flex items-center justify-end mt-auto pt-2 border-t border-black/5">
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#e3231c] group-hover:translate-x-0.5 transition-transform">
                           Inquire
                           <ChevronRight size={12} />

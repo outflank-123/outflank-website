@@ -95,10 +95,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           )}
 
           {/* Footer row */}
-          <div className="mt-auto flex items-center justify-between pt-2 border-t border-black/5">
-            <div className="text-xs text-[#aeaeb2]">
-              {product.min_order_qty ? `MOQ: ${product.min_order_qty} units` : 'Ask for MOQ'}
-            </div>
+          <div className="mt-auto flex items-center justify-end pt-2 border-t border-black/5">
             <button
               onClick={() => setModalOpen(true)}
               id={`product-inquire-${product.id}`}
