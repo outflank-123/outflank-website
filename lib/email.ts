@@ -75,7 +75,10 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                 <!-- Order Details -->
                 <tr>
                   <td style="padding: 40px;">
-                    <h3 style="margin: 0 0 20px; font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 1px;">Order #${orderDetails.orderId.slice(0, 8)}</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                      <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 1px;">Tracking ID</h3>
+                      <span style="font-size: 16px; font-weight: 700; color: #1d1d1f; background-color: #f5f5f7; padding: 6px 12px; border-radius: 6px;">${orderDetails.orderId.split('-')[0].toUpperCase()}</span>
+                    </div>
                     
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       ${itemsHtml}
@@ -109,6 +112,13 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                         <strong>Payment Method:</strong> ${orderDetails.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Prepaid (Razorpay)'}
                       </p>
                     </div>
+                  </td>
+                </tr>
+
+                <!-- Track Order Button -->
+                <tr>
+                  <td style="padding: 0 40px 40px; text-align: center;">
+                    <a href="https://outflank.in/account" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">Track Your Order</a>
                   </td>
                 </tr>
 
