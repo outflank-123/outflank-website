@@ -24,7 +24,13 @@ export async function POST(req: Request) {
     const supabase = createAdminClient()
 
     // 1. Create a pending order in our database
-    const fullAddress = `${customer.address}, ${customer.city}, ${customer.state} - ${customer.pincode}`
+    // Store address as structured JSON so admin dispatch can extract fields
+    const shippingAddressJson = {
+      addressLine1: customer.address,
+      city: customer.city,
+      state: customer.state,
+      pincode: customer.pincode,
+    }
     
     const { data: orderData, error: orderError } = await supabase
       .from('retail_orders')
@@ -33,7 +39,7 @@ export async function POST(req: Request) {
           customer_name: customer.name,
           customer_email: customer.email,
           customer_phone: customer.phone,
-          shipping_address: fullAddress,
+          shipping_address: JSON.stringify(shippingAddressJson),
           total_amount: totalAmount,
           shipping_fee: shippingFee || 0,
           payment_method: 'razorpay',
