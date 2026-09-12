@@ -20,6 +20,8 @@ interface Order {
   created_at: string;
   status: string;
   total_amount: number;
+  awb_number?: string | null;
+  shadowfax_status?: string | null;
   retail_order_items: OrderItem[];
 }
 
@@ -156,12 +158,16 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <div className="text-xs text-[#86868b] font-medium uppercase tracking-wider mb-1">Status</div>
-                      <div className={`text-sm font-bold capitalize ${['paid', 'delivered', 'shipped'].includes(order.status) ? 'text-green-600' : ['failed', 'cancelled'].includes(order.status) ? 'text-red-500' : 'text-orange-500'}`}>
-                        {order.status === 'paid' ? 'Processing' : order.status}
+                      <div className={`text-sm font-bold capitalize ${['paid', 'delivered', 'shipped', 'out_for_delivery'].includes(order.status) ? 'text-green-600' : ['failed', 'cancelled'].includes(order.status) ? 'text-red-500' : 'text-orange-500'}`}>
+                        {order.status === 'paid' ? 'Processing' : order.status === 'out_for_delivery' ? 'Out for Delivery' : order.status}
                       </div>
                     </div>
-                    <div className="flex-1 text-right text-xs text-[#86868b]">
-                      Order #{order.id.split('-')[0].toUpperCase()}
+                    <div className="flex-1 text-right">
+                      <div className="text-xs text-[#86868b] font-medium uppercase tracking-wider mb-1">Order #</div>
+                      <div className="text-xs text-[#1d1d1f] font-bold">{order.id.split('-')[0].toUpperCase()}</div>
+                      {order.awb_number && (
+                        <div className="text-xs text-blue-600 font-mono mt-0.5">AWB: {order.awb_number}</div>
+                      )}
                     </div>
                   </div>
 
@@ -177,12 +183,15 @@ export default function AccountPage() {
                   ) : (
                     <div className="px-6 py-8 border-b border-black/5">
                       <div className="relative max-w-2xl mx-auto">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 rounded-full"></div>
-                        <div 
-                          className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-green-500 rounded-full transition-all duration-500"
-                          style={{ 
-                            width: order.status === 'delivered' ? '100%' : 
-                                   order.status === 'shipped' ? '50%' : '0%' 
+                        {/* Track line */}
+                        <div className="absolute left-0 top-4 -translate-y-1/2 w-full h-1 bg-gray-100 rounded-full"></div>
+                        <div
+                          className="absolute left-0 top-4 -translate-y-1/2 h-1 bg-green-500 rounded-full transition-all duration-500"
+                          style={{
+                            width: order.status === 'delivered' ? '100%'
+                              : order.status === 'out_for_delivery' ? '75%'
+                              : ['shipped'].includes(order.status) ? '40%'
+                              : '0%'
                           }}
                         ></div>
 
@@ -192,23 +201,43 @@ export default function AccountPage() {
                             <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white border-4 border-white shadow-sm relative z-10">
                               <Check size={14} strokeWidth={3} />
                             </div>
-                            <p className="text-xs font-semibold mt-2 text-[#1d1d1f]">Order Placed</p>
+                            <p className="text-xs font-semibold mt-2 text-[#1d1d1f]">Placed</p>
                           </div>
 
                           {/* Step 2: Shipped */}
                           <div className="flex flex-col items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm relative z-10 transition-colors ${['shipped', 'delivered'].includes(order.status) ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
-                              <Truck size={14} strokeWidth={['shipped', 'delivered'].includes(order.status) ? 3 : 2} />
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm relative z-10 transition-colors ${
+                              ['shipped', 'out_for_delivery', 'delivered'].includes(order.status) ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'
+                            }`}>
+                              <Truck size={14} />
                             </div>
-                            <p className={`text-xs font-semibold mt-2 ${['shipped', 'delivered'].includes(order.status) ? 'text-[#1d1d1f]' : 'text-[#86868b]'}`}>Shipped</p>
+                            <p className={`text-xs font-semibold mt-2 ${
+                              ['shipped', 'out_for_delivery', 'delivered'].includes(order.status) ? 'text-[#1d1d1f]' : 'text-[#86868b]'
+                            }`}>Shipped</p>
                           </div>
 
-                          {/* Step 3: Delivered */}
+                          {/* Step 3: Out for Delivery */}
                           <div className="flex flex-col items-center">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm relative z-10 transition-colors ${order.status === 'delivered' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'}`}>
-                              <Package size={14} strokeWidth={order.status === 'delivered' ? 3 : 2} />
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm relative z-10 transition-colors ${
+                              ['out_for_delivery', 'delivered'].includes(order.status) ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'
+                            }`}>
+                              <Package size={14} />
                             </div>
-                            <p className={`text-xs font-semibold mt-2 ${order.status === 'delivered' ? 'text-[#1d1d1f]' : 'text-[#86868b]'}`}>Delivered</p>
+                            <p className={`text-xs font-semibold mt-2 ${
+                              ['out_for_delivery', 'delivered'].includes(order.status) ? 'text-[#1d1d1f]' : 'text-[#86868b]'
+                            }`}>Out for Delivery</p>
+                          </div>
+
+                          {/* Step 4: Delivered */}
+                          <div className="flex flex-col items-center">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-sm relative z-10 transition-colors ${
+                              order.status === 'delivered' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'
+                            }`}>
+                              <Check size={14} strokeWidth={3} />
+                            </div>
+                            <p className={`text-xs font-semibold mt-2 ${
+                              order.status === 'delivered' ? 'text-[#1d1d1f]' : 'text-[#86868b]'
+                            }`}>Delivered</p>
                           </div>
                         </div>
                       </div>
