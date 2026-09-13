@@ -108,7 +108,14 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                     <div style="background-color: #f5f5f7; border-radius: 8px; padding: 24px;">
                       <h3 style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #1d1d1f;">Shipping Information</h3>
                       <p style="margin: 0; font-size: 14px; color: #515154; line-height: 1.6;">
-                        ${orderDetails.shippingAddress}<br>
+                        ${(() => {
+                          try {
+                            const addr = JSON.parse(orderDetails.shippingAddress);
+                            return `${addr.addressLine1}<br>${addr.city}, ${addr.state} - ${addr.pincode}`;
+                          } catch {
+                            return orderDetails.shippingAddress;
+                          }
+                        })()}<br>
                         <strong>Payment Method:</strong> ${orderDetails.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Prepaid (Razorpay)'}
                       </p>
                     </div>
@@ -118,7 +125,7 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                 <!-- Track Order Button -->
                 <tr>
                   <td style="padding: 0 40px 40px; text-align: center;">
-                    <a href="https://outflank.in/account" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">Track Your Order</a>
+                    <a href="https://outflank.in/account" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">View Order Status</a>
                   </td>
                 </tr>
 
@@ -210,7 +217,7 @@ export async function sendShipmentStatusEmail(details: {
             </tr>
             <tr>
               <td style="padding:0 40px 40px;text-align:center;">
-                <a href="https://outflank.in/account" style="display:inline-block;padding:14px 32px;background-color:#1d1d1f;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;border-radius:30px;">Track Your Order</a>
+                <a href="${details.awbNumber ? `https://shadowfax.in/tracking/${details.awbNumber}` : 'https://outflank.in/account'}" style="display:inline-block;padding:14px 32px;background-color:#1d1d1f;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;border-radius:30px;">Track Live on Shadowfax</a>
               </td>
             </tr>
             <tr>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle } from 'lucide-react';
+import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle, ExternalLink } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -166,7 +166,15 @@ export default function AccountPage() {
                       <div className="text-xs text-[#86868b] font-medium uppercase tracking-wider mb-1">Order #</div>
                       <div className="text-xs text-[#1d1d1f] font-bold">{order.id.split('-')[0].toUpperCase()}</div>
                       {order.awb_number && (
-                        <div className="text-xs text-blue-600 font-mono mt-0.5">AWB: {order.awb_number}</div>
+                        <a 
+                          href={`https://shadowfax.in/tracking/${order.awb_number}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-xs text-blue-600 font-mono mt-0.5 hover:underline flex items-center justify-end gap-1"
+                        >
+                          AWB: {order.awb_number}
+                          <ExternalLink size={10} />
+                        </a>
                       )}
                     </div>
                   </div>

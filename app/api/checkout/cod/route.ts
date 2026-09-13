@@ -18,7 +18,12 @@ export async function POST(req: Request) {
     const supabase = createAdminClient()
 
     // 1. Create a pending order in our database for COD
-    const fullAddress = `${customer.address}, ${customer.city}, ${customer.state} - ${customer.pincode}`
+    const shippingAddressJson = {
+      addressLine1: customer.address,
+      city: customer.city,
+      state: customer.state,
+      pincode: customer.pincode,
+    }
     
     const { data: orderData, error: orderError } = await supabase
       .from('retail_orders')
@@ -27,7 +32,7 @@ export async function POST(req: Request) {
           customer_name: customer.name,
           customer_email: customer.email,
           customer_phone: customer.phone,
-          shipping_address: fullAddress,
+          shipping_address: JSON.stringify(shippingAddressJson),
           total_amount: totalAmount,
           shipping_fee: shippingFee || 0,
           payment_method: 'cod',
@@ -73,7 +78,7 @@ export async function POST(req: Request) {
       shippingFee: shippingFee,
       paymentMethod: 'cod',
       items: items,
-      shippingAddress: fullAddress
+      shippingAddress: JSON.stringify(shippingAddressJson)
     })
 
     return NextResponse.json({
