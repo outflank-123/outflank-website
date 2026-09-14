@@ -71,7 +71,7 @@ export const useCartStore = create<CartState>()(
       }
     }),
     {
-      name: 'aluxa-cart-storage',
+      name: 'outflank-cart-storage',
     }
   )
 )

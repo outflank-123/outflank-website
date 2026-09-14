@@ -77,6 +77,7 @@ export default function GiftingFooter() {
             </h4>
             <ul className="flex flex-col gap-3">
               {[
+                { href: '/track', label: 'Track Order' },
                 { href: '/branding', label: 'Branding Preview' },
                 { href: '/#why-outflank', label: 'Why Outflank' },
                 { href: '/#process', label: 'Our Process' },

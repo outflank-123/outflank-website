@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { createHmac } from 'crypto'
 import { mapShadowfaxStatus } from '@/lib/shadowfax'
 import { sendShipmentStatusEmail } from '@/lib/email'
 
@@ -19,8 +20,29 @@ const supabase = createClient(
  */
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const rawBody = await req.text()
 
+    // ── Signature Verification ──────────────────────────────────────────────────
+    // Shadowfax sends an X-Sfx-Signature or X-Signature header.
+    // Verify it against SHADOWFAX_WEBHOOK_SECRET if configured.
+    const webhookSecret = process.env.SHADOWFAX_WEBHOOK_SECRET
+    if (webhookSecret) {
+      const signature = req.headers.get('x-sfx-signature') || req.headers.get('x-signature')
+      if (!signature) {
+        console.warn('[Shadowfax Webhook] Missing signature header — rejecting')
+        return NextResponse.json({ error: 'Missing signature' }, { status: 401 })
+      }
+      const expectedSig = createHmac('sha256', webhookSecret).update(rawBody).digest('hex')
+      if (signature !== expectedSig) {
+        console.warn('[Shadowfax Webhook] Invalid signature — rejecting')
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+      }
+    } else {
+      console.warn('[Shadowfax Webhook] SHADOWFAX_WEBHOOK_SECRET not set — skipping signature check')
+    }
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    const body = JSON.parse(rawBody)
     console.log('[Shadowfax Webhook] Received:', JSON.stringify(body, null, 2))
 
     const {
@@ -41,13 +63,25 @@ export async function POST(req: NextRequest) {
     // Map Shadowfax event to our internal status
     const internalStatus = mapShadowfaxStatus(event)
 
+    // Idempotency check: if the order already has this exact Shadowfax status, skip processing
+    const { data: existingOrder } = await supabase
+      .from('retail_orders')
+      .select('id, customer_email, customer_name, shadowfax_status, awb_number')
+      .eq('id', order_id)
+      .single()
+
+    if (existingOrder && existingOrder.shadowfax_status === event) {
+      console.log(`[Shadowfax Webhook] Skipping duplicate event '${event}' for order ${order_id}`)
+      return NextResponse.json({ received: true, skipped: 'duplicate_event' })
+    }
+
     // Update the order in Supabase
     const { data: order, error } = await supabase
       .from('retail_orders')
       .update({
         status: internalStatus,
         shadowfax_status: event,
-        awb_number: awb_number || undefined,
+        awb_number: awb_number || existingOrder?.awb_number || undefined,
         updated_at: new Date().toISOString(),
       })
       .eq('id', order_id)

@@ -107,11 +107,11 @@ export async function createShadowfaxOrder(payload: ShadowfaxCreateOrderPayload)
       },
       rto_details: {
         name: 'Outflank Warehouse',
-        contact_number: '9999999999',
-        address_line_1: 'Outflank Warehouse, Delhi',
-        city: 'Delhi',
+        contact_number: '9999926273',
+        address_line_1: 'T-513/1, Gali Dargah Wali, Chamelian Road, Near Fire Station, Rani Jhansi Road',
+        city: 'New Delhi',
         state: 'Delhi',
-        pincode: '110001',
+        pincode: '110006',
       },
     }
 

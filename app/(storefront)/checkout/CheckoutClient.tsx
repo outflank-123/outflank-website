@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import Script from 'next/script'
-import { ChevronLeft, Lock, Loader2, CheckCircle2, Wallet, CreditCard } from 'lucide-react'
+import { ChevronLeft, Lock, Loader2, CheckCircle2, Wallet, CreditCard, FileText } from 'lucide-react'
 import { useCartStore } from '@/lib/store/useCartStore'
 import { useAuth } from '@/lib/AuthContext'
 import { State, City } from 'country-state-city'
@@ -25,6 +25,7 @@ export default function CheckoutClient() {
   const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [successOrderId, setSuccessOrderId] = useState<string | null>(null)
   
   const [settings, setSettings] = useState<StoreSettings | null>(null)
   
@@ -84,10 +85,20 @@ export default function CheckoutClient() {
         <h1 className="text-3xl font-bold text-[#1d1d1f] mb-4">Order Confirmed!</h1>
         <p className="text-[#86868b] mb-2">Thank you for your purchase.</p>
         <p className="text-[#86868b] mb-8">We have sent a confirmation to your email.</p>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link href="/account" className="px-8 py-3 rounded-full bg-[#1d1d1f] text-white font-semibold hover:bg-black transition-colors">
             Track My Order
           </Link>
+          {successOrderId && (
+            <Link 
+              href={`/invoice/${successOrderId}?print=true`} 
+              target="_blank"
+              className="px-8 py-3 rounded-full border border-black/10 bg-white text-[#1d1d1f] font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+            >
+              <FileText size={18} />
+              Download Invoice
+            </Link>
+          )}
           <Link href="/products" className="px-8 py-3 rounded-full border border-black/10 bg-white text-[#1d1d1f] font-semibold hover:bg-gray-50 transition-colors">
             Continue Shopping
           </Link>
@@ -109,10 +120,12 @@ export default function CheckoutClient() {
 
   const isCodAvailable = settings?.is_cod_enabled && subtotal >= (settings?.cod_min_amount || 0)
 
-  // Force Razorpay if COD was selected but is no longer available (e.g. cart items removed)
-  if (!isCodAvailable && paymentMethod === 'cod') {
-    setPaymentMethod('razorpay')
-  }
+  // Reset payment method if COD becomes unavailable (via useEffect to avoid setState-in-render)
+  useEffect(() => {
+    if (!isCodAvailable && paymentMethod === 'cod') {
+      setPaymentMethod('razorpay')
+    }
+  }, [isCodAvailable, paymentMethod])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -153,6 +166,7 @@ export default function CheckoutClient() {
         if (!res.ok) throw new Error(data.error || 'Failed to place order')
         
         clearCart()
+        setSuccessOrderId(data.orderId)
         setSuccess(true)
         setLoading(false)
         return
@@ -177,11 +191,6 @@ export default function CheckoutClient() {
         throw new Error(data.error || 'Failed to initiate payment')
       }
 
-      console.log("RAZORPAY OPTIONS:", {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: data.amount,
-        order_id: data.razorpayOrderId
-      })
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, 
@@ -206,6 +215,7 @@ export default function CheckoutClient() {
           
           if (verifyRes.ok && verifyData.success) {
             clearCart()
+            setSuccessOrderId(data.internalOrderId)
             setSuccess(true)
           } else {
             alert('Payment verification failed. Please contact support.')
@@ -329,7 +339,18 @@ export default function CheckoutClient() {
                     </div>
                     <div className="md:col-span-1">
                       <label className="block text-xs font-semibold text-[#86868b] mb-1.5">PIN Code</label>
-                      <input required name="pincode" value={formData.pincode} onChange={handleInputChange} type="text" className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm" placeholder="110001" />
+                      <input
+                        required
+                        name="pincode"
+                        value={formData.pincode}
+                        onChange={handleInputChange}
+                        type="text"
+                        pattern="[0-9]{6}"
+                        maxLength={6}
+                        title="Enter a valid 6-digit PIN code"
+                        className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm"
+                        placeholder="110001"
+                      />
                     </div>
                   </div>
                 </div>

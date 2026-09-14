@@ -17,6 +17,51 @@ export async function POST(req: Request) {
 
     const supabase = createAdminClient()
 
+    // --- SECURE PRICE CALCULATION ---
+    // Fetch product prices from DB
+    const productIds = items.map((i: any) => i.productId)
+    const { data: dbProducts, error: dbProductsError } = await supabase
+      .from('products')
+      .select('id, base_price')
+      .in('id', productIds)
+
+    if (dbProductsError || !dbProducts) {
+      console.error('Error fetching products:', dbProductsError)
+      return NextResponse.json({ error: 'Failed to verify cart items' }, { status: 500 })
+    }
+
+    // Recalculate Subtotal
+    let verifiedSubtotal = 0
+    const verifiedItems = items.map((item: any) => {
+      const dbProduct = dbProducts.find((p) => p.id === item.productId)
+      if (!dbProduct) throw new Error(`Product ${item.productId} not found`)
+      verifiedSubtotal += dbProduct.base_price * item.quantity
+      return {
+        ...item,
+        price: dbProduct.base_price // Overwrite frontend price
+      }
+    })
+
+    // Fetch Shipping Settings from DB
+    const { data: settings } = await supabase
+      .from('store_settings')
+      .select('free_shipping_threshold, flat_shipping_rate')
+      .single()
+
+    let verifiedShippingFee = 0
+    if (settings && verifiedSubtotal < settings.free_shipping_threshold) {
+      verifiedShippingFee = settings.flat_shipping_rate
+    }
+
+    const verifiedTotalAmount = verifiedSubtotal + verifiedShippingFee
+
+    // Safety check against frontend manipulation
+    if (Math.abs(verifiedTotalAmount - totalAmount) > 1) { // 1 rupee tolerance for float weirdness
+      console.warn(`Price mismatch detected in COD. Expected: ${verifiedTotalAmount}, Got: ${totalAmount}`)
+      return NextResponse.json({ error: 'Cart total mismatch. Please refresh and try again.' }, { status: 400 })
+    }
+    // --------------------------------
+
     // 1. Create a pending order in our database for COD
     const shippingAddressJson = {
       addressLine1: customer.address,
@@ -33,8 +78,8 @@ export async function POST(req: Request) {
           customer_email: customer.email,
           customer_phone: customer.phone,
           shipping_address: JSON.stringify(shippingAddressJson),
-          total_amount: totalAmount,
-          shipping_fee: shippingFee || 0,
+          total_amount: verifiedTotalAmount,
+          shipping_fee: verifiedShippingFee,
           payment_method: 'cod',
           status: 'pending', // COD is technically pending payment upon delivery
           customer_uid: firebaseUid || null
@@ -51,7 +96,7 @@ export async function POST(req: Request) {
     const internalOrderId = orderData.id
 
     // 2. Insert order items
-    const orderItems = items.map((item: any) => ({
+    const orderItems = verifiedItems.map((item: any) => ({
       order_id: internalOrderId,
       product_id: item.productId,
       product_name: item.name,
@@ -66,20 +111,26 @@ export async function POST(req: Request) {
 
     if (itemsError) {
       console.error('Error inserting order items:', itemsError)
+      // Rollback: delete the dangling order
+      await supabase.from('retail_orders').delete().eq('id', internalOrderId)
       return NextResponse.json({ error: 'Failed to save order items' }, { status: 500 })
     }
 
     // 3. Send confirmation email for COD
-    await sendOrderConfirmationEmail({
-      orderId: internalOrderId,
-      customerName: customer.name,
-      customerEmail: customer.email,
-      amount: totalAmount,
-      shippingFee: shippingFee,
-      paymentMethod: 'cod',
-      items: items,
-      shippingAddress: JSON.stringify(shippingAddressJson)
-    })
+    try {
+      await sendOrderConfirmationEmail({
+        orderId: internalOrderId,
+        customerName: customer.name,
+        customerEmail: customer.email,
+        amount: verifiedTotalAmount,
+        shippingFee: verifiedShippingFee,
+        paymentMethod: 'cod',
+        items: verifiedItems,
+        shippingAddress: JSON.stringify(shippingAddressJson)
+      })
+    } catch (emailError) {
+      console.error('Non-fatal error: Failed to send COD confirmation email', emailError)
+    }
 
     return NextResponse.json({
       success: true,

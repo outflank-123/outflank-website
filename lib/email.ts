@@ -49,7 +49,7 @@ export async function sendOrderConfirmationEmail(orderDetails: {
   const mailOptions = {
     from: `"Outflank" <${process.env.SMTP_USER}>`,
     to: orderDetails.customerEmail,
-    subject: `Order Confirmation - Outflank #${orderDetails.orderId.slice(0, 8)}`,
+    subject: `Order Confirmation - Outflank #${orderDetails.orderId}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -77,7 +77,7 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                   <td style="padding: 40px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                       <h3 style="margin: 0; font-size: 14px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 1px;">Tracking ID</h3>
-                      <span style="font-size: 16px; font-weight: 700; color: #1d1d1f; background-color: #f5f5f7; padding: 6px 12px; border-radius: 6px;">${orderDetails.orderId.split('-')[0].toUpperCase()}</span>
+                      <span style="font-size: 16px; font-weight: 700; color: #1d1d1f; background-color: #f5f5f7; padding: 6px 12px; border-radius: 6px;">${orderDetails.orderId}</span>
                     </div>
                     
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -125,7 +125,7 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                 <!-- Track Order Button -->
                 <tr>
                   <td style="padding: 0 40px 40px; text-align: center;">
-                    <a href="https://outflank.in/account" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">View Order Status</a>
+                    <a href="https://outflank.in/track?order_id=${orderDetails.orderId}&email=${encodeURIComponent(orderDetails.customerEmail)}" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">View Order Status</a>
                   </td>
                 </tr>
 
@@ -169,8 +169,8 @@ export async function sendShipmentStatusEmail(details: {
 
   const isDelivered = details.status === 'delivered'
   const subject = isDelivered
-    ? `Your order has been delivered! ✅ — Outflank #${details.orderId.slice(0, 8)}`
-    : `Your order is out for delivery! 🚚 — Outflank #${details.orderId.slice(0, 8)}`
+    ? `Your order has been delivered! ✅ — Outflank #${details.orderId}`
+    : `Your order is out for delivery! 🚚 — Outflank #${details.orderId}`
 
   const headline = isDelivered ? 'Your order has been delivered!' : 'Your order is out for delivery!'
   const subtext = isDelivered
@@ -209,7 +209,7 @@ export async function sendShipmentStatusEmail(details: {
               <td style="padding:32px 40px;">
                 <div style="background-color:#f5f5f7;border-radius:8px;padding:20px;">
                   <p style="margin:0 0 4px;font-size:12px;font-weight:600;color:#86868b;text-transform:uppercase;letter-spacing:1px;">Order ID</p>
-                  <p style="margin:0;font-size:18px;font-weight:700;color:#1d1d1f;">#${details.orderId.split('-')[0].toUpperCase()}</p>
+                  <p style="margin:0;font-size:18px;font-weight:700;color:#1d1d1f;">#${details.orderId}</p>
                   ${awbBadge}
                 </div>
                 ${riderInfo}
@@ -217,7 +217,7 @@ export async function sendShipmentStatusEmail(details: {
             </tr>
             <tr>
               <td style="padding:0 40px 40px;text-align:center;">
-                <a href="${details.awbNumber ? `https://shadowfax.in/tracking/${details.awbNumber}` : 'https://outflank.in/account'}" style="display:inline-block;padding:14px 32px;background-color:#1d1d1f;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;border-radius:30px;">Track Live on Shadowfax</a>
+                <a href="${details.awbNumber ? `https://shadowfax.in/tracking/${details.awbNumber}` : `https://outflank.in/track?order_id=${details.orderId}&email=${encodeURIComponent(details.customerEmail)}`}" style="display:inline-block;padding:14px 32px;background-color:#1d1d1f;color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;border-radius:30px;">Track Live on Shadowfax</a>
               </td>
             </tr>
             <tr>

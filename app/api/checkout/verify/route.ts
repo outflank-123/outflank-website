@@ -62,16 +62,20 @@ export async function POST(req: Request) {
     })) || []
 
     // Send confirmation email
-    await sendOrderConfirmationEmail({
-      orderId: orderData.id,
-      customerName: orderData.customer_name,
-      customerEmail: orderData.customer_email,
-      amount: Number(orderData.total_amount),
-      shippingFee: Number(orderData.shipping_fee || 0),
-      paymentMethod: orderData.payment_method || 'razorpay',
-      items: items,
-      shippingAddress: orderData.shipping_address
-    })
+    try {
+      await sendOrderConfirmationEmail({
+        orderId: orderData.id,
+        customerName: orderData.customer_name,
+        customerEmail: orderData.customer_email,
+        amount: Number(orderData.total_amount),
+        shippingFee: Number(orderData.shipping_fee || 0),
+        paymentMethod: orderData.payment_method || 'razorpay',
+        items: items,
+        shippingAddress: orderData.shipping_address
+      })
+    } catch (emailError) {
+      console.error('Non-fatal error: Failed to send Razorpay confirmation email', emailError)
+    }
 
     return NextResponse.json({ success: true })
 

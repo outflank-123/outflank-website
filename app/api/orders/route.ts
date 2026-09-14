@@ -20,6 +20,8 @@ export async function GET(request: Request) {
         created_at,
         status,
         total_amount,
+        awb_number,
+        shadowfax_status,
         retail_order_items (
           product_name,
           quantity,

@@ -19,6 +19,7 @@ interface Order {
   id: string;
   created_at: string;
   status: string;
+  payment_method?: string;
   total_amount: number;
   awb_number?: string | null;
   shadowfax_status?: string | null;
@@ -158,24 +159,34 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <div className="text-xs text-[#86868b] font-medium uppercase tracking-wider mb-1">Status</div>
-                      <div className={`text-sm font-bold capitalize ${['paid', 'delivered', 'shipped', 'out_for_delivery'].includes(order.status) ? 'text-green-600' : ['failed', 'cancelled'].includes(order.status) ? 'text-red-500' : 'text-orange-500'}`}>
-                        {order.status === 'paid' ? 'Processing' : order.status === 'out_for_delivery' ? 'Out for Delivery' : order.status}
+                      <div className={`text-sm font-bold capitalize ${['paid', 'delivered', 'shipped', 'out_for_delivery'].includes(order.status) || (order.status === 'pending' && order.payment_method === 'cod') ? 'text-green-600' : ['failed', 'cancelled'].includes(order.status) ? 'text-red-500' : 'text-orange-500'}`}>
+                        {order.status === 'paid' ? 'Processing' : order.status === 'out_for_delivery' ? 'Out for Delivery' : order.status === 'pending' ? (order.payment_method === 'cod' ? 'Order Confirmed' : 'Payment Pending') : order.status}
                       </div>
                     </div>
                     <div className="flex-1 text-right">
                       <div className="text-xs text-[#86868b] font-medium uppercase tracking-wider mb-1">Order #</div>
-                      <div className="text-xs text-[#1d1d1f] font-bold">{order.id.split('-')[0].toUpperCase()}</div>
-                      {order.awb_number && (
+                      <div className="text-xs text-[#1d1d1f] font-bold">{order.id}</div>
+                      <div className="flex flex-col items-end gap-1 mt-1">
+                        {order.awb_number && (
+                          <a 
+                            href={`https://shadowfax.in/tracking/${order.awb_number}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-xs text-blue-600 font-mono hover:underline flex items-center justify-end gap-1"
+                          >
+                            AWB: {order.awb_number}
+                            <ExternalLink size={10} />
+                          </a>
+                        )}
                         <a 
-                          href={`https://shadowfax.in/tracking/${order.awb_number}`} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-xs text-blue-600 font-mono mt-0.5 hover:underline flex items-center justify-end gap-1"
+                          href={`/invoice/${order.id}?print=true`}
+                          target="_blank"
+                          className="text-xs text-[#86868b] hover:text-[#1d1d1f] transition-colors flex items-center justify-end gap-1"
                         >
-                          AWB: {order.awb_number}
+                          Invoice
                           <ExternalLink size={10} />
                         </a>
-                      )}
+                      </div>
                     </div>
                   </div>
 
