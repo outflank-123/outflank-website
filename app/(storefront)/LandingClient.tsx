@@ -166,7 +166,7 @@ export default function LandingClient({
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight-xl leading-[1.05] mb-6 drop-shadow-lg">
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight-xl leading-[1.05] mb-6 drop-shadow-lg">
                     {banners[currentBanner].title}
                   </h1>
                   
@@ -232,7 +232,7 @@ export default function LandingClient({
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-[#1d1d1f] tracking-tight-xl leading-[1.05] mb-6"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-[#1d1d1f] tracking-tight-xl leading-[1.05] mb-6"
               >
                 Gifts That Say{' '}
                 <br className="hidden sm:block" />
@@ -396,7 +396,10 @@ export default function LandingClient({
                       <h3 className="text-sm md:text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
                         {product.name}
                       </h3>
-                      <div className="flex items-center justify-end mt-auto pt-2 border-t border-black/5">
+                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
+                        <span className="text-sm font-bold text-[#1d1d1f]">
+                          {product.base_price ? `₹${product.base_price.toLocaleString('en-IN')}` : 'Price on Request'}
+                        </span>
                         <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#e3231c] group-hover:translate-x-0.5 transition-transform">
                           Inquire
                           <ChevronRight size={12} />
