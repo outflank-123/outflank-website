@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { checkRateLimit, getClientIp } from '@/lib/rate-limit'
+import { sendAdminLeadAlertNotification } from '@/lib/services/whatsapp'
 
 export async function POST(request: NextRequest) {
   try {
@@ -79,6 +80,22 @@ export async function POST(request: NextRequest) {
         { error: 'Failed to save your inquiry. Please try again later.' },
         { status: 500 }
       )
+    }
+
+    // 5. Trigger instant WhatsApp alert to store owner (non-blocking)
+    try {
+      sendAdminLeadAlertNotification({
+        lead: {
+          name: cleanName,
+          company_name: cleanCompany,
+          email: cleanEmail,
+          phone: cleanPhone,
+          product_name: cleanProductName,
+          quantity: cleanRequirements,
+        }
+      })
+    } catch (waError) {
+      console.error('[leads/POST] WhatsApp alert trigger non-fatal error:', waError)
     }
 
     return NextResponse.json({ success: true }, { status: 200 })

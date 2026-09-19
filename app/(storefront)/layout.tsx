@@ -1,6 +1,7 @@
 import GiftingNavbar from "@/components/layout/GiftingNavbar";
 import GiftingFooter from "@/components/layout/GiftingFooter";
 import BottomNav from "@/components/layout/BottomNav";
+import WhatsAppFloatingWidget from "@/components/layout/WhatsAppFloatingWidget";
 
 export default function StorefrontLayout({
   children,
@@ -13,6 +14,7 @@ export default function StorefrontLayout({
       <div className="flex-grow pb-16 md:pb-0">{children}</div>
       <GiftingFooter />
       <BottomNav />
+      <WhatsAppFloatingWidget />
     </>
   );
 }

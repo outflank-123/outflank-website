@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendOrderConfirmationEmail } from '@/lib/email'
+import { sendOrderPlacedNotification, sendAdminOrderAlertNotification } from '@/lib/services/whatsapp'
 
 export async function POST(req: Request) {
   try {
@@ -95,6 +96,14 @@ export async function POST(req: Request) {
       })
     } catch (emailError) {
       console.error('Non-fatal error: Failed to send Razorpay confirmation email', emailError)
+    }
+
+    // Trigger automated WhatsApp notifications (non-blocking)
+    try {
+      sendOrderPlacedNotification({ order: orderData })
+      sendAdminOrderAlertNotification({ order: orderData })
+    } catch (waError) {
+      console.error('Non-fatal error: WhatsApp notification trigger failed', waError)
     }
 
     return NextResponse.json({ success: true })
