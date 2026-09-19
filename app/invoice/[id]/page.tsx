@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { createAdminClient } from '@/lib/supabase/admin';
 import PrintInvoiceButton from './PrintInvoiceButton';
-import { Sparkles, ArrowLeft, ExternalLink, Package, ShieldCheck, CheckCircle2, Truck } from 'lucide-react';
+import { Paintbrush, ArrowLeft, ExternalLink, Package, ShieldCheck, CheckCircle2, Truck } from 'lucide-react';
 
 interface CustomDetail {
   isCustomized: boolean;
@@ -255,7 +255,7 @@ export default async function InvoicePage({ params }: any) {
                   {hasAnyCustom && (
                     <div className="pt-1">
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                        <Sparkles size={11} /> Contains Custom Personalized Items
+                        <Paintbrush size={11} /> Contains Custom Personalized Items
                       </span>
                     </div>
                   )}
@@ -303,7 +303,7 @@ export default async function InvoicePage({ params }: any) {
                             {custom && (
                               <div className="mt-2.5 p-3 rounded-xl border border-blue-200/90 bg-blue-50/40 print:bg-gray-50 print:border-gray-300">
                                 <div className="flex items-center gap-1.5 text-[11px] font-bold text-blue-700 print:text-gray-900 mb-2">
-                                  <Sparkles size={13} className="text-blue-600 print:text-gray-700 shrink-0" />
+                                  <Paintbrush size={13} className="text-blue-600 print:text-gray-700 shrink-0" />
                                   <span className="uppercase tracking-wider">Custom Print Specification</span>
                                 </div>
 

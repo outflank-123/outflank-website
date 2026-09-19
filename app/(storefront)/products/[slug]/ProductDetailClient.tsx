@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Package, Clock, Users, MessageSquare, ShieldCheck, Sparkles, ShoppingCart, Plus, Minus, Phone, Building2, Check } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package, Clock, Users, MessageSquare, ShieldCheck, Paintbrush, ShoppingCart, Plus, Minus, Phone, Building2, Check } from 'lucide-react'
 import ColorVariantPicker from '@/components/products/ColorVariantPicker'
 import LeadModal from '@/components/products/LeadModal'
 import type { ColorVariant } from '@/components/products/ProductCard'
@@ -283,7 +283,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   )}
                   {isCustomizable ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0066FF]/10 text-[#0066FF] border border-[#0066FF]/20 text-[11px] font-bold tracking-wide">
-                      <Sparkles size={12} className="text-[#0066FF]" />
+                      <Paintbrush size={12} className="text-[#0066FF]" />
                       Custom Branding Available
                     </span>
                   ) : (
@@ -382,7 +382,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <div className="w-7 h-7 rounded-lg bg-[#0066FF] text-white flex items-center justify-center shadow-xs">
-                        <Sparkles size={14} />
+                        <Paintbrush size={14} />
                       </div>
                       <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">
                         Custom Logo & Text Branding
@@ -448,7 +448,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                           href={`/customize/${product.slug}?color=${encodeURIComponent(currentVariant?.hex || '')}`}
                           className="flex-1 flex items-center justify-center gap-2 h-[50px] rounded-full bg-[#0066FF] hover:bg-[#0052cc] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.98] transition-all cursor-pointer"
                         >
-                          <Sparkles size={17} />
+                          <Paintbrush size={16} />
                           <span>Customize & Add Logo</span>
                         </Link>
 
@@ -486,7 +486,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                             href={`/customize/${product.slug}?color=${encodeURIComponent(currentVariant?.hex || '')}`}
                             className="w-full flex items-center justify-center gap-2 h-[48px] rounded-full bg-[#0066FF] text-white font-bold text-sm shadow-md hover:bg-[#0052cc] active:scale-[0.98] transition-all cursor-pointer"
                           >
-                            <Sparkles size={16} />
+                            <Paintbrush size={16} />
                             <span>Design Sample in Customizer Studio</span>
                           </Link>
                         )}

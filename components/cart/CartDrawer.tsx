@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, X, Plus, Minus, Trash2, Sparkles } from 'lucide-react'
+import { ShoppingCart, X, Plus, Minus, Trash2, Paintbrush } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/useCartStore'
@@ -121,7 +121,7 @@ export default function CartDrawer() {
                                 <img src={item.customBranding.logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
                               </div>
                             ) : (
-                              <Sparkles size={12} className="shrink-0" />
+                              <Paintbrush size={12} className="shrink-0" />
                             )}
                             <div className="flex items-center gap-1 truncate">
                               <span className="truncate">

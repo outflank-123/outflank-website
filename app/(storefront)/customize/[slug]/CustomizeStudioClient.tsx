@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import {
   ChevronLeft,
   Upload,
-  Sparkles,
+  Paintbrush,
   Check,
   X,
   ShoppingCart,
@@ -953,7 +953,7 @@ export default function CustomizeStudioClient({ product }: CustomizeStudioClient
                       onClick={() => loadSampleLogo('crest')}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 text-xs font-bold text-gray-700 transition-colors cursor-pointer"
                     >
-                      <Sparkles size={13} className="text-[#0066FF]" />
+                      <Paintbrush size={13} className="text-[#0066FF]" />
                       <span>Monogram Crest</span>
                     </button>
                     <button
@@ -961,7 +961,7 @@ export default function CustomizeStudioClient({ product }: CustomizeStudioClient
                       onClick={() => loadSampleLogo('tech')}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 text-xs font-bold text-gray-700 transition-colors cursor-pointer"
                     >
-                      <Sparkles size={13} className="text-emerald-600" />
+                      <Paintbrush size={13} className="text-emerald-600" />
                       <span>Vector Logo</span>
                     </button>
                   </div>

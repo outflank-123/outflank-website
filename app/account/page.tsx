@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle, ExternalLink, Sparkles } from 'lucide-react';
+import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle, ExternalLink, Paintbrush } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -355,7 +355,7 @@ export default function AccountPage() {
                               <div className="bg-white p-3 rounded-lg border border-blue-200 text-xs space-y-1.5 shadow-2xs">
                                 <div className="flex items-center justify-between">
                                   <span className="inline-flex items-center gap-1 font-bold text-blue-700 text-[11px] uppercase tracking-wider">
-                                    <Sparkles size={11} className="text-blue-600" />
+                                    <Paintbrush size={11} className="text-blue-600" />
                                     Personalized Print Specification
                                   </span>
                                   <span className="text-[10px] text-gray-500 font-medium">

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Package, ChevronRight, Building2, Sparkles, ShoppingBag } from 'lucide-react'
+import { Package, ChevronRight, Building2, Paintbrush, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import ColorVariantPicker from './ColorVariantPicker'
 import LeadModal from './LeadModal'
@@ -100,7 +100,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {/* Customizable Badge */}
           {product.is_customizable && (
             <div className="absolute bottom-2 left-2 md:bottom-3 md:left-3 rounded-full bg-white/95 text-[#1d1d1f] backdrop-blur-md border border-black/8 px-2 md:px-2.5 py-0.5 md:py-1 text-[8px] md:text-[10px] font-bold tracking-wide flex items-center gap-1 z-0 shadow-xs">
-              <Sparkles size={10} className="text-[#0066FF]" />
+              <Paintbrush size={10} className="text-[#0066FF]" />
               <span>Customizable</span>
             </div>
           )}

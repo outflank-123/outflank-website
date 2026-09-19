@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Package, Truck, Check, AlertCircle, ExternalLink, Search, Loader2, ChevronLeft, Sparkles, FileText, ShieldCheck } from 'lucide-react';
+import { Package, Truck, Check, AlertCircle, ExternalLink, Search, Loader2, ChevronLeft, Paintbrush, FileText, ShieldCheck } from 'lucide-react';
 
 interface CustomDetail {
   isCustomized: boolean;
@@ -233,7 +233,7 @@ function TrackOrderForm() {
           {hasAnyCustom && (
             <div className="bg-gradient-to-r from-blue-50 via-indigo-50/50 to-white px-6 py-3 border-b border-blue-100 flex items-center justify-between text-xs text-blue-900">
               <div className="flex items-center gap-2">
-                <Sparkles size={14} className="text-blue-600 shrink-0" />
+                <Paintbrush size={14} className="text-blue-600 shrink-0" />
                 <span className="font-semibold">Contains Custom Personalized Items — Handcrafted to Your Exact Design</span>
               </div>
               <span className="text-[11px] text-blue-600/80 font-medium hidden sm:inline">Production Specifications Verified</span>
@@ -361,7 +361,7 @@ function TrackOrderForm() {
                       <div className="bg-white p-3.5 rounded-xl border border-blue-200 shadow-2xs space-y-2.5">
                         <div className="flex items-center justify-between">
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 uppercase tracking-wider">
-                            <Sparkles size={12} className="text-blue-600" />
+                            <Paintbrush size={12} className="text-blue-600" />
                             Personalized Custom Branding
                           </span>
                           <span className="text-[11px] font-semibold text-gray-500">
