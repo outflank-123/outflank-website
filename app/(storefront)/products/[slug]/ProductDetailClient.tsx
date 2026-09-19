@@ -10,7 +10,9 @@ import ColorVariantPicker from '@/components/products/ColorVariantPicker'
 import LeadModal from '@/components/products/LeadModal'
 import type { ColorVariant } from '@/components/products/ProductCard'
 import { useCartStore } from '@/lib/store/useCartStore'
+import { useShoppingModeStore } from '@/lib/store/useShoppingModeStore'
 import { siteConfig } from '@/lib/site-config'
+import { useEffect } from 'react'
 
 interface ProductDetailClientProps {
   product: {
@@ -42,7 +44,31 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [activeImage, setActiveImage] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [quantity, setQuantity] = useState(1)
-  const [isBulkMode, setIsBulkMode] = useState(!isRetailAllowed) // Default to Bulk Mode if retail is disabled
+
+  // Read global outer selection from useShoppingModeStore
+  const { mode: globalMode, setMode: setGlobalMode } = useShoppingModeStore()
+
+  // If product is Wholesale Only, it MUST always be Bulk mode (yet remains completely available to browse & inquire).
+  // Otherwise, automatically adopt whatever mode the user chose on the outer toggle!
+  const [isBulkMode, setIsBulkMode] = useState<boolean>(() => {
+    if (!isRetailAllowed) return true
+    return globalMode === 'bulk'
+  })
+
+  // Synchronize when global mode changes externally, respecting wholesale-only restriction
+  useEffect(() => {
+    if (!isRetailAllowed) {
+      setIsBulkMode(true)
+    } else {
+      setIsBulkMode(globalMode === 'bulk')
+    }
+  }, [globalMode, isRetailAllowed])
+
+  const handleModeToggle = (bulk: boolean) => {
+    if (!isRetailAllowed) return
+    setIsBulkMode(bulk)
+    setGlobalMode(bulk ? 'bulk' : 'retail')
+  }
   
   const { addItem, setIsCartOpen } = useCartStore()
 
@@ -281,14 +307,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 {isRetailAllowed ? (
                   <div className="flex bg-[#f5f5f7] p-1 rounded-full w-fit mb-6 border border-black/5 shadow-sm">
                     <button
-                      onClick={() => setIsBulkMode(false)}
-                      className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${!isBulkMode ? 'bg-white text-[#1d1d1f] shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
+                      type="button"
+                      onClick={() => handleModeToggle(false)}
+                      className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${!isBulkMode ? 'bg-white text-[#1d1d1f] shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
                     >
                       Buy Retail
                     </button>
                     <button
-                      onClick={() => setIsBulkMode(true)}
-                      className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${isBulkMode ? 'bg-white text-[#1d1d1f] shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
+                      type="button"
+                      onClick={() => handleModeToggle(true)}
+                      className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer ${isBulkMode ? 'bg-white text-[#1d1d1f] shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f]'}`}
                     >
                       Buy in Bulk
                     </button>

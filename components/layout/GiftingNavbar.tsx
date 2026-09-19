@@ -8,6 +8,7 @@ import { Menu, X, ChevronRight, ShoppingCart, User as UserIcon } from 'lucide-re
 import { useCartStore } from '@/lib/store/useCartStore'
 import { useAuth } from '@/lib/AuthContext'
 import AuthModal from '@/components/auth/AuthModal'
+import ShoppingModeToggle from '@/components/common/ShoppingModeToggle'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -37,27 +38,27 @@ export default function GiftingNavbar() {
 
   return (
     <>
-      <header className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
+      <header className="fixed top-5 left-0 right-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none">
         <div
-          className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full flex items-center justify-between ${
+          className={`mx-auto pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full flex items-center justify-between gap-2 ${
             scrolled
-              ? 'w-[90%] max-w-[1000px] px-3 py-2 bg-white/60 backdrop-blur-3xl saturate-200 border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
-              : 'w-[95%] max-w-[1100px] px-4 py-2.5 bg-white/60 backdrop-blur-3xl saturate-200 border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
+              ? 'w-[94%] max-w-[1100px] px-3 py-2 bg-white/70 backdrop-blur-3xl saturate-200 border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
+              : 'w-[96%] max-w-[1180px] px-4 py-2.5 bg-white/70 backdrop-blur-3xl saturate-200 border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.08)]'
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 pl-2">
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 pl-1">
             <Image
               src="/logo/outflank-logo.png"
               alt="Outflank"
               width={160}
               height={64}
-              className="h-11 md:h-12 w-auto object-contain"
+              className="h-10 md:h-12 w-auto object-contain"
               priority
             />
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && !link.href.includes('#') && pathname.startsWith(link.href));
@@ -65,7 +66,7 @@ export default function GiftingNavbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-5 py-2 text-[14px] font-semibold transition-all duration-200 rounded-full ${
+                  className={`px-4 lg:px-5 py-2 text-[13px] lg:text-[14px] font-semibold transition-all duration-200 rounded-full ${
                     isActive
                       ? 'bg-white text-[#e3231c] shadow-[0_2px_8px_rgba(0,0,0,0.08)]'
                       : 'text-[#1d1d1f] hover:text-black'
@@ -77,8 +78,13 @@ export default function GiftingNavbar() {
             })}
           </nav>
 
+          {/* Mode Toggle (Both Desktop & Mobile) */}
+          <div className="flex items-center">
+            <ShoppingModeToggle size="sm" />
+          </div>
+
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3 pr-1">
+          <div className="hidden md:flex items-center gap-2.5 pr-1">
             {user ? (
               <Link
                 href="/account"

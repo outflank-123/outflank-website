@@ -72,6 +72,9 @@ function FloatingBadge({ icon: Icon, label, delay = 0, className = '' }: {
   )
 }
 
+import ShoppingModeToggle from '@/components/common/ShoppingModeToggle'
+import { useShoppingModeStore } from '@/lib/store/useShoppingModeStore'
+
 export interface Banner {
   id: string
   title: string
@@ -87,6 +90,9 @@ export interface FeaturedProduct {
   base_price: number | null
   min_order_qty: number | null
   primary_image_url: string | null
+  is_retail?: boolean | null
+  is_customizable?: boolean | null
+  branding_config?: any
   categories?: { name: string, slug: string } | null
 }
 
@@ -103,6 +109,12 @@ export default function LandingClient({
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0])
 
   const [currentBanner, setCurrentBanner] = useState(0)
+  const [mounted, setMounted] = useState(false)
+  const { mode: shoppingMode } = useShoppingModeStore()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (banners.length <= 1) return
@@ -345,70 +357,99 @@ export default function LandingClient({
                   Featured Products
                 </h2>
               </motion.div>
-              <Link
-                href="/products"
-                className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-[#e3231c] hover:text-[#b91a14] transition-colors group"
-              >
-                View Full Catalog
-                <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <ShoppingModeToggle size="md" />
+                <Link
+                  href="/products"
+                  className="hidden md:inline-flex items-center gap-2 text-sm font-semibold text-[#e3231c] hover:text-[#b91a14] transition-colors group"
+                >
+                  View Full Catalog
+                  <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
             </div>
 
             {/* Featured Products Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mt-8">
-              {featuredProducts.map((product, i) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                  className="bg-white rounded-2xl md:rounded-3xl p-2.5 md:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] md:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col group hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all"
-                >
-                  <Link href={`/products/${product.slug}`} className="block flex-1 flex flex-col">
-                    <div className="relative w-full aspect-square rounded-xl md:rounded-2xl overflow-hidden bg-[#f5f5f7] mb-3 md:mb-4">
-                      {product.primary_image_url ? (
-                        <Image
-                          src={product.primary_image_url}
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center text-black/10">
-                          <Package className="w-8 h-8 md:w-12 md:h-12" />
+              {featuredProducts.map((product, i) => {
+                const currentMode = mounted ? shoppingMode : 'retail'
+                const isRetailAllowed = product.is_retail !== false && (product.branding_config as any)?._is_retail !== false
+
+                return (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.4 }}
+                    className="bg-white rounded-2xl md:rounded-3xl p-2.5 md:p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] md:shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col group hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all"
+                  >
+                    <Link href={`/products/${product.slug}`} className="block flex-1 flex flex-col">
+                      <div className="relative w-full aspect-square rounded-xl md:rounded-2xl overflow-hidden bg-[#f5f5f7] mb-3 md:mb-4">
+                        {product.primary_image_url ? (
+                          <Image
+                            src={product.primary_image_url}
+                            alt={product.name}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center text-black/10">
+                            <Package className="w-8 h-8 md:w-12 md:h-12" />
+                          </div>
+                        )}
+
+                        {/* Wholesale Only Badge */}
+                        {!isRetailAllowed && (
+                          <div className="absolute top-2 right-2 rounded-full bg-[#1d1d1f]/90 text-white backdrop-blur-md px-2 py-0.5 text-[8px] md:text-[9px] font-bold tracking-wide z-10 shadow-xs">
+                            Wholesale Only
+                          </div>
+                        )}
+
+                        {/* Hover Overlay - hidden on small mobile */}
+                        <div className="hidden md:flex absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center">
+                          <span className="bg-white/90 backdrop-blur-md text-black text-sm font-semibold px-4 py-2 rounded-full shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                            View Details
+                          </span>
                         </div>
-                      )}
-                      {/* Hover Overlay - hidden on small mobile */}
-                      <div className="hidden md:flex absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity items-center justify-center">
-                        <span className="bg-white/90 backdrop-blur-md text-black text-sm font-semibold px-4 py-2 rounded-full shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                          View Details
-                        </span>
                       </div>
-                    </div>
-                    
-                    <div className="px-1 md:px-2 pb-1 flex-1 flex flex-col">
-                      {product.categories && (
-                        <p className="text-[10px] md:text-xs font-semibold text-[#6e6e73] mb-1 md:mb-1.5 uppercase tracking-wider">
-                          {product.categories.name}
-                        </p>
-                      )}
-                      <h3 className="text-sm md:text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
-                        <span className="text-sm font-bold text-[#1d1d1f]">
-                          {product.base_price ? `₹${product.base_price.toLocaleString('en-IN')}` : 'Price on Request'}
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#e3231c] group-hover:translate-x-0.5 transition-transform">
-                          Inquire
-                          <ChevronRight size={12} />
-                        </span>
+                      
+                      <div className="px-1 md:px-2 pb-1 flex-1 flex flex-col">
+                        {product.categories && (
+                          <p className="text-[10px] md:text-xs font-semibold text-[#6e6e73] mb-1 md:mb-1.5 uppercase tracking-wider">
+                            {product.categories.name}
+                          </p>
+                        )}
+                        <h3 className="text-sm md:text-lg font-bold text-[#1d1d1f] leading-snug line-clamp-2 mb-2 group-hover:text-[#e3231c] transition-colors">
+                          {product.name}
+                        </h3>
+                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
+                          <div className="flex flex-col">
+                            {currentMode === 'retail' && isRetailAllowed ? (
+                              product.base_price ? (
+                                <span className="text-sm font-bold text-[#1d1d1f]">
+                                  ₹{product.base_price.toLocaleString('en-IN')}
+                                </span>
+                              ) : (
+                                <span className="text-xs text-[#86868b]">Price on Request</span>
+                              )
+                            ) : (
+                              <span className="text-xs font-bold text-[#e3231c]">
+                                Wholesale Quote
+                              </span>
+                            )}
+                          </div>
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#e3231c] group-hover:translate-x-0.5 transition-transform">
+                            {currentMode === 'retail' && isRetailAllowed ? (product.is_customizable ? 'Customize' : 'Buy Retail') : 'Inquire Bulk'}
+                            <ChevronRight size={12} />
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    </Link>
+                  </motion.div>
+                )
+              })}
             </div>
             
             <div className="flex justify-center md:hidden mt-4">

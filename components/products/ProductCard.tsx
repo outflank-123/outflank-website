@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Package, ChevronRight, Building2, Sparkles } from 'lucide-react'
+import { Package, ChevronRight, Building2, Sparkles, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import ColorVariantPicker from './ColorVariantPicker'
 import LeadModal from './LeadModal'
+import { useShoppingModeStore } from '@/lib/store/useShoppingModeStore'
 
 export interface ColorVariant {
   name: string
@@ -37,6 +38,15 @@ interface ProductCardProps {
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [activeVariant, setActiveVariant] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  const { mode: shoppingMode } = useShoppingModeStore()
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const currentMode = mounted ? shoppingMode : 'retail'
+  const isRetailAllowed = product.is_retail !== false && product.branding_config?._is_retail !== false
 
   const variants: ColorVariant[] = product.color_variants ?? []
   const currentImages = variants[activeVariant]?.images ?? []
@@ -124,23 +134,48 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {/* Footer row */}
           <div className="mt-auto flex items-center justify-between pt-2 border-t border-black/5 relative z-20">
             <div className="flex flex-col">
-              {product.base_price ? (
-                <span className="text-sm md:text-base font-bold text-[#1d1d1f]">
-                  ₹{product.base_price.toLocaleString('en-IN')}
-                </span>
+              {currentMode === 'retail' && isRetailAllowed ? (
+                product.base_price ? (
+                  <>
+                    <span className="text-sm md:text-base font-bold text-[#1d1d1f]">
+                      ₹{product.base_price.toLocaleString('en-IN')}
+                    </span>
+                    <span className="text-[10px] text-[#86868b]">Retail price</span>
+                  </>
+                ) : (
+                  <span className="text-xs text-[#86868b]">Price on request</span>
+                )
               ) : (
-                <span className="text-xs text-[#86868b]">Price on request</span>
+                <>
+                  <span className="text-xs md:text-sm font-bold text-[#e3231c]">
+                    Wholesale Quote
+                  </span>
+                  <span className="text-[10px] text-[#86868b]">
+                    MOQ: {product.min_order_qty || 50} units
+                  </span>
+                </>
               )}
             </div>
 
-            <button
-              onClick={() => setModalOpen(true)}
-              id={`product-inquire-${product.id}`}
-              className="inline-flex items-center gap-1 rounded-full bg-[#e3231c] text-white px-4 py-1.5 text-xs font-semibold hover:bg-[#b91a14] transition-colors hover:scale-[1.03]"
-            >
-              Inquire
-              <ChevronRight size={12} />
-            </button>
+            {currentMode === 'retail' && isRetailAllowed ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#1d1d1f] text-white px-3.5 py-1.5 text-xs font-semibold group-hover:bg-black transition-colors group-hover:scale-[1.03]">
+                <span>{product.is_customizable ? 'Customize' : 'Buy Retail'}</span>
+                <ChevronRight size={12} />
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setModalOpen(true)
+                }}
+                id={`product-inquire-${product.id}`}
+                className="inline-flex items-center gap-1 rounded-full bg-[#e3231c] text-white px-4 py-1.5 text-xs font-semibold hover:bg-[#b91a14] transition-colors hover:scale-[1.03] cursor-pointer"
+              >
+                Inquire
+                <ChevronRight size={12} />
+              </button>
+            )}
           </div>
         </div>
       </motion.article>
