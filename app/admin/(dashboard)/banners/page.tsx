@@ -12,7 +12,7 @@ export default async function BannersAdminPage() {
   // Relaxed Auth check - just ensure there's a user
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    redirect('/admin/login')
+    redirect('/login')
   }
 
   // 3. Fetch banners

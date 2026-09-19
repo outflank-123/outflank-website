@@ -107,7 +107,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   }
 
   const handleWhatsApp = () => {
-    const text = `Hi, I'm interested in purchasing the following product in bulk: ${product.name}. I'm looking for approximately ${product.min_order_qty || 50} pieces. Please share the wholesale pricing, MOQ, availability, and delivery details. Thank you.`
+    const text = `Hi, I'm interested in purchasing the following product in bulk: ${product.name}. Please share wholesale pricing, customization options, and delivery timeline. Thank you.`
     const encodedText = encodeURIComponent(text)
     const cleanPhone = siteConfig.phone.replace(/\s+/g, '')
     window.open(`https://wa.me/${cleanPhone}?text=${encodedText}`, '_blank')
@@ -409,37 +409,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </motion.div>
               )}
 
-              {/* Data Points Grid */}
-              <AnimatePresence mode="wait">
-                {isBulkMode && (
-                  <motion.div 
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="grid grid-cols-2 gap-3 mb-8 overflow-hidden"
-                  >
-                    <div className="bg-white rounded-2xl p-5 border border-black/6 shadow-xs flex flex-col gap-1">
-                      <div className="flex items-center gap-1.5 text-[#86868b]">
-                        <Users size={15} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Min. Order</span>
-                      </div>
-                      <span className="text-2xl font-bold text-[#1d1d1f] tracking-tight">
-                        {product.min_order_qty ? `${product.min_order_qty}` : '--'} <span className="text-sm text-[#86868b] font-medium">units</span>
-                      </span>
-                    </div>
-
-                    <div className="bg-white rounded-2xl p-5 border border-black/6 shadow-xs flex flex-col gap-1">
-                      <div className="flex items-center gap-1.5 text-[#86868b]">
-                        <Clock size={15} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Lead Time</span>
-                      </div>
-                      <span className="text-2xl font-bold text-[#1d1d1f] tracking-tight">
-                        {product.lead_time_days ? `${product.lead_time_days}` : '--'} <span className="text-sm text-[#86868b] font-medium">days</span>
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
 
               {/* ── Action Sections: Retail & Bulk ── */}
               <motion.div 

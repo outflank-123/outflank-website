@@ -29,7 +29,7 @@ export default function AdminUsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch('/api/admin/users')
+      const res = await fetch('/api/users')
       if (res.ok) {
         const data = await res.json()
         setUsers(data.users)
@@ -71,7 +71,7 @@ export default function AdminUsersPage() {
     if (!confirm(`Are you sure you want to delete ${name}? This cannot be undone.`)) return
 
     try {
-      const res = await fetch('/api/admin/users', {
+      const res = await fetch('/api/users', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
@@ -94,14 +94,14 @@ export default function AdminUsersPage() {
       let res;
       if (editingUserId) {
         // Edit User
-        res = await fetch('/api/admin/users', {
+        res = await fetch('/api/users', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: editingUserId, fullName, role }),
         })
       } else {
         // Create User
-        res = await fetch('/api/admin/users', {
+        res = await fetch('/api/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password, fullName, role }),

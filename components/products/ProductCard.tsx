@@ -151,7 +151,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
                     Wholesale Quote
                   </span>
                   <span className="text-[10px] text-[#86868b]">
-                    MOQ: {product.min_order_qty || 50} units
+                    Quote on Inquiry
                   </span>
                 </>
               )}

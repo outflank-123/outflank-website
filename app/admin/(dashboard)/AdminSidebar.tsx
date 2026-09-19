@@ -15,31 +15,31 @@ export default function AdminSidebar({ userEmail, userRole = 'admin' }: AdminSid
   const pathname = usePathname()
 
   let navItems = [
-    { href: '/admin', icon: LayoutDashboard, label: 'Dashboard', exact: true },
-    { href: '/admin/banners', icon: ImageIcon, label: 'Banners' },
-    { href: '/admin/leads', icon: Users, label: 'Leads Pipeline' },
-    { href: '/admin/categories', icon: Tags, label: 'Categories' },
-    { href: '/admin/products', icon: Package, label: 'Products' },
-    { href: '/admin/orders', icon: ShoppingBag, label: 'Retail Orders' },
-    { href: '/admin/settings', icon: Settings, label: 'Store Settings' },
+    { href: '/', icon: LayoutDashboard, label: 'Dashboard', exact: true },
+    { href: '/banners', icon: ImageIcon, label: 'Banners' },
+    { href: '/leads', icon: Users, label: 'Leads Pipeline' },
+    { href: '/categories', icon: Tags, label: 'Categories' },
+    { href: '/products', icon: Package, label: 'Products' },
+    { href: '/orders', icon: ShoppingBag, label: 'Retail Orders' },
+    { href: '/settings', icon: Settings, label: 'Store Settings' },
   ]
 
   if (userRole === 'junior') {
     navItems = [
-      { href: '/admin/leads', icon: Users, label: 'Leads Pipeline' },
-      { href: '/admin/products', icon: Package, label: 'Products' },
+      { href: '/leads', icon: Users, label: 'Leads Pipeline' },
+      { href: '/products', icon: Package, label: 'Products' },
     ]
   }
 
   if (userRole === 'super_admin') {
-    navItems.push({ href: '/admin/users', icon: Users, label: 'Manage Users' })
+    navItems.push({ href: '/users', icon: Users, label: 'Manage Users' })
   }
 
   return (
     <aside className="w-[260px] shrink-0 bg-white/70 backdrop-blur-2xl border-r border-black/5 flex flex-col h-screen z-20">
       {/* Logo */}
       <div className="px-6 py-8 border-b border-black/[0.03]">
-        <Link href="/admin" className="block transition-transform hover:scale-[0.98] origin-left">
+        <Link href="/" className="block transition-transform hover:scale-[0.98] origin-left">
           <Image
             src="/logo/outflank-logo.png"
             alt="Outflank CRM"
