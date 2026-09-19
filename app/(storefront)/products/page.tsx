@@ -36,12 +36,13 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
     .from('products')
     .select(`
       id, name, slug, short_desc, base_price, min_order_qty,
-      color_variants, primary_image_url,
+      color_variants, primary_image_url, branding_config, is_retail, is_customizable,
       categories ( name, slug )
     `)
     .eq('is_active', true)
     .order('is_featured', { ascending: false })
     .order('created_at', { ascending: false })
+    .order('id', { ascending: true }) // Tie-breaker to prevent pagination duplicates
 
   if (activeCategory?.id) {
     query = query.eq('category_id', activeCategory.id)
@@ -54,11 +55,37 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   // Fetch initial batch of products
   query = query.range(0, 23)
 
-  const { data: products, count } = await query
+  let { data, count, error } = await query
+  let products: any = data
+
+  if (error && error.code === '42703') {
+    let fallbackQuery = supabase
+      .from('products')
+      .select(`
+        id, name, slug, short_desc, base_price, min_order_qty,
+        color_variants, primary_image_url, branding_config,
+        categories ( name, slug )
+      `)
+      .eq('is_active', true)
+      .order('is_featured', { ascending: false })
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: true })
+
+    if (activeCategory?.id) {
+      fallbackQuery = fallbackQuery.eq('category_id', activeCategory.id)
+    }
+    if (q) {
+      fallbackQuery = fallbackQuery.ilike('name', `%${q}%`)
+    }
+    fallbackQuery = fallbackQuery.range(0, 23)
+    const fallbackRes = await fallbackQuery
+    products = fallbackRes.data
+  }
 
   // Map categories array to single object if needed
   const formattedProducts: Product[] = (products ?? []).map((product: any) => ({
     ...product,
+    is_retail: product.is_retail !== undefined ? product.is_retail : (product.branding_config?._is_retail ?? true),
     categories: Array.isArray(product.categories)
       ? (product.categories[0] ?? null)
       : (product.categories ?? null),

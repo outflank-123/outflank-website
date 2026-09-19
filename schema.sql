@@ -90,6 +90,7 @@ create table public.products (
   lead_time_days    int         default 15,
   is_featured       boolean     not null default false,
   is_active         boolean     not null default true,
+  is_retail         boolean     not null default true,
   tags              text[]      default '{}',
   color_variants    jsonb       not null default '[]'::jsonb,
   primary_image_url text,

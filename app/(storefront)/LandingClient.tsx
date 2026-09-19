@@ -268,11 +268,11 @@ export default function LandingClient({
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/branding"
-                  id="hero-cta-branding"
+                  href="/products"
+                  id="hero-cta-custom-catalog"
                   className="inline-flex items-center gap-2 rounded-full border border-black/12 bg-white px-8 py-4 text-base font-semibold text-[#1d1d1f] hover:bg-[#f5f5f7] hover:border-black/20 transition-all duration-200"
                 >
-                  Try Branding Preview
+                  Explore Customizable
                 </Link>
               </motion.div>
 
@@ -568,7 +568,7 @@ export default function LandingClient({
             <div className="w-full md:w-1/2 flex flex-col gap-12 md:gap-32 py-10 order-1 md:order-2">
               {[
                 { step: '01', title: 'Browse the Catalog', desc: 'Explore our 500+ products across 17 categories. Filter by use-case, category or budget.' },
-                { step: '02', title: 'Preview Your Branding', desc: 'Use our live Branding Preview tool to see your logo and colors on products in real time before you ever speak to sales.' },
+                { step: '02', title: 'Customize Online', desc: 'Use our interactive Customizer Studio to add your logo, custom text, and color choices with live real-time previews.' },
                 { step: '03', title: 'Submit an Inquiry', desc: 'Click "Inquire" on any product. Fill in your details and requirements — zero commitment required.' },
                 { step: '04', title: 'We Get to Work', desc: 'Our team reaches out within 24 hours with a detailed quote, timeline, and physical samples if requested.' },
               ].map((step, i) => (

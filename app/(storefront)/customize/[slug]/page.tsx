@@ -1,14 +1,13 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
-import ProductDetailClient from './ProductDetailClient'
+import CustomizeStudioClient from './CustomizeStudioClient'
 
-interface ProductPageProps {
+interface CustomizePageProps {
   params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CustomizePageProps): Promise<Metadata> {
   const { slug } = await params
   const supabase = await createClient()
   const { data: product } = await supabase
@@ -17,15 +16,15 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     .eq('slug', slug)
     .single()
 
-  if (!product) return { title: 'Product Not Found | Outflank' }
+  if (!product) return { title: 'Customize Product | Outflank' }
 
   return {
-    title: `${product.name} | Outflank Corporate Gifting`,
-    description: product.short_desc ?? `Premium corporate gift: ${product.name}. Custom branding available. Request a quote from Outflank.`,
+    title: `Customize ${product.name} | Outflank Studio`,
+    description: `Personalize ${product.name} with your custom company logo, brand text, and colors. Real-time preview and instant ordering.`,
   }
 }
 
-export default async function ProductDetailPage({ params }: ProductPageProps) {
+export default async function CustomizePage({ params }: CustomizePageProps) {
   const { slug } = await params
   const supabase = await createClient()
 
@@ -60,17 +59,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     product = fallback.data
   }
 
-  if (!product) notFound()
+  if (!product) {
+    notFound()
+  }
 
-  return (
-    <ProductDetailClient
-      product={{
-        ...product,
-        is_retail: (product as any).is_retail !== undefined ? (product as any).is_retail : ((product as any).branding_config?._is_retail ?? true),
-        categories: Array.isArray(product.categories)
-          ? (product.categories[0] ?? null)
-          : (product.categories ?? null),
-      }}
-    />
-  )
+  return <CustomizeStudioClient product={product} />
 }

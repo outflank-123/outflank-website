@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 
 const catalogLinks = [
@@ -11,6 +14,10 @@ const catalogLinks = [
 ]
 
 export default function GiftingFooter() {
+  const pathname = usePathname()
+
+  if (pathname?.startsWith('/customize')) return null
+
   return (
     <footer className="bg-[#1d1d1f] text-white">
       {/* Main footer content */}
@@ -78,7 +85,6 @@ export default function GiftingFooter() {
             <ul className="flex flex-col gap-3">
               {[
                 { href: '/track', label: 'Track Order' },
-                { href: '/branding', label: 'Branding Preview' },
                 { href: '/#why-outflank', label: 'Why Outflank' },
                 { href: '/#process', label: 'Our Process' },
               ].map((link) => (

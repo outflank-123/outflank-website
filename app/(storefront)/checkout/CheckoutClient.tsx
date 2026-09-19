@@ -45,10 +45,30 @@ export default function CheckoutClient() {
   const states = State.getStatesOfCountry('IN')
   const cities = formData.stateCode ? City.getCitiesOfState('IN', formData.stateCode) : []
 
+  // Calculate pricing & COD availability unconditionally at the top level
+  const subtotal = getCartTotal()
+  
+  let shippingFee = 0
+  if (settings) {
+    if (subtotal < settings.free_shipping_threshold) {
+      shippingFee = settings.flat_shipping_rate
+    }
+  }
+
+  const total = subtotal + shippingFee
+  const isCodAvailable = Boolean(settings?.is_cod_enabled && subtotal >= (settings?.cod_min_amount || 0))
+
   useEffect(() => {
     setMounted(true)
     fetchSettings()
   }, [])
+
+  // Reset payment method if COD becomes unavailable (unconditionally at the top level)
+  useEffect(() => {
+    if (!isCodAvailable && paymentMethod === 'cod') {
+      setPaymentMethod('razorpay')
+    }
+  }, [isCodAvailable, paymentMethod])
 
   const fetchSettings = async () => {
     try {
@@ -62,6 +82,7 @@ export default function CheckoutClient() {
     }
   }
 
+  // Early returns ONLY AFTER all React hooks have been declared
   if (!mounted) return null
 
   if (items.length === 0 && !success) {
@@ -107,26 +128,6 @@ export default function CheckoutClient() {
     )
   }
 
-  const subtotal = getCartTotal()
-  
-  let shippingFee = 0
-  if (settings) {
-    if (subtotal < settings.free_shipping_threshold) {
-      shippingFee = settings.flat_shipping_rate
-    }
-  }
-
-  const total = subtotal + shippingFee
-
-  const isCodAvailable = settings?.is_cod_enabled && subtotal >= (settings?.cod_min_amount || 0)
-
-  // Reset payment method if COD becomes unavailable (via useEffect to avoid setState-in-render)
-  useEffect(() => {
-    if (!isCodAvailable && paymentMethod === 'cod') {
-      setPaymentMethod('razorpay')
-    }
-  }, [isCodAvailable, paymentMethod])
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -145,6 +146,20 @@ export default function CheckoutClient() {
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Strict Client-Side Validation
+    const phoneRegex = /^[0-9]{10}$/
+    if (!phoneRegex.test(formData.phone)) {
+      alert("Please enter a valid 10-digit mobile number.")
+      return
+    }
+
+    const pincodeRegex = /^[0-9]{6}$/
+    if (!pincodeRegex.test(formData.pincode)) {
+      alert("Please enter a valid 6-digit PIN code.")
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -408,8 +423,8 @@ export default function CheckoutClient() {
                 
                 {/* Items List */}
                 <div className="flex flex-col gap-4 mb-6 max-h-[300px] overflow-y-auto scrollbar-thin pr-2">
-                  {items.map((item) => (
-                    <div key={`${item.productId}-${item.colorName || 'default'}`} className="flex gap-3 items-start">
+                  {items.map((item, idx) => (
+                    <div key={`${item.productId}-${item.colorName || 'default'}-${idx}`} className="flex gap-3 items-start">
                       <div className="w-16 h-16 rounded-xl bg-[#f5f5f7] border border-black/5 overflow-hidden relative shrink-0">
                         {item.imageUrl && (
                           <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />

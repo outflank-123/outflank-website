@@ -16,7 +16,8 @@ export default async function RetailOrdersPage() {
       total_amount,
       payment_method,
       status,
-      created_at
+      created_at,
+      notes
     `)
     .order('created_at', { ascending: false })
 
@@ -81,7 +82,9 @@ export default async function RetailOrdersPage() {
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => (
+                orders.map((order) => {
+                  const isCustom = order.notes?.includes('has_custom_items')
+                  return (
                   <tr key={order.id} className="hover:bg-gray-50 transition-colors">
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
                       <div className="flex items-center gap-3">
@@ -89,8 +92,13 @@ export default async function RetailOrdersPage() {
                           <Package className="h-5 w-5 text-gray-500" />
                         </div>
                         <div>
-                          <div className="font-medium text-gray-900 text-xs uppercase">
-                            #{order.id.split('-')[0]}
+                          <div className="font-medium text-gray-900 text-xs uppercase flex items-center gap-1.5">
+                            <span>#{order.id.split('-')[0]}</span>
+                            {isCustom && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-[#0066FF] border border-blue-200">
+                                CUSTOM PRINT
+                              </span>
+                            )}
                           </div>
                           <div className="text-gray-500 text-xs">
                             {new Date(order.created_at).toLocaleDateString('en-IN', {
@@ -116,7 +124,8 @@ export default async function RetailOrdersPage() {
                       {formatCurrency(order.total_amount)}
                     </td>
                   </tr>
-                ))
+                  )
+                })
               )}
             </tbody>
           </table>

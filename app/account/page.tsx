@@ -2,17 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle, ExternalLink } from 'lucide-react';
+import { LogOut, Package, Clock, ChevronRight, Bell, BellRing, Check, Truck, XCircle, AlertCircle, ExternalLink, Sparkles } from 'lucide-react';
 import { useAuth } from '@/lib/AuthContext';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
 import { useFCM } from '@/hooks/useFCM';
 
 interface OrderItem {
+  id?: string;
   product_name: string;
   quantity: number;
   price_at_time: number;
   selected_color: string | null;
+  customization?: any;
+  products?: {
+    primary_image_url?: string;
+  } | Array<{ primary_image_url?: string }>;
 }
 
 interface Order {
@@ -23,7 +28,57 @@ interface Order {
   total_amount: number;
   awb_number?: string | null;
   shadowfax_status?: string | null;
+  notes?: string | null;
+  has_custom_items?: boolean;
   retail_order_items: OrderItem[];
+}
+
+function extractAccountCustomData(item: OrderItem, order: Order) {
+  let c = item.customization;
+  if (!c && order.notes) {
+    try {
+      const parsed = typeof order.notes === 'string' ? JSON.parse(order.notes) : order.notes;
+      const found = parsed?.custom_items?.find((ci: any) => ci.product_name === item.product_name);
+      if (found?.customization) c = found.customization;
+    } catch {}
+  }
+  if (!c && item.selected_color && item.selected_color.includes('Custom')) {
+    const match = item.selected_color.match(/Custom:?\s*"?([^"\]]+)"?/i);
+    if (match) {
+      return {
+        isCustomized: true,
+        brandType: 'text' as const,
+        brandText: match[1],
+        printPosition: 'Left Chest',
+        textColor: '#FFFFFF',
+      };
+    }
+  }
+  if (!c || (!c.isCustomized && !c.is_customized && !c.brandText && !c.brand_text && !c.logoUrl && !c.logo_url)) {
+    return null;
+  }
+
+  const brandText = c.brandText || c.brand_text || c.text || null;
+  const logoUrl = c.logoUrl || c.logo_url || null;
+  const brandType: 'text' | 'logo' = c.brandType || (logoUrl ? 'logo' : 'text');
+  const textColor = c.textColor || c.text_color || '#FFFFFF';
+
+  let printPos = c.printPosition || c.print_position || 'Left Chest';
+  if (printPos === 'center_chest') printPos = 'Center Chest';
+  if (printPos === 'left_chest') printPos = 'Left Chest';
+  if (printPos === 'right_chest') printPos = 'Right Chest';
+
+  const coords = c.coordinates || c.position || null;
+
+  return {
+    isCustomized: true,
+    brandType,
+    brandText,
+    textColor,
+    logoUrl,
+    printPosition: printPos,
+    coordinates: coords,
+  };
 }
 
 export default function AccountPage() {
@@ -266,24 +321,79 @@ export default function AccountPage() {
                   {/* Order Items */}
                   <div className="p-6">
                     <div className="space-y-4">
-                      {order.retail_order_items?.map((item, idx) => (
-                        <div key={idx} className="flex justify-between items-center">
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
-                              <Package size={20} className="text-[#86868b]" />
+                      {order.retail_order_items?.map((item, idx) => {
+                        const custom = extractAccountCustomData(item, order);
+                        const prodImg = (Array.isArray(item.products) ? item.products[0] : item.products)?.primary_image_url;
+
+                        return (
+                          <div key={item.id || idx} className="bg-[#fbfbfd] p-4 rounded-xl border border-black/5 space-y-2.5">
+                            <div className="flex justify-between items-start gap-4">
+                              <div className="flex items-start gap-3.5">
+                                {prodImg ? (
+                                  <div className="w-12 h-12 rounded-lg bg-white border border-black/5 overflow-hidden shrink-0 relative">
+                                    <img src={prodImg} alt={item.product_name} className="w-full h-full object-cover" />
+                                  </div>
+                                ) : (
+                                  <div className="w-12 h-12 bg-white border border-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                                    <Package size={20} className="text-[#86868b]" />
+                                  </div>
+                                )}
+                                <div>
+                                  <p className="text-sm font-semibold text-[#1d1d1f]">{item.product_name}</p>
+                                  <p className="text-xs text-[#86868b] mt-0.5">
+                                    Qty: <strong className="text-gray-900">{item.quantity}</strong> {item.selected_color && <>· Color: <strong className="text-gray-900">{item.selected_color}</strong></>}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="text-sm font-bold text-[#1d1d1f] shrink-0 text-right">
+                                ₹{(item.price_at_time * item.quantity).toLocaleString('en-IN')}
+                              </div>
                             </div>
-                            <div>
-                              <p className="text-sm font-semibold text-[#1d1d1f]">{item.product_name}</p>
-                              <p className="text-xs text-[#86868b] mt-0.5">
-                                Qty: {item.quantity} {item.selected_color && `| Color: ${item.selected_color}`}
-                              </p>
-                            </div>
+
+                            {/* Custom Branding Callout */}
+                            {custom && (
+                              <div className="bg-white p-3 rounded-lg border border-blue-200 text-xs space-y-1.5 shadow-2xs">
+                                <div className="flex items-center justify-between">
+                                  <span className="inline-flex items-center gap-1 font-bold text-blue-700 text-[11px] uppercase tracking-wider">
+                                    <Sparkles size={11} className="text-blue-600" />
+                                    Personalized Print Specification
+                                  </span>
+                                  <span className="text-[10px] text-gray-500 font-medium">
+                                    Placement: <strong className="text-gray-900">{custom.printPosition}</strong>
+                                  </span>
+                                </div>
+
+                                {custom.brandType === 'text' && custom.brandText && (
+                                  <div className="flex flex-wrap items-center gap-2 pt-0.5">
+                                    <span className="text-gray-500 text-[10px] font-bold uppercase">Text:</span>
+                                    <span className="font-mono font-bold text-gray-900">"{custom.brandText}"</span>
+                                    {custom.textColor && (
+                                      <span className="inline-flex items-center gap-1 text-[11px] font-mono text-gray-600 ml-2">
+                                        <span 
+                                          className="w-3 h-3 rounded-full border border-gray-300 inline-block shrink-0" 
+                                          style={{ backgroundColor: custom.textColor }}
+                                        />
+                                        {custom.textColor}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+
+                                {custom.brandType === 'logo' && (
+                                  <div className="flex items-center gap-2.5 pt-0.5">
+                                    {custom.logoUrl && (
+                                      <div className="w-9 h-9 rounded bg-[#f8f9fa] border border-gray-200 p-0.5 flex items-center justify-center shrink-0">
+                                        <img src={custom.logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
+                                      </div>
+                                    )}
+                                    <span className="text-gray-700 text-[11px] font-medium">Uploaded Vector/Raster Artwork Attached</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
-                          <div className="text-sm font-medium text-[#1d1d1f]">
-                            ₹{item.price_at_time.toLocaleString('en-IN')}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
 

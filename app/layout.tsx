@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Outflank",
   },
+  icons: {
+    icon: "/logo/outflank-logo.png",
+    shortcut: "/logo/outflank-logo.png",
+    apple: "/logo/outflank-logo.png",
+  },
 };
 
 export default function RootLayout({

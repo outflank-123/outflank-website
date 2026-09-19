@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react'
+import { ShoppingCart, X, Plus, Minus, Trash2, Sparkles } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/useCartStore'
@@ -75,8 +75,8 @@ export default function CartDrawer() {
                   </button>
                 </div>
               ) : (
-                items.map((item) => (
-                  <div key={`${item.productId}-${item.colorName || 'default'}`} className="flex gap-4 p-3 rounded-2xl border border-black/5 bg-[#fbfbfd]">
+                items.map((item, idx) => (
+                  <div key={`${item.productId}-${item.colorName || 'default'}-${idx}`} className="flex gap-4 p-3 rounded-2xl border border-black/5 bg-[#fbfbfd]">
                     {/* Item Image */}
                     <div className="w-20 h-20 rounded-xl bg-white border border-black/5 overflow-hidden relative shrink-0">
                       {item.imageUrl ? (
@@ -96,7 +96,7 @@ export default function CartDrawer() {
                             {item.name}
                           </h4>
                           <button
-                            onClick={() => removeItem(item.productId, item.colorName)}
+                            onClick={() => removeItem(item.productId, item.colorName, item.customBranding)}
                             className="text-[#aeaeb2] hover:text-[#e3231c] transition-colors p-1"
                           >
                             <Trash2 size={16} />
@@ -107,13 +107,43 @@ export default function CartDrawer() {
                             Color: <span className="font-medium text-[#1d1d1f]">{item.colorName}</span>
                           </div>
                         )}
+                        {(item.customBranding || item.customization) && (
+                          <div className="text-[11px] text-[#0066FF] font-semibold mt-1.5 flex items-center gap-1.5 bg-blue-50/70 border border-blue-100 px-2 py-1 rounded-lg">
+                            {item.customBranding?.logoUrl ? (
+                              <div 
+                                className="w-5 h-5 rounded border border-blue-200 overflow-hidden shrink-0 flex items-center justify-center"
+                                style={{
+                                  backgroundImage: 'linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%)',
+                                  backgroundSize: '4px 4px',
+                                  backgroundPosition: '0 0, 0 2px, 2px -2px, -2px 0'
+                                }}
+                              >
+                                <img src={item.customBranding.logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
+                              </div>
+                            ) : (
+                              <Sparkles size={12} className="shrink-0" />
+                            )}
+                            <div className="flex items-center gap-1 truncate">
+                              <span className="truncate">
+                                {item.customBranding?.customizationLabel || item.customization}
+                              </span>
+                              {item.customBranding?.textColor && (
+                                <span 
+                                  className="w-2.5 h-2.5 rounded-full border border-black/20 shrink-0 inline-block ml-1" 
+                                  style={{ backgroundColor: item.customBranding.textColor }} 
+                                  title={`Imprint: ${item.customBranding.textColor}`}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex items-center justify-between mt-3">
                         {/* Quantity Control */}
                         <div className="flex items-center bg-white rounded-full border border-black/10">
                           <button
-                            onClick={() => updateQuantity(item.productId, item.colorName, Math.max(1, item.quantity - 1))}
+                            onClick={() => updateQuantity(item.productId, item.colorName, Math.max(1, item.quantity - 1), item.customBranding)}
                             className="w-7 h-7 flex items-center justify-center text-[#1d1d1f] hover:text-[#e3231c]"
                           >
                             <Minus size={14} />
@@ -122,7 +152,7 @@ export default function CartDrawer() {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => updateQuantity(item.productId, item.colorName, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.productId, item.colorName, item.quantity + 1, item.customBranding)}
                             className="w-7 h-7 flex items-center justify-center text-[#1d1d1f] hover:text-[#e3231c]"
                           >
                             <Plus size={14} />

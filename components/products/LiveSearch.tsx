@@ -20,6 +20,9 @@ export default function LiveSearch({ initialQuery = '' }: { initialQuery?: strin
     if (!mounted) return
 
     const timer = setTimeout(() => {
+      const currentQ = searchParams.get('q') || ''
+      if (currentQ === query) return // Prevent infinite loop
+
       const params = new URLSearchParams(searchParams.toString())
       if (query) {
         params.set('q', query)

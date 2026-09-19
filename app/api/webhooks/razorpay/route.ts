@@ -49,37 +49,61 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Order not found' }, { status: 404 })
       }
 
-      // If already paid, ignore
-      if (orderData.status === 'paid' || orderData.status === 'shipped' || orderData.status === 'delivered') {
-        return NextResponse.json({ success: true, message: 'Already processed' })
-      }
-
-      // Update order status to paid
-      const { error: updateError } = await supabase
+      // Atomically update order status to paid ONLY if it is currently pending
+      // This prevents race conditions if multiple webhooks arrive simultaneously
+      const { data: updatedOrder, error: updateError } = await supabase
         .from('retail_orders')
         .update({
           status: 'paid',
           razorpay_payment_id: razorpayPaymentId,
         })
         .eq('id', orderData.id)
+        .eq('status', 'pending')
+        .select()
+        .single()
 
       if (updateError) {
+        if (updateError.code === 'PGRST116') {
+          // PGRST116 means 0 rows returned. This means the order was no longer 'pending'
+          console.log(`[Razorpay Webhook] Order ${orderData.id} was already processed. Ignoring duplicate webhook.`)
+          return NextResponse.json({ success: true, message: 'Already processed' })
+        }
         console.error('[Razorpay Webhook] Error updating order status:', updateError)
         return NextResponse.json({ error: 'Update failed' }, { status: 500 })
       }
 
-      // Fetch items for email
-      const { data: itemsData } = await supabase
+      // Fetch items for email (including customization)
+      let { data: itemsData } = await supabase
         .from('retail_order_items')
-        .select('product_name, quantity, price_at_time, selected_color')
+        .select('product_name, quantity, price_at_time, selected_color, customization')
         .eq('order_id', orderData.id)
 
-      const items = itemsData?.map((i: any) => ({
-        name: i.product_name,
-        quantity: i.quantity,
-        price: i.price_at_time,
-        colorName: i.selected_color
-      })) || []
+      if (!itemsData) {
+        const fallback = await supabase
+          .from('retail_order_items')
+          .select('product_name, quantity, price_at_time, selected_color')
+          .eq('order_id', orderData.id)
+        itemsData = fallback.data as any
+      }
+
+      let notesCustomItems: any[] = []
+      if (orderData.notes) {
+        try {
+          const parsedNotes = typeof orderData.notes === 'string' ? JSON.parse(orderData.notes) : orderData.notes
+          notesCustomItems = parsedNotes?.custom_items || []
+        } catch {}
+      }
+
+      const items = itemsData?.map((i: any) => {
+        const fallbackCustom = notesCustomItems.find((ci: any) => ci.product_name === i.product_name)?.customization
+        return {
+          name: i.product_name,
+          quantity: i.quantity,
+          price: i.price_at_time,
+          colorName: i.selected_color,
+          customization: i.customization || fallbackCustom || null
+        }
+      }) || []
 
       // Send confirmation email
       try {

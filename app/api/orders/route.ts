@@ -13,24 +13,60 @@ export async function GET(request: Request) {
     const supabase = createAdminClient();
 
     // Fetch orders belonging to this firebase UID
-    const { data: orders, error } = await supabase
+    let { data: orders, error } = await supabase
       .from('retail_orders')
       .select(`
         id,
         created_at,
         status,
         total_amount,
+        shipping_fee,
+        payment_method,
         awb_number,
         shadowfax_status,
+        notes,
+        has_custom_items,
         retail_order_items (
+          id,
           product_name,
           quantity,
           price_at_time,
-          selected_color
+          selected_color,
+          customization,
+          products (
+            primary_image_url
+          )
         )
       `)
       .eq('customer_uid', uid)
       .order('created_at', { ascending: false });
+
+    if (error && (error.code === '42703' || error.code === 'PGRST204')) {
+      const fallback = await supabase
+        .from('retail_orders')
+        .select(`
+          id,
+          created_at,
+          status,
+          total_amount,
+          shipping_fee,
+          payment_method,
+          awb_number,
+          shadowfax_status,
+          notes,
+          retail_order_items (
+            id,
+            product_name,
+            quantity,
+            price_at_time,
+            selected_color
+          )
+        `)
+        .eq('customer_uid', uid)
+        .order('created_at', { ascending: false });
+      orders = fallback.data as any;
+      error = fallback.error;
+    }
 
     if (error) {
       console.error('Error fetching orders:', error);

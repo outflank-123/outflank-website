@@ -23,17 +23,35 @@ export async function POST(req: Request) {
 
     const supabase = createAdminClient()
 
-    // --- SECURE PRICE CALCULATION ---
+    // --- SECURE PRICE CALCULATION & RETAIL CHECK ---
     // Fetch product prices from DB
     const productIds = items.map((i: any) => i.productId)
-    const { data: dbProducts, error: dbProductsError } = await supabase
+    let { data: dbProducts, error: dbProductsError } = await supabase
       .from('products')
-      .select('id, base_price')
+      .select('id, base_price, branding_config, is_retail')
       .in('id', productIds)
+
+    if (dbProductsError && dbProductsError.code === '42703') {
+      const fallback = await supabase
+        .from('products')
+        .select('id, base_price, branding_config')
+        .in('id', productIds)
+      dbProducts = fallback.data as any
+      dbProductsError = fallback.error
+    }
 
     if (dbProductsError || !dbProducts) {
       console.error('Error fetching products:', dbProductsError)
       return NextResponse.json({ error: 'Failed to verify cart items' }, { status: 500 })
+    }
+
+    // Guard against non-retail products
+    const nonRetailProduct = dbProducts.find((p: any) => p.is_retail === false || p.branding_config?._is_retail === false)
+    if (nonRetailProduct) {
+      return NextResponse.json(
+        { error: 'One or more items in your cart are restricted to corporate bulk orders only and cannot be purchased via retail checkout.' },
+        { status: 400 }
+      )
     }
 
     // Recalculate Subtotal
@@ -76,45 +94,122 @@ export async function POST(req: Request) {
       state: customer.state,
       pincode: customer.pincode,
     }
+
+    const hasCustomItems = verifiedItems.some((i: any) => i.customBranding?.isCustomized || Boolean(i.customization))
     
-    const { data: orderData, error: orderError } = await supabase
+    const orderPayload: any = {
+      customer_name: customer.name,
+      customer_email: customer.email,
+      customer_phone: customer.phone,
+      shipping_address: JSON.stringify(shippingAddressJson),
+      total_amount: verifiedTotalAmount,
+      shipping_fee: verifiedShippingFee,
+      payment_method: 'razorpay',
+      status: 'pending',
+      customer_uid: firebaseUid || null,
+      has_custom_items: hasCustomItems
+    }
+
+    let { data: orderData, error: orderError } = await supabase
       .from('retail_orders')
-      .insert([
-        {
-          customer_name: customer.name,
-          customer_email: customer.email,
-          customer_phone: customer.phone,
-          shipping_address: JSON.stringify(shippingAddressJson),
-          total_amount: verifiedTotalAmount,
-          shipping_fee: verifiedShippingFee,
-          payment_method: 'razorpay',
-          status: 'pending',
-          customer_uid: firebaseUid || null
-        }
-      ])
+      .insert([orderPayload])
       .select('id')
       .single()
 
-    if (orderError) {
+    if (orderError && (orderError.code === '42703' || orderError.code === 'PGRST204' || orderError.message?.includes('has_custom_items'))) {
+      // Fallback if has_custom_items column does not exist yet in DB
+      delete orderPayload.has_custom_items
+      orderPayload.notes = JSON.stringify({ has_custom_items: hasCustomItems })
+      const retry = await supabase.from('retail_orders').insert([orderPayload]).select('id').single()
+      orderData = retry.data
+      orderError = retry.error
+    }
+
+    if (orderError || !orderData) {
       console.error('Error creating internal order:', orderError)
       return NextResponse.json({ error: 'Failed to create internal order' }, { status: 500 })
     }
 
     const internalOrderId = orderData.id
 
-    // 2. Insert order items
-    const orderItems = verifiedItems.map((item: any) => ({
-      order_id: internalOrderId,
-      product_id: item.productId,
-      product_name: item.name,
-      quantity: item.quantity,
-      price_at_time: item.price,
-      selected_color: item.colorName || null,
-    }))
+    // 2. Insert order items with custom branding metadata
+    const orderItems = verifiedItems.map((item: any) => {
+      const customData = item.customBranding || (item.customization ? { isCustomized: true, customizationLabel: item.customization } : null)
+      return {
+        order_id: internalOrderId,
+        product_id: item.productId,
+        product_name: item.name,
+        quantity: item.quantity,
+        price_at_time: item.price,
+        selected_color: item.colorName || null,
+        customization: customData ? { ...customData } : null
+      }
+    })
 
-    const { error: itemsError } = await supabase
+    // Upload locally stored base64 custom logos to Supabase Storage permanently upon checkout
+    for (const oi of orderItems) {
+      if (oi.customization?.logoUrl?.startsWith('data:image/')) {
+        try {
+          const dataUrl = oi.customization.logoUrl
+          const matches = dataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/)
+          if (matches && matches[2]) {
+            const buffer = Buffer.from(matches[2], 'base64')
+            const fileName = `orders/${internalOrderId}_${oi.product_id}_${Date.now()}.webp`
+            const { data: uploadRes, error: uploadErr } = await supabase.storage
+              .from('custom-branding-assets')
+              .upload(fileName, buffer, {
+                contentType: 'image/webp',
+                upsert: true
+              })
+
+            if (!uploadErr && uploadRes) {
+              const { data: publicUrlData } = supabase.storage
+                .from('custom-branding-assets')
+                .getPublicUrl(fileName)
+
+              oi.customization.logoUrl = publicUrlData.publicUrl
+              oi.customization.logoStoragePath = fileName
+            }
+          }
+        } catch (uploadEx) {
+          console.warn('[Razorpay checkout] Could not upload logo to storage bucket, keeping base64 in record:', uploadEx)
+        }
+      }
+    }
+
+    let { error: itemsError } = await supabase
       .from('retail_order_items')
       .insert(orderItems)
+
+    if (itemsError && (itemsError.code === '42703' || itemsError.code === 'PGRST204' || itemsError.message?.includes('customization'))) {
+      // Fallback if customization column does not exist yet:
+      const fallbackItems = orderItems.map((item: any) => {
+        const customData = item.customization
+        const customTag = customData?.customizationLabel || (customData?.brandText ? `Custom: "${customData.brandText}"` : null)
+        return {
+          order_id: item.order_id,
+          product_id: item.product_id,
+          product_name: item.product_name,
+          quantity: item.quantity,
+          price_at_time: item.price,
+          selected_color: item.selected_color ? (customTag ? `${item.selected_color} (${customTag})` : item.selected_color) : customTag
+        }
+      })
+      const retryItems = await supabase.from('retail_order_items').insert(fallbackItems)
+      itemsError = retryItems.error
+
+      // Save customData details in retail_orders.notes
+      await supabase.from('retail_orders').update({
+        notes: JSON.stringify({
+          has_custom_items: hasCustomItems,
+          custom_items: orderItems.map((oi: any) => ({
+            product_name: oi.product_name,
+            selected_color: oi.selected_color,
+            customization: oi.customization
+          }))
+        })
+      }).eq('id', internalOrderId)
+    }
 
     if (itemsError) {
       console.error('Error inserting order items:', itemsError)

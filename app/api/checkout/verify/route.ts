@@ -48,18 +48,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: 'Payment verified but order update failed' }, { status: 500 })
     }
 
-    // Fetch order items to include in the email
-    const { data: itemsData } = await supabase
+    // Fetch order items to include in the email (including customization)
+    let { data: itemsData } = await supabase
       .from('retail_order_items')
-      .select('product_name, quantity, price_at_time, selected_color')
+      .select('product_name, quantity, price_at_time, selected_color, customization')
       .eq('order_id', internal_order_id)
 
-    const items = itemsData?.map((i: any) => ({
-      name: i.product_name,
-      quantity: i.quantity,
-      price: i.price_at_time,
-      colorName: i.selected_color
-    })) || []
+    if (!itemsData) {
+      const fallback = await supabase
+        .from('retail_order_items')
+        .select('product_name, quantity, price_at_time, selected_color')
+        .eq('order_id', internal_order_id)
+      itemsData = fallback.data as any
+    }
+
+    let notesCustomItems: any[] = []
+    if (orderData.notes) {
+      try {
+        const parsedNotes = typeof orderData.notes === 'string' ? JSON.parse(orderData.notes) : orderData.notes
+        notesCustomItems = parsedNotes?.custom_items || []
+      } catch {}
+    }
+
+    const items = itemsData?.map((i: any) => {
+      const fallbackCustom = notesCustomItems.find((ci: any) => ci.product_name === i.product_name)?.customization
+      return {
+        name: i.product_name,
+        quantity: i.quantity,
+        price: i.price_at_time,
+        colorName: i.selected_color,
+        customization: i.customization || fallbackCustom || null
+      }
+    }) || []
 
     // Send confirmation email
     try {

@@ -76,17 +76,35 @@ export async function POST(req: NextRequest) {
     }
 
     // Update the order in Supabase
-    const { data: order, error } = await supabase
+    const updatePayload: any = {
+      status: internalStatus,
+      shadowfax_status: event,
+      awb_number: awb_number || existingOrder?.awb_number || undefined,
+      updated_at: new Date().toISOString(),
+    }
+
+    if (internalStatus === 'delivered') {
+      updatePayload.delivered_at = new Date().toISOString()
+    }
+
+    let { data: order, error } = await supabase
       .from('retail_orders')
-      .update({
-        status: internalStatus,
-        shadowfax_status: event,
-        awb_number: awb_number || existingOrder?.awb_number || undefined,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updatePayload)
       .eq('id', order_id)
       .select('id, customer_email, customer_name, status')
       .single()
+
+    if (error && error.code === '42703' && updatePayload.delivered_at) {
+      delete updatePayload.delivered_at
+      const retry = await supabase
+        .from('retail_orders')
+        .update(updatePayload)
+        .eq('id', order_id)
+        .select('id, customer_email, customer_name, status')
+        .single()
+      order = retry.data
+      error = retry.error
+    }
 
     if (error) {
       console.error('[Shadowfax Webhook] Supabase update error:', error)

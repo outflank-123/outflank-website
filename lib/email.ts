@@ -16,6 +16,47 @@ export type OrderItem = {
   price: number;
   image?: string;
   colorName?: string;
+  customization?: any;
+  customBranding?: any;
+}
+
+function extractEmailCustomData(item: OrderItem) {
+  const c = item.customization || item.customBranding;
+  if (!c && item.colorName && item.colorName.includes('Custom')) {
+    const match = item.colorName.match(/Custom:?\s*"?([^"\]]+)"?/i);
+    if (match) {
+      return {
+        isCustomized: true,
+        brandType: 'text' as const,
+        brandText: match[1],
+        printPosition: 'Left Chest',
+        textColor: '#FFFFFF',
+      };
+    }
+  }
+  if (!c || (!c.isCustomized && !c.is_customized && !c.brandText && !c.brand_text && !c.logoUrl && !c.logo_url)) {
+    return null;
+  }
+
+  const brandText = c.brandText || c.brand_text || c.text || null;
+  const logoUrl = c.logoUrl || c.logo_url || null;
+  const brandType = c.brandType || (logoUrl ? 'logo' : 'text');
+  const textColor = c.textColor || c.text_color || '#FFFFFF';
+  let printPos = c.printPosition || c.print_position || 'Left Chest';
+  if (printPos === 'center_chest') printPos = 'Center Chest';
+  if (printPos === 'left_chest') printPos = 'Left Chest';
+  if (printPos === 'right_chest') printPos = 'Right Chest';
+  const coords = c.coordinates || c.position || null;
+
+  return {
+    isCustomized: true,
+    brandType,
+    brandText,
+    textColor,
+    logoUrl,
+    printPosition: printPos,
+    coordinates: coords,
+  };
 }
 
 export async function sendOrderConfirmationEmail(orderDetails: {
@@ -33,18 +74,69 @@ export async function sendOrderConfirmationEmail(orderDetails: {
     return
   }
 
-  const itemsHtml = orderDetails.items.map(item => `
-    <tr>
-      <td style="padding: 16px 0; border-bottom: 1px solid #eaeaea;">
-        <p style="margin: 0; font-size: 16px; font-weight: 500; color: #1d1d1f;">${item.name}</p>
-        ${item.colorName ? `<p style="margin: 4px 0 0; font-size: 14px; color: #86868b;">Color: ${item.colorName}</p>` : ''}
-        <p style="margin: 4px 0 0; font-size: 14px; color: #86868b;">Qty: ${item.quantity}</p>
-      </td>
-      <td style="padding: 16px 0; border-bottom: 1px solid #eaeaea; text-align: right;">
-        <p style="margin: 0; font-size: 16px; font-weight: 500; color: #1d1d1f;">₹${item.price.toLocaleString('en-IN')}</p>
-      </td>
-    </tr>
-  `).join('')
+  const itemsHtml = orderDetails.items.map(item => {
+    const custom = extractEmailCustomData(item);
+    let customBoxHtml = '';
+
+    if (custom) {
+      if (custom.brandType === 'text' && custom.brandText) {
+        customBoxHtml = `
+          <div style="margin-top: 10px; padding: 10px 12px; background-color: #f0f7ff; border: 1px solid #cce3ff; border-radius: 8px; font-size: 13px;">
+            <div style="font-weight: 700; color: #0066cc; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+              ✦ Custom Print Specification
+            </div>
+            <div style="color: #1d1d1f; margin-bottom: 3px;">
+              <span style="color: #666; font-size: 11px; text-transform: uppercase; font-weight: 600;">Text:</span> <strong>"${custom.brandText}"</strong>
+            </div>
+            <div style="color: #444; font-size: 12px; margin-bottom: 3px;">
+              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: ${custom.textColor}; border: 1px solid #bbb; vertical-align: middle; margin-right: 4px;"></span>
+              Ink Color: <strong>${custom.textColor}</strong>
+            </div>
+            <div style="color: #444; font-size: 12px;">
+              Placement: <strong>${custom.printPosition}</strong>
+              ${custom.coordinates ? `<span style="color: #777; font-size: 11px; margin-left: 6px;">(${custom.coordinates.left || ''}, ${custom.coordinates.top || ''})</span>` : ''}
+            </div>
+          </div>
+        `;
+      } else if (custom.brandType === 'logo') {
+        const logoPreview = custom.logoUrl && !custom.logoUrl.startsWith('data:')
+          ? `<img src="${custom.logoUrl}" alt="Attached Logo" style="width: 44px; height: 44px; object-fit: contain; border-radius: 6px; border: 1px solid #d0d7de; background-color: #ffffff; padding: 2px; display: block; margin-right: 10px;" />`
+          : `<div style="width: 44px; height: 44px; border-radius: 6px; border: 1px solid #d0d7de; background-color: #ffffff; text-align: center; line-height: 44px; font-size: 18px; margin-right: 10px;">🎨</div>`;
+
+        customBoxHtml = `
+          <div style="margin-top: 10px; padding: 10px 12px; background-color: #f0f7ff; border: 1px solid #cce3ff; border-radius: 8px; font-size: 13px;">
+            <div style="font-weight: 700; color: #0066cc; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+              ✦ Custom Uploaded Logo Graphic
+            </div>
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td valign="top">${logoPreview}</td>
+                <td valign="middle" style="font-size: 12px; color: #333;">
+                  <div>Placement: <strong>${custom.printPosition}</strong></div>
+                  <div style="color: #059669; font-size: 11px; font-weight: 600; margin-top: 2px;">✓ High-Res Print File Attached</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        `;
+      }
+    }
+
+    return `
+      <tr>
+        <td style="padding: 16px 0; border-bottom: 1px solid #eaeaea;">
+          <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1d1d1f;">${item.name}</p>
+          ${item.colorName ? `<p style="margin: 4px 0 0; font-size: 14px; color: #86868b;">Color: ${item.colorName}</p>` : ''}
+          <p style="margin: 4px 0 0; font-size: 14px; color: #86868b;">Qty: ${item.quantity}</p>
+          ${customBoxHtml}
+        </td>
+        <td style="padding: 16px 0; border-bottom: 1px solid #eaeaea; text-align: right; vertical-align: top;">
+          <p style="margin: 0; font-size: 16px; font-weight: 600; color: #1d1d1f;">₹${(item.price * item.quantity).toLocaleString('en-IN')}</p>
+          <p style="margin: 4px 0 0; font-size: 12px; color: #86868b;">(₹${item.price.toLocaleString('en-IN')} each)</p>
+        </td>
+      </tr>
+    `;
+  }).join('');
 
   const mailOptions = {
     from: `"Outflank" <${process.env.SMTP_USER}>`,
@@ -122,10 +214,13 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                   </td>
                 </tr>
 
-                <!-- Track Order Button -->
+                <!-- Track Order & Invoice Buttons -->
                 <tr>
                   <td style="padding: 0 40px 40px; text-align: center;">
                     <a href="https://outflank.in/track?order_id=${orderDetails.orderId}&email=${encodeURIComponent(orderDetails.customerEmail)}" style="display: inline-block; padding: 14px 32px; background-color: #1d1d1f; color: #ffffff; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 30px; letter-spacing: 0.5px;">View Order Status</a>
+                    <div style="margin-top: 14px;">
+                      <a href="https://outflank.in/invoice/${orderDetails.orderId}?print=true" style="font-size: 13px; color: #666666; text-decoration: underline; font-weight: 500;">Download Official Tax Invoice (PDF)</a>
+                    </div>
                   </td>
                 </tr>
 
