@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Product } from '@/components/products/ProductCard'
 
-const PAGE_SIZE = 24
+const PAGE_SIZE = 36
 
 export async function fetchProductsPage(
   page: number,

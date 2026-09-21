@@ -12,7 +12,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    if (!customer.name || !customer.email || !customer.phone || !customer.address || !customer.city || !customer.state || !customer.pincode) {
+    const addressValue = customer.address || [customer.houseNo, customer.street].filter(Boolean).join(', ') || customer.addressLine1
+    if (!customer.name || !customer.email || !customer.phone || !addressValue || !customer.city || !customer.state || !customer.pincode) {
       return NextResponse.json({ error: 'Missing customer details' }, { status: 400 })
     }
 
@@ -82,8 +83,24 @@ export async function POST(req: Request) {
     // --------------------------------
 
     // 1. Create a pending order in our database for COD
+    const houseNo = customer.houseNo || ''
+    const street = customer.street || ''
+    const landmark = customer.landmark || customer.addressLine2 || ''
+    const addressLine1 = customer.addressLine1 || (houseNo ? [houseNo, street].filter(Boolean).join(', ') : customer.address)
+    const addressLine2 = landmark || customer.addressLine2 || ''
+    const landmarkText = landmark ? (/^(near|opp|opposite|behind|beside|adjacent)\b/i.test(landmark) ? landmark : `Near ${landmark}`) : ''
+    const fullAddress = customer.address || [addressLine1, landmarkText].filter(Boolean).join(', ')
+
     const shippingAddressJson = {
-      addressLine1: customer.address,
+      fullName: customer.name,
+      phone: customer.phone,
+      email: customer.email,
+      houseNo,
+      street,
+      landmark,
+      addressLine1,
+      addressLine2,
+      address: fullAddress,
       city: customer.city,
       state: customer.state,
       pincode: customer.pincode,
@@ -125,6 +142,38 @@ export async function POST(req: Request) {
     }
 
     const internalOrderId = orderData.id
+
+    // Sync customer profile and phone number to customers table if user is logged in
+    if (firebaseUid) {
+      const cleanPhone = customer.phone ? customer.phone.replace(/\D/g, '').slice(-10) : null
+      try {
+        await supabase
+          .from('customers')
+          .upsert({
+            firebase_uid: firebaseUid,
+            full_name: customer.name || null,
+            email: customer.email || null,
+            phone: cleanPhone || null,
+            shipping_address: {
+              fullName: customer.name,
+              phone: cleanPhone || customer.phone,
+              email: customer.email,
+              houseNo,
+              street,
+              landmark,
+              addressLine1,
+              addressLine2,
+              address: fullAddress,
+              city: customer.city,
+              state: customer.state,
+              pincode: customer.pincode,
+            },
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'firebase_uid' })
+      } catch (err: any) {
+        console.warn('[COD checkout] Could not sync customer profile:', err?.message || err)
+      }
+    }
 
     // 2. Insert order items with custom branding metadata
     const orderItems = verifiedItems.map((item: any) => {

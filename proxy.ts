@@ -29,6 +29,12 @@ export async function proxy(request: NextRequest) {
 
   const isAuthPage = request.nextUrl.pathname.startsWith('/admin/login')
   const isAdminPage = request.nextUrl.pathname.startsWith('/admin') && !isAuthPage
+  const isApiAdmin = request.nextUrl.pathname.startsWith('/api/admin')
+
+  // Block unauthenticated access to all /api/admin/* endpoints
+  if (isApiAdmin && !user) {
+    return NextResponse.json({ error: 'Unauthorized: Admin session required' }, { status: 401 })
+  }
 
   // Not logged in -> Redirect to login
   if (isAdminPage && !user) {

@@ -46,7 +46,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   }, [])
 
   const currentMode = mounted ? shoppingMode : 'retail'
-  const isRetailAllowed = product.is_retail !== false && product.branding_config?._is_retail !== false
+  const isRetailAllowed = product.is_retail !== false
 
   const variants: ColorVariant[] = product.color_variants ?? []
   const currentImages = variants[activeVariant]?.images ?? []
@@ -67,17 +67,17 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         </Link>
 
         {/* Image */}
-        <div className="relative aspect-square bg-[#f5f5f7] overflow-hidden block">
+        <div className="relative aspect-square bg-white border-b border-black/[0.04] overflow-hidden block p-2">
           {displayImage ? (
             <Image
               src={displayImage}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-[1.03]"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center bg-[#f5f5f7]">
               <Package size={48} className="text-[#aeaeb2]" />
             </div>
           )}

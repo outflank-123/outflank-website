@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { MessageCircle, X, Send, ArrowRight, ShieldCheck, Briefcase, Palette, Package } from 'lucide-react'
 
+import { getBrowserCache, setBrowserCache } from '@/lib/browserCache'
+
 interface WhatsAppFloatingWidgetProps {
   defaultPhone?: string
 }
@@ -15,14 +17,27 @@ export default function WhatsAppFloatingWidget({ defaultPhone = '919999926273' }
   const [hasInteracted, setHasInteracted] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Fetch dynamic phone from store settings if available
+  // Fetch dynamic phone from store settings with browser session caching
   useEffect(() => {
     let isMounted = true
     async function fetchSettings() {
+      // Check browser cache first
+      const cached = getBrowserCache<{ whatsapp_support_phone?: string }>(
+        'outflank_store_settings',
+        15 * 60 * 1000,
+        'session'
+      )
+      if (cached?.data?.whatsapp_support_phone && isMounted) {
+        const clean = cached.data.whatsapp_support_phone.replace(/\D/g, '')
+        setPhone(clean.length === 10 ? `91${clean}` : clean)
+        if (!cached.isStale) return // Fresh cache: eliminate API call!
+      }
+
       try {
-        const res = await fetch('/api/settings', { cache: 'no-store' })
+        const res = await fetch('/api/settings')
         if (res.ok) {
           const data = await res.json()
+          setBrowserCache('outflank_store_settings', data, 'session')
           if (data?.whatsapp_support_phone && isMounted) {
             const clean = data.whatsapp_support_phone.replace(/\D/g, '')
             setPhone(clean.length === 10 ? `91${clean}` : clean)
@@ -110,7 +125,7 @@ export default function WhatsAppFloatingWidget({ defaultPhone = '919999926273' }
             {/* Greeting speech bubble */}
             <div className="bg-white p-3.5 rounded-2xl rounded-tl-sm shadow-xs border border-gray-100 space-y-1">
               <p className="font-semibold text-gray-900 text-xs">
-                Hi! Welcome to Outflank 👋
+                Hi! Welcome to Outflank
               </p>
               <p className="text-gray-600 leading-relaxed">
                 Looking for corporate gifting, bulk apparel, or have questions about custom orders? Tap a quick option or send us a message below.

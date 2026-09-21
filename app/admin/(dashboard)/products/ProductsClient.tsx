@@ -13,6 +13,7 @@ import {
 import { createProduct, updateProduct, deleteProduct, duplicateProduct, uploadProductImage, batchUpdateProducts } from '../actions'
 import Image from 'next/image'
 import BrandingCanvasEditor from './BrandingCanvasEditor'
+import { getAdminCache, setAdminCache } from '@/lib/adminCache'
 
 export interface ColorVariant {
   name: string
@@ -70,17 +71,24 @@ const BRANDING_PRESETS = [
 ]
 
 export default function ProductsClient({ initialProducts, categories }: ProductsClientProps) {
-  const [products, setProducts] = useState<Product[]>(initialProducts)
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (initialProducts && initialProducts.length > 0) return initialProducts
+    const cached = getAdminCache<Product[]>('outflank_admin_products', 10 * 60 * 1000, 'session')
+    return cached?.data || initialProducts
+  })
   const [baselineProducts, setBaselineProducts] = useState<Product[]>(initialProducts)
   const [pendingChanges, setPendingChanges] = useState<Record<string, Record<string, any>>>({})
   const [isSavingBatch, setIsSavingBatch] = useState(false)
   const [showSavedToast, setShowSavedToast] = useState(false)
 
-  // Sync baseline if initialProducts change from external revalidation
+  // Sync baseline if initialProducts change from external revalidation and persist to cache
   useEffect(() => {
-    setProducts(initialProducts)
-    setBaselineProducts(initialProducts)
-    setPendingChanges({})
+    if (initialProducts && initialProducts.length > 0) {
+      setProducts(initialProducts)
+      setBaselineProducts(initialProducts)
+      setPendingChanges({})
+      setAdminCache('outflank_admin_products', initialProducts, 'session')
+    }
   }, [initialProducts])
 
   const pendingCount = Object.keys(pendingChanges).length

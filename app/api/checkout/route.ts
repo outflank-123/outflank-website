@@ -17,7 +17,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    if (!customer.name || !customer.email || !customer.phone || !customer.address || !customer.city || !customer.state || !customer.pincode) {
+    const addressValue = customer.address || [customer.houseNo, customer.street].filter(Boolean).join(', ') || customer.addressLine1
+    if (!customer.name || !customer.email || !customer.phone || !addressValue || !customer.city || !customer.state || !customer.pincode) {
       return NextResponse.json({ error: 'Missing customer details' }, { status: 400 })
     }
 
@@ -88,8 +89,24 @@ export async function POST(req: Request) {
 
     // 1. Create a pending order in our database
     // Store address as structured JSON so admin dispatch can extract fields
+    const houseNo = customer.houseNo || ''
+    const street = customer.street || ''
+    const landmark = customer.landmark || customer.addressLine2 || ''
+    const addressLine1 = customer.addressLine1 || (houseNo ? [houseNo, street].filter(Boolean).join(', ') : customer.address)
+    const addressLine2 = landmark || customer.addressLine2 || ''
+    const landmarkText = landmark ? (/^(near|opp|opposite|behind|beside|adjacent)\b/i.test(landmark) ? landmark : `Near ${landmark}`) : ''
+    const fullAddress = customer.address || [addressLine1, landmarkText].filter(Boolean).join(', ')
+
     const shippingAddressJson = {
-      addressLine1: customer.address,
+      fullName: customer.name,
+      phone: customer.phone,
+      email: customer.email,
+      houseNo,
+      street,
+      landmark,
+      addressLine1,
+      addressLine2,
+      address: fullAddress,
       city: customer.city,
       state: customer.state,
       pincode: customer.pincode,

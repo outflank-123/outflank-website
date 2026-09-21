@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, LayoutGrid, Info, ShoppingCart } from 'lucide-react'
+import { Home, LayoutGrid, Info, ShoppingCart, User as UserIcon } from 'lucide-react'
 import { useCartStore } from '@/lib/store/useCartStore'
+import { useAuth } from '@/lib/AuthContext'
 import { useState, useEffect } from 'react'
 
 const navItems = [
@@ -15,6 +16,7 @@ const navItems = [
 export default function BottomNav() {
   const pathname = usePathname()
   const { items, setIsCartOpen } = useCartStore()
+  const { user, openAuthModal } = useAuth()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -22,6 +24,8 @@ export default function BottomNav() {
   }, [])
 
   if (pathname?.startsWith('/customize')) return null
+
+  const isAccountActive = pathname === '/account'
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/80 backdrop-blur-md border-t border-gray-200/50 pb-safe">
@@ -41,6 +45,28 @@ export default function BottomNav() {
             </Link>
           )
         })}
+
+        {/* Account / Sign In */}
+        {user ? (
+          <Link
+            href="/account"
+            className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
+              isAccountActive ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+            }`}
+          >
+            <UserIcon className={`w-6 h-6 ${isAccountActive ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+            <span className="text-[10px] font-medium leading-none">Account</span>
+          </Link>
+        ) : (
+          <button
+            onClick={openAuthModal}
+            type="button"
+            className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors text-gray-400 hover:text-gray-600 cursor-pointer"
+          >
+            <UserIcon className="w-6 h-6 stroke-2" />
+            <span className="text-[10px] font-medium leading-none">Sign In</span>
+          </button>
+        )}
         
         {/* Cart Button */}
         <button

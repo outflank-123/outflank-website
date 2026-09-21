@@ -13,7 +13,7 @@ interface CatalogGridClientProps {
   totalCount: number
 }
 
-const PAGE_SIZE = 24
+const PAGE_SIZE = 36
 
 export function ProductGridSkeleton() {
   return (
@@ -51,12 +51,12 @@ export default function CatalogGridClient({
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const [isSwitchingCategory, setIsSwitchingCategory] = useState(false)
-  const [hasMore, setHasMore] = useState(initialProducts.length >= PAGE_SIZE)
+  const [hasMore, setHasMore] = useState(initialProducts.length < totalCount)
   const isLoadingRef = useRef(false)
 
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: '200px',
+    rootMargin: '250px',
   })
 
   // Listen for category switch start to show instant grid skeleton
@@ -73,29 +73,31 @@ export default function CatalogGridClient({
     setProducts(initialProducts)
     setIsSwitchingCategory(false)
     setPage(1)
-    setHasMore(initialProducts.length >= PAGE_SIZE)
+    setHasMore(initialProducts.length < totalCount)
     isLoadingRef.current = false
     setLoading(false)
-  }, [initialProducts])
+  }, [initialProducts, totalCount])
 
-  // Infinite scroll pagination logic
-  useEffect(() => {
-    if (!inView || !hasMore || isLoadingRef.current || isSwitchingCategory) return
+  const loadMore = () => {
+    if (!hasMore || isLoadingRef.current || isSwitchingCategory) return
 
-    let cancelled = false
     isLoadingRef.current = true
     setLoading(true)
 
     fetchProductsPage(page, categoryId, searchQuery)
       .then((nextProducts) => {
-        if (cancelled) return
-
         if (nextProducts.length > 0) {
-          setProducts((prev) => [...prev, ...nextProducts])
+          setProducts((prev) => {
+            const existingIds = new Set(prev.map(p => p.id))
+            const filtered = nextProducts.filter(p => !existingIds.has(p.id))
+            const updated = [...prev, ...filtered]
+            if (updated.length >= totalCount || nextProducts.length < PAGE_SIZE) {
+              setHasMore(false)
+            }
+            return updated
+          })
           setPage((prev) => prev + 1)
-        }
-
-        if (nextProducts.length < PAGE_SIZE) {
+        } else {
           setHasMore(false)
         }
       })
@@ -103,16 +105,17 @@ export default function CatalogGridClient({
         console.error('Error fetching next products page:', error)
       })
       .finally(() => {
-        if (!cancelled) {
-          isLoadingRef.current = false
-          setLoading(false)
-        }
+        isLoadingRef.current = false
+        setLoading(false)
       })
+  }
 
-    return () => {
-      cancelled = true
+  // Infinite scroll trigger
+  useEffect(() => {
+    if (inView && hasMore && !isLoadingRef.current && !isSwitchingCategory) {
+      loadMore()
     }
-  }, [inView, hasMore, page, categoryId, searchQuery, isSwitchingCategory])
+  }, [inView, hasMore, isSwitchingCategory])
 
   if (isSwitchingCategory) {
     return <ProductGridSkeleton />
@@ -138,8 +141,28 @@ export default function CatalogGridClient({
       </div>
 
       {hasMore && (
-        <div ref={ref} className="py-12 flex justify-center items-center">
-          <Loader2 className="animate-spin text-[#aeaeb2]" size={32} />
+        <div ref={ref} className="py-12 flex flex-col justify-center items-center gap-3">
+          <button
+            type="button"
+            onClick={loadMore}
+            disabled={loading}
+            className="px-8 py-3.5 rounded-full bg-white border border-black/10 hover:border-black/30 hover:bg-[#f5f5f7] text-[#1d1d1f] font-semibold text-sm shadow-sm hover:shadow transition-all flex items-center gap-2.5 cursor-pointer disabled:opacity-50 group"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin text-[#e3231c]" size={18} />
+                <span>Loading more products...</span>
+              </>
+            ) : (
+              <>
+                <span>Load More Products</span>
+                <span className="text-xs bg-[#f5f5f7] px-2.5 py-0.5 rounded-full text-[#86868b] border border-black/5 font-medium group-hover:bg-white transition-colors">
+                  {products.length} of {totalCount}
+                </span>
+              </>
+            )}
+          </button>
+          <span className="text-xs text-[#86868b]">Scroll or click button to load more</span>
         </div>
       )}
 

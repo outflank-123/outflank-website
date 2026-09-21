@@ -73,7 +73,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
     }
 
-    return NextResponse.json(orders);
+    return NextResponse.json(orders, {
+      headers: {
+        'Cache-Control': 'private, max-age=30, stale-while-revalidate=120',
+      },
+    });
   } catch (error: any) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

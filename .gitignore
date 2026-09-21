@@ -43,3 +43,8 @@ next-env.d.ts
 # Large media/assets
 /pdf
 /products
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]

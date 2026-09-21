@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Package, Clock, Users, MessageSquare, ShieldCheck, Paintbrush, ShoppingCart, Plus, Minus, Phone, Building2, Check } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Package, Clock, Users, MessageSquare, ShieldCheck, Paintbrush, ShoppingCart, Plus, Minus, Phone, Building2, Check, Maximize2, ZoomIn, ZoomOut, RotateCcw, X } from 'lucide-react'
 import ColorVariantPicker from '@/components/products/ColorVariantPicker'
 import LeadModal from '@/components/products/LeadModal'
 import type { ColorVariant } from '@/components/products/ProductCard'
@@ -37,13 +37,31 @@ interface ProductDetailClientProps {
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
   const router = useRouter()
-  const isRetailAllowed = product.is_retail !== false && (product.branding_config as any)?._is_retail !== false
+  const isRetailAllowed = product.is_retail !== false
   const isCustomizable = product.is_customizable !== false
   const variants: ColorVariant[] = product.color_variants ?? []
   const [activeVariant, setActiveVariant] = useState(0)
   const [activeImage, setActiveImage] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const [zoomLevel, setZoomLevel] = useState(1)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsLightboxOpen(false)
+    }
+    if (isLightboxOpen) {
+      window.addEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isLightboxOpen])
 
   // Read global outer selection from useShoppingModeStore
   const { mode: globalMode, setMode: setGlobalMode } = useShoppingModeStore()
@@ -192,7 +210,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <div className="order-1 md:order-2 flex-1 w-full">
                 <motion.div
                   layoutId="product-main-image"
-                  className="relative aspect-square md:aspect-[4/3] w-full rounded-[32px] overflow-hidden bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] border border-black/[0.04] group"
+                  onClick={() => {
+                    setZoomLevel(1)
+                    setIsLightboxOpen(true)
+                  }}
+                  className="relative aspect-square md:aspect-[4/3] w-full rounded-[32px] overflow-hidden bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] border border-black/[0.04] group cursor-zoom-in"
                 >
                   <AnimatePresence mode="wait">
                     {mainImage ? (
@@ -233,6 +255,23 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     <div className="absolute bottom-5 left-5 bg-black/70 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-sm z-10">
                       {activeImage === 0 ? "Front View" : activeImage === 1 ? "Side Profile" : `Angle ${activeImage + 1}`}
                     </div>
+                  )}
+
+                  {/* Zoom Lightbox Trigger Button */}
+                  {mainImage && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setZoomLevel(1)
+                        setIsLightboxOpen(true)
+                      }}
+                      className="absolute bottom-5 right-5 bg-white/95 hover:bg-white text-[#1d1d1f] backdrop-blur-md px-3 py-1.5 rounded-full border border-black/10 shadow-sm hover:shadow-md flex items-center gap-1.5 text-xs font-semibold z-10 transition-all hover:scale-105 cursor-pointer"
+                      title="Inspect full catalog plate"
+                    >
+                      <Maximize2 size={13} className="text-[#e3231c]" />
+                      <span className="hidden sm:inline">Zoom Catalog Plate</span>
+                    </button>
                   )}
 
                   {/* Left & Right Chevron Navigation Buttons */}
@@ -538,6 +577,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           </div>
         </section>
+        {/* Product Details & Specifications */}
+        {product.description && (
+          <section className="max-w-[1400px] mx-auto px-6 pb-16">
+            <div className="bg-white rounded-3xl p-6 md:p-10 border border-black/8 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-bold text-[#1d1d1f] mb-4">
+                Product Specifications & Highlights
+              </h2>
+              <div className="text-sm md:text-base text-[#48484a] whitespace-pre-line leading-relaxed">
+                {product.description}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
 
       {/* Lead Inquiry Modal */}
@@ -547,6 +599,92 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         productName={product.name}
         productId={product.id}
       />
+
+      {/* Lightbox Modal for Full Catalog Plate Zoom */}
+      <AnimatePresence>
+        {isLightboxOpen && mainImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-2 md:p-6"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <div
+              className="relative max-w-6xl w-full h-[92vh] bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Lightbox Header */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-black/10 bg-[#f5f5f7]">
+                <div className="flex items-center gap-2 truncate pr-4">
+                  <span className="font-bold text-sm text-[#1d1d1f] truncate">
+                    {product.name}
+                  </span>
+                  <span className="hidden sm:inline text-xs text-[#86868b] bg-white px-2 py-0.5 rounded-md border border-black/5 font-medium">
+                    Catalog Plate View
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setZoomLevel((z) => Math.max(1, +(z - 0.25).toFixed(2)))}
+                    className="p-2 rounded-xl bg-white hover:bg-black/5 text-[#1d1d1f] border border-black/10 transition-colors cursor-pointer"
+                    title="Zoom out"
+                  >
+                    <ZoomOut size={16} />
+                  </button>
+                  <span className="text-xs font-mono font-bold w-12 text-center text-[#1d1d1f]">
+                    {Math.round(zoomLevel * 100)}%
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setZoomLevel((z) => Math.min(2.5, +(z + 0.25).toFixed(2)))}
+                    className="p-2 rounded-xl bg-white hover:bg-black/5 text-[#1d1d1f] border border-black/10 transition-colors cursor-pointer"
+                    title="Zoom in"
+                  >
+                    <ZoomIn size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setZoomLevel(1)}
+                    className="p-2 rounded-xl bg-white hover:bg-black/5 text-[#1d1d1f] border border-black/10 transition-colors cursor-pointer"
+                    title="Reset zoom"
+                  >
+                    <RotateCcw size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsLightboxOpen(false)}
+                    className="ml-2 p-2 rounded-full bg-black/5 hover:bg-black/10 text-[#1d1d1f] transition-colors cursor-pointer"
+                    title="Close"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Lightbox Body with Pan/Zoom Container */}
+              <div className="flex-1 relative overflow-auto p-4 md:p-8 flex items-center justify-center bg-neutral-900/5 select-none">
+                <div
+                  className="transition-transform duration-200 ease-out origin-center flex items-center justify-center"
+                  style={{ transform: `scale(${zoomLevel})` }}
+                >
+                  <Image
+                    src={mainImage}
+                    alt={product.name}
+                    width={1400}
+                    height={1050}
+                    className="object-contain max-h-[82vh] w-auto shadow-2xl bg-white rounded-xl border border-black/10"
+                    unoptimized
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

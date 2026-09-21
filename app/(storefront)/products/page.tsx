@@ -31,14 +31,15 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
 
   const activeCategory = categories?.find((c) => c.slug === category)
 
-  // Build products query
+  // Build products query with exact count
+  const PAGE_SIZE = 36
   let query = supabase
     .from('products')
     .select(`
       id, name, slug, short_desc, base_price, min_order_qty,
       color_variants, primary_image_url, branding_config, is_retail, is_customizable,
       categories ( name, slug )
-    `)
+    `, { count: 'exact' })
     .eq('is_active', true)
     .order('is_featured', { ascending: false })
     .order('created_at', { ascending: false })
@@ -53,10 +54,11 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
   }
 
   // Fetch initial batch of products
-  query = query.range(0, 23)
+  query = query.range(0, PAGE_SIZE - 1)
 
   let { data, count, error } = await query
   let products: any = data
+  let totalProductCount = count ?? products?.length ?? 0
 
   if (error && error.code === '42703') {
     let fallbackQuery = supabase
@@ -65,7 +67,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
         id, name, slug, short_desc, base_price, min_order_qty,
         color_variants, primary_image_url, branding_config,
         categories ( name, slug )
-      `)
+      `, { count: 'exact' })
       .eq('is_active', true)
       .order('is_featured', { ascending: false })
       .order('created_at', { ascending: false })
@@ -77,9 +79,10 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
     if (q) {
       fallbackQuery = fallbackQuery.ilike('name', `%${q}%`)
     }
-    fallbackQuery = fallbackQuery.range(0, 23)
+    fallbackQuery = fallbackQuery.range(0, PAGE_SIZE - 1)
     const fallbackRes = await fallbackQuery
     products = fallbackRes.data
+    totalProductCount = fallbackRes.count ?? products?.length ?? 0
   }
 
   // Map categories array to single object if needed
@@ -97,7 +100,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
       <section className="px-5 md:px-8 pt-32 pb-10 md:pt-36 md:pb-14">
         <div className="max-w-7xl mx-auto">
           <Suspense fallback={<div className="h-24 w-full bg-[#f5f5f7] rounded-2xl animate-pulse" />}>
-            <CategoryHeader categories={categories ?? []} totalProductsCount={products?.length ?? 0} />
+            <CategoryHeader categories={categories ?? []} totalProductsCount={totalProductCount} />
           </Suspense>
 
           {/* Filters & Search Toolbar */}
@@ -127,7 +130,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
               initialProducts={formattedProducts}
               categoryId={activeCategory?.id}
               searchQuery={q}
-              totalCount={count ?? 0}
+              totalCount={totalProductCount}
             />
           ) : (
             <div className="flex flex-col items-center justify-center py-32 text-center">

@@ -9,6 +9,7 @@ import { ChevronLeft, Lock, Loader2, CheckCircle2, Wallet, CreditCard, FileText 
 import { useCartStore } from '@/lib/store/useCartStore'
 import { useAuth } from '@/lib/AuthContext'
 import { State, City } from 'country-state-city'
+import { getBrowserCache, setBrowserCache, removeBrowserCache } from '@/lib/browserCache'
 
 interface StoreSettings {
   is_cod_enabled: boolean;
@@ -20,7 +21,8 @@ interface StoreSettings {
 export default function CheckoutClient() {
   const router = useRouter()
   const { items, getCartTotal, clearCart } = useCartStore()
-  const { user } = useAuth()
+  const { user, customerProfile, saveAddress, openAuthModal } = useAuth()
+  const [isAddressPreFilled, setIsAddressPreFilled] = useState(false)
   
   const [mounted, setMounted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -33,6 +35,9 @@ export default function CheckoutClient() {
     name: '',
     email: '',
     phone: '',
+    houseNo: '',
+    street: '',
+    landmark: '',
     address: '',
     city: '',
     state: '',
@@ -57,6 +62,7 @@ export default function CheckoutClient() {
 
   const total = subtotal + shippingFee
   const isCodAvailable = Boolean(settings?.is_cod_enabled && subtotal >= (settings?.cod_min_amount || 0))
+  const isGoogleUser = Boolean(user && (customerProfile?.auth_provider === 'google' || user?.providerData?.some(p => p.providerId === 'google.com')))
 
   useEffect(() => {
     setMounted(true)
@@ -70,12 +76,61 @@ export default function CheckoutClient() {
     }
   }, [isCodAvailable, paymentMethod])
 
+  // Auto-fill address and customer contact info if customer is logged in
+  useEffect(() => {
+    if (customerProfile?.shipping_address) {
+      const addr = customerProfile.shipping_address as any
+      const matchedState = states.find(
+        (s) =>
+          s.name.toLowerCase() === (addr.state || '').toLowerCase() ||
+          s.isoCode.toLowerCase() === (addr.state || '').toLowerCase()
+      )
+
+      const houseNo = addr.houseNo || ''
+      const street = addr.street || (!addr.houseNo && addr.address ? addr.address : '')
+      const landmark = addr.landmark || addr.addressLine2 || ''
+      const landmarkText = landmark ? (/^(near|opp|opposite|behind|beside|adjacent)\b/i.test(landmark) ? landmark : `Near ${landmark}`) : ''
+      const combinedAddress = addr.address || [houseNo, street, landmarkText].filter(Boolean).join(', ')
+
+      setFormData((prev) => ({
+        ...prev,
+        name: addr.fullName || customerProfile.full_name || user?.displayName || prev.name,
+        email: addr.email || customerProfile.email || user?.email || prev.email,
+        phone: addr.phone || customerProfile.phone || user?.phoneNumber?.replace(/\D/g, '').slice(-10) || prev.phone,
+        houseNo: houseNo || prev.houseNo,
+        street: street || prev.street,
+        landmark: landmark || prev.landmark,
+        address: combinedAddress || prev.address,
+        city: addr.city || prev.city,
+        state: matchedState?.name || addr.state || prev.state,
+        stateCode: matchedState?.isoCode || prev.stateCode,
+        pincode: addr.pincode || prev.pincode,
+      }))
+      setIsAddressPreFilled(true)
+    } else if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: customerProfile?.full_name || user.displayName || prev.name,
+        email: customerProfile?.email || user.email || prev.email,
+        phone: customerProfile?.phone || user.phoneNumber?.replace(/\D/g, '').slice(-10) || prev.phone,
+      }))
+    }
+  }, [customerProfile, user])
+
   const fetchSettings = async () => {
+    // Check browser session cache first
+    const cached = getBrowserCache<StoreSettings>('outflank_store_settings', 15 * 60 * 1000, 'session')
+    if (cached?.data) {
+      setSettings(cached.data)
+      if (!cached.isStale) return // Fresh cache: eliminate API call!
+    }
+
     try {
       const res = await fetch('/api/settings')
       if (res.ok) {
         const data = await res.json()
         setSettings(data)
+        setBrowserCache('outflank_store_settings', data, 'session')
       }
     } catch (e) {
       console.error(e)
@@ -148,19 +203,90 @@ export default function CheckoutClient() {
     e.preventDefault()
     
     // Strict Client-Side Validation
-    const phoneRegex = /^[0-9]{10}$/
-    if (!phoneRegex.test(formData.phone)) {
+    if (!formData.name.trim()) {
+      alert("Please enter your full name.")
+      return
+    }
+
+    const cleanPhone = formData.phone.replace(/\D/g, '').slice(-10)
+    if (cleanPhone.length !== 10) {
       alert("Please enter a valid 10-digit mobile number.")
       return
     }
 
+    if (!formData.email.trim() || !formData.email.includes('@')) {
+      alert("Please enter a valid email address.")
+      return
+    }
+
+    if (!formData.houseNo.trim() && !formData.address.trim()) {
+      alert("Please enter your Flat / House No. / Building Name.")
+      return
+    }
+
+    if (!formData.street.trim() && !formData.address.trim()) {
+      alert("Please enter your Street / Area / Sector.")
+      return
+    }
+
+    if (!formData.state.trim()) {
+      alert("Please select your State.")
+      return
+    }
+
+    if (!formData.city.trim()) {
+      alert("Please select your City.")
+      return
+    }
+
     const pincodeRegex = /^[0-9]{6}$/
-    if (!pincodeRegex.test(formData.pincode)) {
+    if (!pincodeRegex.test(formData.pincode.trim())) {
       alert("Please enter a valid 6-digit PIN code.")
       return
     }
 
     setLoading(true)
+
+    const houseNo = formData.houseNo.trim()
+    const street = formData.street.trim()
+    const landmark = formData.landmark.trim()
+    const combinedStreet = [houseNo, street].filter(Boolean).join(', ')
+    const landmarkText = landmark ? (/^(near|opp|opposite|behind|beside|adjacent)\b/i.test(landmark) ? landmark : `Near ${landmark}`) : ''
+    const fullAddress = [combinedStreet, landmarkText].filter(Boolean).join(', ') || formData.address.trim()
+
+    const customerPayload = {
+      ...formData,
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: cleanPhone,
+      houseNo,
+      street,
+      landmark,
+      addressLine1: combinedStreet || fullAddress,
+      addressLine2: landmark,
+      address: fullAddress,
+      city: formData.city.trim(),
+      state: formData.state.trim(),
+      pincode: formData.pincode.trim(),
+    }
+
+    // Save/update address immediately for logged-in user so it is securely remembered
+    if (user?.uid) {
+      saveAddress({
+        fullName: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: cleanPhone,
+        houseNo,
+        street,
+        landmark,
+        addressLine1: combinedStreet || fullAddress,
+        addressLine2: landmark,
+        address: fullAddress,
+        city: formData.city.trim(),
+        state: formData.state.trim(),
+        pincode: formData.pincode.trim(),
+      }).catch(() => {})
+    }
 
     try {
       if (paymentMethod === 'cod') {
@@ -170,7 +296,7 @@ export default function CheckoutClient() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             items,
-            customer: formData,
+            customer: customerPayload,
             totalAmount: total,
             shippingFee,
             firebaseUid: user?.uid
@@ -184,6 +310,26 @@ export default function CheckoutClient() {
         setSuccessOrderId(data.orderId)
         setSuccess(true)
         setLoading(false)
+        if (user?.uid) {
+          removeBrowserCache('outflank_orders_' + user.uid, 'session')
+        }
+
+        if (user?.uid) {
+          saveAddress({
+            fullName: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            houseNo,
+            street,
+            landmark,
+            addressLine1: combinedStreet || fullAddress,
+            addressLine2: landmark,
+            address: fullAddress,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode,
+          }).catch(() => {})
+        }
         return
       }
 
@@ -193,7 +339,7 @@ export default function CheckoutClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items,
-          customer: formData,
+          customer: customerPayload,
           totalAmount: total,
           shippingFee,
           firebaseUid: user?.uid
@@ -232,6 +378,26 @@ export default function CheckoutClient() {
             clearCart()
             setSuccessOrderId(data.internalOrderId)
             setSuccess(true)
+            if (user?.uid) {
+              removeBrowserCache('outflank_orders_' + user.uid, 'session')
+            }
+
+            if (user?.uid) {
+              saveAddress({
+                fullName: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                houseNo,
+                street,
+                landmark,
+                addressLine1: combinedStreet || fullAddress,
+                addressLine2: landmark,
+                address: fullAddress,
+                city: formData.city,
+                state: formData.state,
+                pincode: formData.pincode,
+              }).catch(() => {})
+            }
           } else {
             alert('Payment verification failed. Please contact support.')
           }
@@ -305,6 +471,32 @@ export default function CheckoutClient() {
               <h2 className="text-2xl font-bold text-[#1d1d1f] mb-6">Contact & Delivery</h2>
               
               <form id="checkout-form" onSubmit={handlePayment} className="space-y-5">
+                {/* User Pre-fill / Sign-in Banner */}
+                {user ? (
+                  isAddressPreFilled && (
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200/70 rounded-2xl flex items-center gap-2.5 text-xs text-emerald-900 font-medium">
+                      <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                      <span>
+                        Welcome back! Your delivery address has been auto-filled from your Outflank account.
+                      </span>
+                    </div>
+                  )
+                ) : (
+                  <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between gap-3 text-xs text-slate-700">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-[#1d1d1f]">Have an Outflank account?</span>
+                      <span className="hidden sm:inline text-slate-500">Sign in with WhatsApp or Google for saved addresses.</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={openAuthModal}
+                      className="px-3.5 py-1.5 bg-[#1d1d1f] hover:bg-black text-white font-bold rounded-xl text-xs transition-colors shrink-0 cursor-pointer"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+                )}
+
                 {/* Contact Info */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-bold text-[#1d1d1f] uppercase tracking-wider mb-2">Contact Information</h3>
@@ -318,8 +510,29 @@ export default function CheckoutClient() {
                       <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm" placeholder="+91 99999 99999" />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Email Address (For Order Updates)</label>
-                      <input required name="email" value={formData.email} onChange={handleInputChange} type="email" className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm" placeholder="john@example.com" />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-semibold text-[#86868b]">Email Address (For Order Updates) *</label>
+                        {isGoogleUser && (
+                          <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md flex items-center gap-1 border border-slate-200/80">
+                            <Lock size={10} className="text-slate-400" />
+                            <span>Google Account</span>
+                          </span>
+                        )}
+                      </div>
+                      <input
+                        required
+                        name="email"
+                        value={formData.email}
+                        readOnly={isGoogleUser}
+                        onChange={handleInputChange}
+                        type="email"
+                        className={`w-full h-11 px-4 rounded-xl border text-sm outline-none transition-all ${
+                          isGoogleUser
+                            ? 'bg-slate-100/80 border-black/5 text-slate-500 cursor-not-allowed select-none'
+                            : 'bg-[#fbfbfd] border-black/10 text-[#1d1d1f] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c]'
+                        }`}
+                        placeholder="john@example.com"
+                      />
                     </div>
                   </div>
                 </div>
@@ -329,9 +542,42 @@ export default function CheckoutClient() {
                 {/* Shipping Address */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-bold text-[#1d1d1f] uppercase tracking-wider mb-2">Shipping Address</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Flat / House No., Building Name *</label>
+                      <input
+                        required
+                        name="houseNo"
+                        value={formData.houseNo}
+                        onChange={handleInputChange}
+                        type="text"
+                        className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm"
+                        placeholder="e.g. Flat 402, Building 3"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Street, Road, Area, Sector *</label>
+                      <input
+                        required
+                        name="street"
+                        value={formData.street}
+                        onChange={handleInputChange}
+                        type="text"
+                        className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm"
+                        placeholder="e.g. 5th Main, Sector 14"
+                      />
+                    </div>
+                  </div>
                   <div>
-                    <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Complete Address</label>
-                    <textarea required name="address" value={formData.address} onChange={handleInputChange} rows={3} className="w-full p-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm resize-none" placeholder="House/Flat No., Street, Landmark"></textarea>
+                    <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Landmark (Optional / Near By)</label>
+                    <input
+                      name="landmark"
+                      value={formData.landmark}
+                      onChange={handleInputChange}
+                      type="text"
+                      className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm"
+                      placeholder="e.g. Opposite Metro Station, Near Apollo Hospital"
+                    />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="md:col-span-1">
@@ -347,6 +593,9 @@ export default function CheckoutClient() {
                       <label className="block text-xs font-semibold text-[#86868b] mb-1.5">City</label>
                       <select required name="city" value={formData.city} onChange={handleInputChange} disabled={!formData.stateCode} className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] focus:bg-white focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm appearance-none disabled:opacity-50">
                         <option value="">Select City</option>
+                        {formData.city && !cities.some(c => c.name.toLowerCase() === formData.city.toLowerCase()) && (
+                          <option value={formData.city}>{formData.city}</option>
+                        )}
                         {cities.map(city => (
                           <option key={city.name} value={city.name}>{city.name}</option>
                         ))}
@@ -367,6 +616,24 @@ export default function CheckoutClient() {
                         placeholder="110001"
                       />
                     </div>
+
+                    {user ? (
+                      <div className="md:col-span-3 flex items-center gap-2 pt-1 text-xs text-emerald-800 bg-emerald-50/80 border border-emerald-200/60 px-3.5 py-2.5 rounded-xl font-medium">
+                        <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
+                        <span>Address is linked to your Outflank account and automatically saved for future 1-click orders.</span>
+                      </div>
+                    ) : (
+                      <div className="md:col-span-3 flex items-center justify-between gap-2 pt-1 text-xs text-slate-600 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl">
+                        <span>Save this address to your account for future orders:</span>
+                        <button
+                          type="button"
+                          onClick={openAuthModal}
+                          className="text-[#e3231c] font-bold hover:underline cursor-pointer shrink-0"
+                        >
+                          Sign In / Register
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 

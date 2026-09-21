@@ -106,6 +106,51 @@ export async function POST(req: Request) {
       console.error('Non-fatal error: WhatsApp notification trigger failed', waError)
     }
 
+    // Sync customer profile and phone number to customers table if order has customer_uid
+    if (orderData.customer_uid) {
+      const cleanPhone = orderData.customer_phone ? orderData.customer_phone.replace(/\D/g, '').slice(-10) : null
+      let parsedAddr: any = {}
+      try {
+        parsedAddr = typeof orderData.shipping_address === 'string' ? JSON.parse(orderData.shipping_address) : orderData.shipping_address
+      } catch {}
+
+      const houseNo = parsedAddr?.houseNo || ''
+      const street = parsedAddr?.street || ''
+      const landmark = parsedAddr?.landmark || parsedAddr?.addressLine2 || ''
+      const addressLine1 = parsedAddr?.addressLine1 || (houseNo ? [houseNo, street].filter(Boolean).join(', ') : (parsedAddr?.address || ''))
+      const addressLine2 = landmark || parsedAddr?.addressLine2 || ''
+      const landmarkText = landmark ? (/^(near|opp|opposite|behind|beside|adjacent)\b/i.test(landmark) ? landmark : `Near ${landmark}`) : ''
+      const fullAddress = parsedAddr?.address || [addressLine1, landmarkText].filter(Boolean).join(', ')
+
+      try {
+        await supabase
+          .from('customers')
+          .upsert({
+            firebase_uid: orderData.customer_uid,
+            full_name: orderData.customer_name || null,
+            email: orderData.customer_email || null,
+            phone: cleanPhone || null,
+            shipping_address: {
+              fullName: orderData.customer_name,
+              phone: cleanPhone || orderData.customer_phone,
+              email: orderData.customer_email,
+              houseNo: houseNo || undefined,
+              street: street || undefined,
+              landmark: landmark || undefined,
+              addressLine1: addressLine1 || undefined,
+              addressLine2: addressLine2 || undefined,
+              address: fullAddress,
+              city: parsedAddr?.city || '',
+              state: parsedAddr?.state || '',
+              pincode: parsedAddr?.pincode || '',
+            },
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'firebase_uid' })
+      } catch (err: any) {
+        console.warn('[Verify payment] Could not sync customer profile:', err?.message || err)
+      }
+    }
+
     return NextResponse.json({ success: true })
 
   } catch (error: any) {

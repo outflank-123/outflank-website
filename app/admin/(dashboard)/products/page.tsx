@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: 'Products | Outflank Admin',
 }
 
+export const revalidate = 60
+
 export default async function AdminProductsPage() {
   const supabase = await createClient()
 

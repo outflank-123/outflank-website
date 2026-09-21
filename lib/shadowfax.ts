@@ -67,6 +67,7 @@ export interface ShadowfaxCreateOrderPayload {
   customerPhone: string
   customerEmail?: string
   addressLine1: string
+  addressLine2?: string
   city: string
   state: string
   pincode: string
@@ -95,6 +96,7 @@ export async function createShadowfaxOrder(payload: ShadowfaxCreateOrderPayload)
         name: payload.customerName,
         contact_number: payload.customerPhone,
         address_line_1: payload.addressLine1,
+        address_line_2: payload.addressLine2 || '',
         city: payload.city,
         state: payload.state,
         pincode: String(payload.pincode),

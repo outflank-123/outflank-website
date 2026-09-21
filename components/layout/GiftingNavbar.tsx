@@ -21,9 +21,8 @@ export default function GiftingNavbar() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { items, setIsCartOpen } = useCartStore()
-  const { user } = useAuth()
+  const { user, isAuthModalOpen, openAuthModal, closeAuthModal } = useAuth()
   const [mounted, setMounted] = useState(false)
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -95,7 +94,7 @@ export default function GiftingNavbar() {
               </Link>
             ) : (
               <button
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={openAuthModal}
                 className="p-2 text-[#1d1d1f] hover:bg-black/5 rounded-full transition-colors cursor-pointer"
                 aria-label="Sign In"
               >
@@ -126,7 +125,7 @@ export default function GiftingNavbar() {
           {/* Mobile CTA (optional) or just rely on bottom nav */}
         </div>
       </header>
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
     </>
   )
 }
