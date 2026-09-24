@@ -86,7 +86,9 @@ export default function GiftingFooter() {
               {[
                 { href: '/track', label: 'Track Order' },
                 { href: '/#why-outflank', label: 'Why Outflank' },
-                { href: '/#process', label: 'Our Process' },
+                { href: '/privacy-policy', label: 'Privacy Policy' },
+                { href: '/terms', label: 'Terms of Service' },
+                { href: '/privacy-policy#data-deletion', label: 'Data Deletion' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
@@ -106,11 +108,15 @@ export default function GiftingFooter() {
       <div className="border-t border-white/8">
         <div className="max-w-7xl mx-auto px-5 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-[#6e6e73]">
-            © {new Date().getFullYear()} Outflank. All rights reserved.
+            © {new Date().getFullYear()} Outflank Trading Pvt Ltd. All rights reserved.
           </p>
-          <p className="text-xs text-[#6e6e73]">
-            <em>get the better of</em>
-          </p>
+          <div className="flex items-center gap-4 text-xs text-[#6e6e73]">
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
+            <span>•</span>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <span>•</span>
+            <Link href="/privacy-policy#data-deletion" className="hover:text-white transition-colors">Data Deletion</Link>
+          </div>
         </div>
       </div>
     </footer>
