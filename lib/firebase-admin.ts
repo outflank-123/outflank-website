@@ -24,8 +24,10 @@ function initializeFirebaseAdmin(): App | null {
     }
 
     if (clientEmail && privateKey) {
-      // Fix escaped newlines in private key
+      // Clean up the private key (Vercel sometimes adds outer quotes or escapes newlines differently)
+      privateKey = privateKey.replace(/^"|"$/g, '');
       privateKey = privateKey.replace(/\\n/g, '\n');
+      
       return initializeApp({
         credential: cert({
           projectId,
