@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { validateCoupon } from '@/lib/coupons'
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
     })
 
     const body = await req.json()
-    const { items, customer, totalAmount, shippingFee, firebaseUid } = body
+    const { items, customer, totalAmount, shippingFee, firebaseUid, couponCode } = body
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
@@ -78,10 +79,30 @@ export async function POST(req: Request) {
       verifiedShippingFee = settings.flat_shipping_rate
     }
 
-    const verifiedTotalAmount = verifiedSubtotal + verifiedShippingFee
+    const verifiedSubtotalPlusShipping = verifiedSubtotal + verifiedShippingFee
 
-    // Safety check against frontend manipulation
-    if (Math.abs(verifiedTotalAmount - totalAmount) > 1) { // 1 rupee tolerance for float weirdness
+    // ── Coupon Validation ─────────────────────────────────────────────────
+    let couponDiscount = 0
+    let validatedCouponId: string | undefined
+    let validatedCouponCode: string | undefined
+
+    if (couponCode) {
+      const couponResult = await validateCoupon({
+        code: couponCode,
+        cartTotal: verifiedSubtotalPlusShipping,
+        customerPhone: customer.phone,
+      })
+      if (!couponResult.valid) {
+        return NextResponse.json({ error: `Coupon error: ${couponResult.error}` }, { status: 400 })
+      }
+      couponDiscount = couponResult.discountAmount ?? 0
+      validatedCouponId = couponResult.couponId
+      validatedCouponCode = couponResult.code
+    }
+
+    const verifiedTotalAmount = Math.max(0, verifiedSubtotalPlusShipping - couponDiscount)
+
+    if (Math.abs(verifiedTotalAmount - totalAmount) > 2) {
       console.warn(`Price mismatch detected. Expected: ${verifiedTotalAmount}, Got: ${totalAmount}`)
       return NextResponse.json({ error: 'Cart total mismatch. Please refresh and try again.' }, { status: 400 })
     }
@@ -121,6 +142,8 @@ export async function POST(req: Request) {
       shipping_address: JSON.stringify(shippingAddressJson),
       total_amount: verifiedTotalAmount,
       shipping_fee: verifiedShippingFee,
+      coupon_code: validatedCouponCode || null,
+      coupon_discount: couponDiscount,
       payment_method: 'razorpay',
       status: 'pending',
       customer_uid: firebaseUid || null,
@@ -256,6 +279,8 @@ export async function POST(req: Request) {
       currency: razorpayOrder.currency,
       razorpayOrderId: razorpayOrder.id,
       internalOrderId: internalOrderId,
+      couponId: validatedCouponId || null,
+      couponDiscount: couponDiscount,
     })
 
   } catch (error: any) {

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import Script from 'next/script'
-import { ChevronLeft, Lock, Loader2, CheckCircle2, Wallet, CreditCard, FileText } from 'lucide-react'
+import { ChevronLeft, Lock, Loader2, CheckCircle2, Wallet, CreditCard, FileText, Tag, X, Paintbrush } from 'lucide-react'
 import { useCartStore } from '@/lib/store/useCartStore'
 import { useAuth } from '@/lib/AuthContext'
 import { State, City } from 'country-state-city'
@@ -47,6 +47,14 @@ export default function CheckoutClient() {
 
   const [paymentMethod, setPaymentMethod] = useState<'razorpay' | 'cod'>('razorpay')
 
+  // Coupon state
+  const [couponInput, setCouponInput] = useState('')
+  const [couponApplied, setCouponApplied] = useState<{
+    code: string; discountAmount: number; type: string; value: number
+  } | null>(null)
+  const [couponLoading, setCouponLoading] = useState(false)
+  const [couponError, setCouponError] = useState('')
+
   const states = State.getStatesOfCountry('IN')
   const cities = formData.stateCode ? City.getCitiesOfState('IN', formData.stateCode) : []
 
@@ -61,6 +69,8 @@ export default function CheckoutClient() {
   }
 
   const total = subtotal + shippingFee
+  const couponDiscount = couponApplied?.discountAmount ?? 0
+  const finalTotal = Math.max(0, total - couponDiscount)
   const isCodAvailable = Boolean(settings?.is_cod_enabled && subtotal >= (settings?.cod_min_amount || 0))
   const isGoogleUser = Boolean(user && (customerProfile?.auth_provider === 'google' || user?.providerData?.some(p => p.providerId === 'google.com')))
 
@@ -69,12 +79,52 @@ export default function CheckoutClient() {
     fetchSettings()
   }, [])
 
-  // Reset payment method if COD becomes unavailable (unconditionally at the top level)
+  // Reset payment method if COD becomes unavailable
   useEffect(() => {
     if (!isCodAvailable && paymentMethod === 'cod') {
       setPaymentMethod('razorpay')
     }
   }, [isCodAvailable, paymentMethod])
+
+  const applyCoupon = async () => {
+    if (!couponInput.trim()) return
+    setCouponLoading(true)
+    setCouponError('')
+    try {
+      const res = await fetch('/api/coupons/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: couponInput.trim(),
+          cartTotal: total,
+          customerPhone: formData.phone || undefined,
+        }),
+      })
+      const data = await res.json()
+      if (data.valid) {
+        setCouponApplied({
+          code: data.code,
+          discountAmount: data.discountAmount,
+          type: data.type,
+          value: data.value,
+        })
+        setCouponError('')
+      } else {
+        setCouponError(data.error || 'Invalid coupon code.')
+        setCouponApplied(null)
+      }
+    } catch {
+      setCouponError('Could not apply coupon. Please try again.')
+    } finally {
+      setCouponLoading(false)
+    }
+  }
+
+  const removeCoupon = () => {
+    setCouponApplied(null)
+    setCouponInput('')
+    setCouponError('')
+  }
 
   // Auto-fill address and customer contact info if customer is logged in
   useEffect(() => {
@@ -298,8 +348,9 @@ export default function CheckoutClient() {
           body: JSON.stringify({
             items,
             customer: customerPayload,
-            totalAmount: total,
+            totalAmount: finalTotal,
             shippingFee,
+            couponCode: couponApplied?.code || undefined,
             firebaseUid: user?.uid
           }),
         })
@@ -341,8 +392,9 @@ export default function CheckoutClient() {
         body: JSON.stringify({
           items,
           customer: customerPayload,
-          totalAmount: total,
+          totalAmount: finalTotal,
           shippingFee,
+          couponCode: couponApplied?.code || undefined,
           firebaseUid: user?.uid
         }),
       })
@@ -370,6 +422,7 @@ export default function CheckoutClient() {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               internal_order_id: data.internalOrderId,
+              coupon_id: data.couponId || undefined,
             }),
           })
           
@@ -704,12 +757,64 @@ export default function CheckoutClient() {
                       <div className="flex-1">
                         <h4 className="font-semibold text-xs text-[#1d1d1f] line-clamp-2">{item.name}</h4>
                         {item.colorName && <div className="text-[10px] text-[#86868b] mt-0.5">{item.colorName}</div>}
+                        {(item.customBranding || item.customization) && (
+                          <div className="text-[10px] text-[#0066FF] font-semibold mt-1 flex items-center gap-1 bg-blue-50/70 w-fit px-1.5 py-0.5 rounded">
+                            <Paintbrush size={10} />
+                            <span className="truncate max-w-[120px]">
+                              {item.customBranding?.brandText || item.customBranding?.customizationLabel || item.customization || 'Customized'}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div className="font-bold text-sm text-[#1d1d1f]">
                         ₹{(item.price * item.quantity).toLocaleString('en-IN')}
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Coupon Code Input */}
+                <div className="mb-6">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Tag size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#86868b]" />
+                      <input
+                        type="text"
+                        value={couponApplied ? couponApplied.code : couponInput}
+                        onChange={e => { setCouponInput(e.target.value.toUpperCase()); setCouponError('') }}
+                        onKeyDown={e => e.key === 'Enter' && !couponApplied && applyCoupon()}
+                        disabled={!!couponApplied}
+                        placeholder="Coupon code"
+                        className="w-full pl-8 pr-3 py-2.5 text-sm border border-black/10 rounded-xl bg-[#f5f5f7] focus:outline-none focus:border-[#e3231c] disabled:opacity-60 font-medium uppercase tracking-wider"
+                      />
+                    </div>
+                    {couponApplied ? (
+                      <button
+                        type="button"
+                        onClick={removeCoupon}
+                        className="px-4 py-2.5 rounded-xl bg-red-50 text-[#e3231c] text-sm font-semibold flex items-center gap-1.5 hover:bg-red-100 transition-colors"
+                      >
+                        <X size={14} /> Remove
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={applyCoupon}
+                        disabled={couponLoading || !couponInput.trim()}
+                        className="px-4 py-2.5 rounded-xl bg-[#1d1d1f] text-white text-sm font-semibold hover:bg-black/80 transition-colors disabled:opacity-50 min-w-[80px] flex items-center justify-center"
+                      >
+                        {couponLoading ? <Loader2 size={14} className="animate-spin" /> : 'Apply'}
+                      </button>
+                    )}
+                  </div>
+                  {couponError && (
+                    <p className="mt-1.5 text-xs text-[#e3231c] font-medium">{couponError}</p>
+                  )}
+                  {couponApplied && (
+                    <p className="mt-1.5 text-xs text-[#34c759] font-semibold flex items-center gap-1">
+                      <CheckCircle2 size={12} /> Coupon applied! You save ₹{couponApplied.discountAmount.toLocaleString('en-IN')}
+                    </p>
+                  )}
                 </div>
 
                 <hr className="border-black/5 mb-6" />
@@ -728,9 +833,15 @@ export default function CheckoutClient() {
                       <span className="font-semibold text-[#1d1d1f]">₹{shippingFee.toLocaleString('en-IN')}</span>
                     )}
                   </div>
+                  {couponApplied && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#34c759] font-medium">Discount ({couponApplied.code})</span>
+                      <span className="font-semibold text-[#34c759]">-₹{couponApplied.discountAmount.toLocaleString('en-IN')}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center pt-3 border-t border-black/5">
                     <span className="font-bold text-base text-[#1d1d1f]">Total</span>
-                    <span className="font-bold text-2xl text-[#1d1d1f]">₹{total.toLocaleString('en-IN')}</span>
+                    <span className="font-bold text-2xl text-[#1d1d1f]">₹{finalTotal.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
 
@@ -747,9 +858,9 @@ export default function CheckoutClient() {
                       Processing...
                     </>
                   ) : paymentMethod === 'razorpay' ? (
-                    <>Pay Securely (₹{total.toLocaleString('en-IN')})</>
+                    <>Pay Securely (₹{finalTotal.toLocaleString('en-IN')})</>
                   ) : (
-                    <>Place COD Order (₹{total.toLocaleString('en-IN')})</>
+                    <>Place COD Order (₹{finalTotal.toLocaleString('en-IN')})</>
                   )}
                 </button>
                 <div className="text-center mt-3 text-[10px] text-[#86868b] flex items-center justify-center gap-1">

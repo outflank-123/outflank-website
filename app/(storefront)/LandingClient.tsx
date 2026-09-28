@@ -376,6 +376,21 @@ export default function LandingClient({
                 const currentMode = mounted ? shoppingMode : 'retail'
                 const isRetailAllowed = product.is_retail !== false && (product.branding_config as any)?._is_retail !== false
 
+                const isTShirt = product.categories?.slug?.toLowerCase().includes('t-shirt') || product.categories?.name?.toLowerCase().includes('t-shirt') || false
+                
+                let retailPrice = product.base_price
+                let mrpPrice = product.base_price ? Math.round(product.base_price * 1.25) : null
+              
+                if (isTShirt && product.base_price) {
+                  mrpPrice = product.base_price
+                  if (product.base_price === 359) retailPrice = 299
+                  else if (product.base_price === 469) retailPrice = 399
+                  else if (product.base_price === 599) retailPrice = 499
+                  else if (product.base_price === 719) retailPrice = 599
+                  else if (product.base_price === 959) retailPrice = 799
+                  else retailPrice = Math.round(product.base_price / 1.2)
+                }
+
                 return (
                   <motion.div
                     key={product.id}
@@ -427,10 +442,17 @@ export default function LandingClient({
                         <div className="flex items-center justify-between mt-auto pt-2 border-t border-black/5">
                           <div className="flex flex-col">
                             {currentMode === 'retail' && isRetailAllowed ? (
-                              product.base_price ? (
-                                <span className="text-sm font-bold text-[#1d1d1f]">
-                                  ₹{product.base_price.toLocaleString('en-IN')}
-                                </span>
+                              retailPrice ? (
+                                <div className="flex items-baseline gap-1.5">
+                                  <span className="text-sm font-bold text-[#34c759]">
+                                    ₹{retailPrice.toLocaleString('en-IN')}
+                                  </span>
+                                  {mrpPrice && (
+                                    <span className="text-[10px] text-[#86868b] line-through">
+                                      ₹{mrpPrice.toLocaleString('en-IN')}
+                                    </span>
+                                  )}
+                                </div>
                               ) : (
                                 <span className="text-xs text-[#86868b]">Price on Request</span>
                               )
@@ -572,7 +594,7 @@ export default function LandingClient({
       {/* ═══════════════════════════════════════════════
           PROCESS SECTION (Sticky Scroll)
       ═══════════════════════════════════════════════ */}
-      <section id="process" className="py-20 md:py-32 px-5 md:px-8 bg-[#fbfbfd]">
+      <section id="process" className="py-24 md:py-32 px-5 md:px-8 bg-[#f5f5f7]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -580,33 +602,41 @@ export default function LandingClient({
             viewport={{ once: true }}
             className="text-center mb-16 md:mb-24"
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#e3231c] mb-3">How It Works</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1d1d1f] tracking-tight-xl">
-              Simple. Seamless. Stunning.
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#0066FF] mb-3">How It Works</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1d1d1f] tracking-tight mb-4">
+              Simple. Seamless. <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0066FF] to-[#3B82F6]">Stunning.</span>
             </h2>
+            <p className="text-lg text-[#6e6e73] max-w-2xl mx-auto font-medium">
+              We've streamlined the entire gifting process. It takes just minutes to build your perfect custom merchandise package.
+            </p>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row gap-12 lg:gap-20 relative items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative items-start">
             {/* Sticky Visual Column */}
-            <div className="w-full md:w-1/2 md:sticky top-32 h-[400px] md:h-[600px] rounded-[32px] overflow-hidden bg-[#1d1d1f] shadow-2xl order-2 md:order-1 relative group">
+            <div className="md:sticky top-32 h-[320px] md:h-[650px] rounded-[32px] md:rounded-[40px] overflow-hidden bg-black shadow-2xl order-2 md:order-1 relative group transform-gpu">
               <Image 
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1000&auto=format&fit=crop" 
-                alt="Corporate Gifting Process" fill className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000" unoptimized
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop" 
+                alt="Corporate Gifting Process" fill className="object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000" unoptimized
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 w-full p-8">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-white mb-4 border border-white/20">
-                  <Star size={14} className="fill-white" />
-                  <span className="text-sm font-semibold tracking-wide">End-to-End Service</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <div className="w-[300px] h-[300px] bg-[#0066FF]/20 blur-[80px] rounded-full mix-blend-screen transition-opacity opacity-0 group-hover:opacity-100 duration-1000" />
+              </div>
+
+              <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-xl px-4 md:px-5 py-2 md:py-2.5 text-white mb-4 md:mb-6 border border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+                  <Star size={14} className="text-[#60A5FA] fill-[#60A5FA]" />
+                  <span className="text-xs md:text-sm font-bold tracking-wide">End-to-End Service</span>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white leading-snug">
+                <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15] md:leading-[1.1] tracking-tight">
                   From concept to delivery, we handle the heavy lifting.
                 </h3>
               </div>
             </div>
 
             {/* Scrollable Steps Column */}
-            <div className="w-full md:w-1/2 flex flex-col gap-12 md:gap-32 py-10 order-1 md:order-2">
+            <div className="flex flex-col gap-6 md:gap-8 py-10 order-1 md:order-2">
               {[
                 { step: '01', title: 'Browse the Catalog', desc: 'Explore our 500+ products across 17 categories. Filter by use-case, category or budget.' },
                 { step: '02', title: 'Customize Online', desc: 'Use our interactive Customizer Studio to add your logo, custom text, and color choices with live real-time previews.' },
@@ -615,24 +645,22 @@ export default function LandingClient({
               ].map((step, i) => (
                 <motion.div
                   key={step.step}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ margin: "-20% 0px -20% 0px", once: false }}
-                  transition={{ duration: 0.5 }}
-                  className="flex flex-col gap-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ margin: "-10% 0px -10% 0px", once: false }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="relative bg-white rounded-[28px] md:rounded-[32px] p-6 md:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/5 hover:border-black/10 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-300 group overflow-hidden"
                 >
-                  <span className="text-6xl md:text-8xl font-black text-black/10 leading-none -mb-8 md:-mb-12">
-                    {step.step}
-                  </span>
-                  <h3 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] relative z-10">{step.title}</h3>
-                  <p className="text-lg text-[#6e6e73] leading-relaxed relative z-10">{step.desc}</p>
+                  <div className="absolute top-0 right-0 p-8 pointer-events-none opacity-[0.02] group-hover:opacity-[0.04] transition-opacity duration-500 group-hover:scale-110 transform-gpu origin-top-right">
+                    <span className="text-9xl font-black">{step.step}</span>
+                  </div>
                   
-                  {/* Connecting Arrow */}
-                  {i !== 3 && (
-                    <div className="hidden md:flex justify-start pt-6 -mb-6 relative z-10">
-                      <ArrowDown size={32} className="text-black/15" strokeWidth={1.5} />
-                    </div>
-                  )}
+                  <div className="w-14 h-14 rounded-2xl bg-[#0066FF]/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-xl font-bold text-[#0066FF]">{step.step}</span>
+                  </div>
+                  
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#1d1d1f] mb-3 relative z-10 tracking-tight">{step.title}</h3>
+                  <p className="text-base md:text-lg text-[#6e6e73] leading-relaxed relative z-10 font-medium">{step.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -643,57 +671,75 @@ export default function LandingClient({
       {/* ═══════════════════════════════════════════════
           BOTTOM CTA
       ═══════════════════════════════════════════════ */}
-      <section className="py-20 md:py-28 px-5 md:px-8 bg-[#1d1d1f] relative overflow-hidden">
-        {/* Red glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#e3231c]/25 blur-[100px] pointer-events-none" />
+      <section className="py-24 md:py-32 px-5 md:px-8 relative overflow-hidden bg-black">
+        {/* Dynamic mesh gradients */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] rounded-full bg-[#0066FF]/20 blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
+          <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-[#3B82F6]/20 blur-[120px] mix-blend-screen animate-pulse" style={{ animationDuration: '10s' }} />
+          <div className="absolute top-[20%] left-[20%] w-[40%] h-[40%] rounded-full bg-[#60A5FA]/10 blur-[100px] mix-blend-screen" />
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto text-center relative z-10"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl mx-auto relative z-10"
         >
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#e3231c] mb-4">Ready to Impress?</p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight-xl mb-6">
-            Start Building Your{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e3231c] to-[#ff6b35]">
-              Gifting Strategy
-            </span>
-          </h2>
-          <p className="text-lg text-white/60 mb-10 max-w-xl mx-auto">
-            Browse 500+ curated products and get a quote in under 24 hours. 
-            No commitments, just possibilities.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/products"
-              id="bottom-cta-catalog"
-              className="group inline-flex items-center gap-2 rounded-full bg-[#e3231c] text-white px-8 py-4 text-base font-semibold hover:bg-[#ff4038] transition-all duration-200 hover:scale-[1.03] shadow-[0_4px_24px_rgba(227,35,28,0.40)]"
-            >
-              Explore the Catalog
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <a
-              href="https://wa.me/919999926273?text=Hi!%20I'd%20like%20to%20discuss%20corporate%20gifting."
-              target="_blank"
-              rel="noopener noreferrer"
-              id="bottom-cta-whatsapp"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 text-white/90 px-8 py-4 text-base font-semibold hover:bg-white/8 transition-all duration-200"
-            >
-              WhatsApp Us
-            </a>
-          </div>
+          <div className="bg-white/5 backdrop-blur-2xl rounded-[32px] md:rounded-[48px] border border-white/10 p-6 sm:p-10 md:p-20 text-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden relative group">
+            
+            <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-          {/* Client logos / social proof strip */}
-          <div className="mt-14 pt-10 border-t border-white/10">
-            <p className="text-xs text-white/40 uppercase tracking-widest mb-6">Trusted by teams at</p>
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              {['Enterprise Corp', 'StartupXYZ', 'MedTech Co', 'RetailBrand'].map((name) => (
-                <div key={name} className="flex items-center gap-2">
-                  <Building2 size={16} className="text-white/25" />
-                  <span className="text-sm text-white/30 font-medium">{name}</span>
-                </div>
-              ))}
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#0066FF]/20 border border-[#0066FF]/30 px-3 md:px-4 py-1.5 mb-6 md:mb-8">
+              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#60A5FA] animate-pulse" />
+              <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-[#60A5FA]">Ready to Impress?</p>
+            </div>
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tight leading-[1.15] md:leading-[1.1] mb-4 md:mb-6">
+              Start Building Your{' '}
+              <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-[#60A5FA] via-[#3B82F6] to-[#0066FF]">
+                Gifting Strategy
+              </span>
+            </h2>
+            
+            <p className="text-base md:text-xl text-white/60 mb-8 md:mb-12 max-w-2xl mx-auto font-medium">
+              Browse 500+ curated products and get a quote in under 24 hours. 
+              No commitments, just possibilities.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+              <Link
+                href="/products"
+                id="bottom-cta-catalog"
+                className="group relative flex items-center justify-center gap-2 rounded-full bg-[#0066FF] text-white px-8 md:px-10 py-4 md:py-5 text-base md:text-lg font-bold hover:bg-[#0052cc] transition-all duration-300 hover:scale-[1.02] shadow-[0_8px_24px_rgba(0,102,255,0.4)] overflow-hidden w-full sm:w-auto"
+              >
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Explore the Catalog
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Link>
+              <a
+                href="https://wa.me/919999926273?text=Hi!%20I'd%20like%20to%20discuss%20corporate%20gifting."
+                target="_blank"
+                rel="noopener noreferrer"
+                id="bottom-cta-whatsapp"
+                className="group relative flex items-center justify-center gap-2 rounded-full border-2 border-white/20 bg-white/5 text-white px-8 md:px-10 py-4 md:py-5 text-base md:text-lg font-bold hover:bg-white/10 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] w-full sm:w-auto backdrop-blur-md"
+              >
+                <span className="relative z-10">WhatsApp Us</span>
+              </a>
+            </div>
+
+            <div className="mt-16 md:mt-20 pt-8 border-t border-white/10">
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-6 font-bold">Trusted by top teams</p>
+              <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+                {['Enterprise Corp', 'StartupXYZ', 'MedTech Co', 'RetailBrand'].map((name) => (
+                  <div key={name} className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300 cursor-default">
+                    <Building2 size={20} className="text-white" />
+                    <span className="text-sm md:text-base text-white font-bold">{name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>

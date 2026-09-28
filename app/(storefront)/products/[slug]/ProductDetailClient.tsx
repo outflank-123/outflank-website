@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -40,12 +40,79 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const isRetailAllowed = product.is_retail !== false
   const isCustomizable = product.is_customizable !== false
   const variants: ColorVariant[] = product.color_variants ?? []
+  const isTShirt = product.categories?.slug?.toLowerCase().includes('t-shirt') || product.categories?.name?.toLowerCase().includes('t-shirt') || false
+  
+  let retailPrice = product.base_price
+  let mrpPrice = product.base_price ? Math.round(product.base_price * 1.25) : null
+
+  if (isTShirt && product.base_price) {
+    mrpPrice = product.base_price
+    if (product.base_price === 359) retailPrice = 299
+    else if (product.base_price === 469) retailPrice = 399
+    else if (product.base_price === 599) retailPrice = 499
+    else if (product.base_price === 719) retailPrice = 599
+    else if (product.base_price === 959) retailPrice = 799
+    else retailPrice = Math.round(product.base_price / 1.2)
+  }
   const [activeVariant, setActiveVariant] = useState(0)
   const [activeImage, setActiveImage] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [zoomLevel, setZoomLevel] = useState(1)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [customText, setCustomText] = useState('')
+  const [customLogoBase64, setCustomLogoBase64] = useState<string | null>(null)
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomText(e.target.value)
+    if (e.target.value) {
+      setCustomLogoBase64(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setCustomText('')
+      
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const img = new window.Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let { width, height } = img
+          const max_size = 800
+
+          if (width > height) {
+            if (width > max_size) {
+              height = Math.round(height * max_size / width)
+              width = max_size
+            }
+          } else {
+            if (height > max_size) {
+              width = Math.round(width * max_size / height)
+              height = max_size
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          ctx?.drawImage(img, 0, 0, width, height)
+          
+          setCustomLogoBase64(canvas.toDataURL('image/webp', 0.8))
+        }
+        img.src = event.target?.result as string
+      }
+      reader.readAsDataURL(file)
+    } else {
+      setCustomLogoBase64(null)
+    }
+  }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -132,15 +199,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   }
 
   const handleAddToCart = () => {
+    let customBranding: any = undefined;
+    
+    if (isCustomizable && (customText || customLogoBase64)) {
+      customBranding = {
+        isCustomized: true,
+        brandText: customText,
+        logoUrl: customLogoBase64 || undefined
+      }
+    }
+
     addItem({
       productId: product.id,
       name: product.name,
       slug: product.slug,
-      price: product.base_price || 0,
+      price: retailPrice || 0,
       quantity,
       colorName: currentVariant?.name,
       imageUrl: mainImage || undefined,
-    })
+      customBranding
+    } as any)
     setIsCartOpen(true)
   }
 
@@ -374,10 +452,17 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                 {/* Pricing Display */}
                 {!isBulkMode ? (
-                  product.base_price && (
+                  retailPrice && (
                     <div className="mb-6">
-                      <div className="text-3xl font-bold text-[#1d1d1f]">
-                        ₹{product.base_price.toLocaleString('en-IN')}
+                      <div className="flex items-end gap-3">
+                        <div className="text-3xl font-bold text-[#34c759]">
+                          ₹{retailPrice.toLocaleString('en-IN')}
+                        </div>
+                        {mrpPrice && (
+                          <div className="text-lg font-medium text-[#86868b] line-through mb-1">
+                            ₹{mrpPrice.toLocaleString('en-IN')}
+                          </div>
+                        )}
                       </div>
                       <div className="text-sm text-[#86868b] mt-1">Incl. of all taxes</div>
                     </div>
@@ -410,45 +495,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 </motion.div>
               )}
 
-              {/* ── Customization Info Banner ── */}
-              {isCustomizable && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-                  className="mb-8 p-4.5 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50/90 via-white to-blue-50/50 border border-[#0066FF]/20 shadow-2xs space-y-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#0066FF] text-white flex items-center justify-center shadow-xs">
-                        <Paintbrush size={14} />
-                      </div>
-                      <span className="text-xs font-bold text-gray-900 uppercase tracking-wider">
-                        Custom Logo & Text Branding
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#0066FF] bg-[#0066FF]/10 px-2.5 py-0.5 rounded-full border border-[#0066FF]/20">
-                      Studio Available
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Personalize this garment with your company logo, employee names, or custom graphics in our interactive design studio. High-definition screen print & embroidery options.
-                  </p>
-
-                  <div className="pt-1 flex items-center gap-2 sm:gap-3 text-[11px] font-semibold text-gray-700 flex-wrap">
-                    <span className="flex items-center gap-1 text-emerald-700">
-                      <Check size={13} className="text-emerald-600" /> WebP High-Res Print Ready
-                    </span>
-                    <span className="hidden sm:inline">•</span>
-                    <span>Multi-Color Printing</span>
-                    <span className="hidden sm:inline">•</span>
-                    <span>Left Chest & Front</span>
-                  </div>
-                </motion.div>
-              )}
-
-
               {/* ── Action Sections: Retail & Bulk ── */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
@@ -457,9 +503,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 className="flex flex-col gap-6"
               >
                 {isRetailAllowed && !isBulkMode ? (
-                  <div className="bg-white p-5 rounded-3xl border border-black/8 shadow-sm">
+                  <div className="bg-white p-5 rounded-3xl border border-black/8 shadow-sm flex flex-col gap-5">
                     {/* Quantity Selector */}
-                    <div className="flex items-center justify-between mb-4 pb-4 border-b border-black/6">
+                    <div className="flex items-center justify-between pb-4 border-b border-black/6">
                       <label className="text-xs font-semibold text-[#86868b] uppercase tracking-wider">Quantity</label>
                       <div className="flex items-center bg-[#f5f5f7] rounded-full p-1 border border-black/5">
                         <button 
@@ -480,38 +526,57 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       </div>
                     </div>
 
-                    {/* Dual Action CTAs */}
-                    {isCustomizable ? (
-                      <div className="flex flex-col sm:flex-row gap-3">
-                        <Link
-                          href={`/customize/${product.slug}?color=${encodeURIComponent(currentVariant?.hex || '')}`}
-                          className="flex-1 flex items-center justify-center gap-2 h-[50px] rounded-full bg-[#0066FF] hover:bg-[#0052cc] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-[0.98] transition-all cursor-pointer"
-                        >
-                          <Paintbrush size={16} />
-                          <span>Customize & Add Logo</span>
-                        </Link>
-
-                        <button
-                          type="button"
-                          onClick={handleAddToCart}
-                          disabled={!product.base_price}
-                          className="flex items-center justify-center gap-2 h-[50px] px-5 rounded-full bg-white text-[#1d1d1f] font-bold text-sm border border-black/15 hover:border-black/30 hover:bg-[#f5f5f7] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
-                        >
-                          <ShoppingCart size={16} />
-                          <span>Buy Plain {product.base_price ? `(₹${product.base_price})` : ''}</span>
-                        </button>
+                    {/* Custom Branding Inputs */}
+                    {isCustomizable && (
+                      <div className="flex flex-col gap-4 pb-4 border-b border-black/6">
+                        <div>
+                          <label className="block text-xs font-semibold text-[#86868b] uppercase tracking-wider mb-2">
+                            Add Custom Text (Optional)
+                          </label>
+                          <input 
+                            type="text"
+                            placeholder="Enter text here..."
+                            value={customText}
+                            onChange={handleTextChange}
+                            className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-[#86868b] uppercase tracking-wider mb-2">
+                            Upload Logo (Optional)
+                          </label>
+                          <input 
+                            type="file"
+                            accept="image/*"
+                            ref={fileInputRef}
+                            onChange={handleLogoUpload}
+                            className="block w-full text-sm text-[#86868b]
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-full file:border-0
+                              file:text-xs file:font-semibold
+                              file:bg-[#f5f5f7] file:text-[#1d1d1f]
+                              hover:file:bg-[#e8e8ed]
+                              cursor-pointer"
+                          />
+                          {customLogoBase64 && (
+                            <div className="mt-2 text-xs font-semibold text-[#34c759] flex items-center gap-1">
+                              <Check size={14} /> Logo uploaded successfully
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleAddToCart}
-                        disabled={!product.base_price}
-                        className="w-full flex items-center justify-center gap-2 h-[50px] rounded-full bg-[#1d1d1f] text-white font-bold text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
-                      >
-                        <ShoppingCart size={16} />
-                        <span>{product.base_price ? 'Add to Cart' : 'Price Unavailable'}</span>
-                      </button>
                     )}
+
+                    {/* Add to Cart CTA */}
+                    <button
+                      type="button"
+                      onClick={handleAddToCart}
+                      disabled={!product.base_price}
+                      className="w-full flex items-center justify-center gap-2 h-[50px] rounded-full bg-[#1d1d1f] text-white font-bold text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
+                    >
+                      <ShoppingCart size={16} />
+                      <span>{product.base_price ? 'Add to Cart' : 'Price Unavailable'}</span>
+                    </button>
                   </div>
                 ) : (
                   <div className="bg-[#fcf5f5] p-5 rounded-3xl border border-[#e3231c]/10 shadow-sm relative overflow-hidden">
@@ -520,15 +585,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     </div>
                     <div className="relative z-10">
                       <div className="flex flex-col gap-3">
-                        {isCustomizable && (
-                          <Link
-                            href={`/customize/${product.slug}?color=${encodeURIComponent(currentVariant?.hex || '')}`}
-                            className="w-full flex items-center justify-center gap-2 h-[48px] rounded-full bg-[#0066FF] text-white font-bold text-sm shadow-md hover:bg-[#0052cc] active:scale-[0.98] transition-all cursor-pointer"
-                          >
-                            <Paintbrush size={16} />
-                            <span>Design Sample in Customizer Studio</span>
-                          </Link>
-                        )}
+                        {/* Design Sample button removed as requested */}
 
                         <button
                           type="button"

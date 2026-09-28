@@ -65,6 +65,8 @@ export async function sendOrderConfirmationEmail(orderDetails: {
   customerEmail: string;
   amount: number;
   shippingFee: number;
+  couponCode?: string;
+  couponDiscount?: number;
   paymentMethod: string;
   items: OrderItem[];
   shippingAddress: string;
@@ -180,12 +182,17 @@ export async function sendOrderConfirmationEmail(orderDetails: {
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 24px;">
                       <tr>
                         <td style="padding: 8px 0; color: #86868b; font-size: 15px;">Subtotal</td>
-                        <td style="padding: 8px 0; text-align: right; color: #1d1d1f; font-size: 15px;">₹${(orderDetails.amount - orderDetails.shippingFee).toLocaleString('en-IN')}</td>
+                        <td style="padding: 8px 0; text-align: right; color: #1d1d1f; font-size: 15px;">₹${(orderDetails.amount + (orderDetails.couponDiscount || 0) - orderDetails.shippingFee).toLocaleString('en-IN')}</td>
                       </tr>
                       <tr>
                         <td style="padding: 8px 0; color: #86868b; font-size: 15px;">Shipping</td>
                         <td style="padding: 8px 0; text-align: right; color: #1d1d1f; font-size: 15px;">${orderDetails.shippingFee > 0 ? `₹${orderDetails.shippingFee.toLocaleString('en-IN')}` : 'Free'}</td>
                       </tr>
+                      ${orderDetails.couponCode && (orderDetails.couponDiscount || 0) > 0 ? `
+                      <tr>
+                        <td style="padding: 8px 0; color: #059669; font-size: 15px; font-weight: 600;">Discount (${orderDetails.couponCode}) 🎉</td>
+                        <td style="padding: 8px 0; text-align: right; color: #059669; font-size: 15px; font-weight: 600;">-₹${(orderDetails.couponDiscount || 0).toLocaleString('en-IN')}</td>
+                      </tr>` : ''}
                       <tr>
                         <td style="padding: 16px 0 0; color: #1d1d1f; font-size: 18px; font-weight: 600;">Total</td>
                         <td style="padding: 16px 0 0; text-align: right; color: #1d1d1f; font-size: 18px; font-weight: 600;">₹${orderDetails.amount.toLocaleString('en-IN')}</td>

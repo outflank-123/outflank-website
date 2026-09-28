@@ -52,6 +52,20 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const currentImages = variants[activeVariant]?.images ?? []
   const displayImage = currentImages[0] ?? product.primary_image_url ?? null
 
+  const isTShirt = product.categories?.slug?.toLowerCase().includes('t-shirt') || product.categories?.name?.toLowerCase().includes('t-shirt') || false
+  
+  let retailPrice = product.base_price
+  let mrpPrice = product.base_price ? Math.round(product.base_price * 1.25) : null
+
+  if (isTShirt && product.base_price) {
+    mrpPrice = product.base_price
+    if (product.base_price === 359) retailPrice = 299
+    else if (product.base_price === 469) retailPrice = 399
+    else if (product.base_price === 599) retailPrice = 499
+    else if (product.base_price === 719) retailPrice = 599
+    else if (product.base_price === 959) retailPrice = 799
+    else retailPrice = Math.round(product.base_price / 1.2)
+  }
   return (
     <>
       <motion.article
@@ -137,9 +151,16 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               {currentMode === 'retail' && isRetailAllowed ? (
                 product.base_price ? (
                   <>
-                    <span className="text-sm md:text-base font-bold text-[#1d1d1f]">
-                      ₹{product.base_price.toLocaleString('en-IN')}
-                    </span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-sm md:text-base font-bold text-[#34c759]">
+                        ₹{retailPrice?.toLocaleString('en-IN')}
+                      </span>
+                      {mrpPrice && (
+                        <span className="text-[10px] md:text-xs text-[#86868b] line-through">
+                          ₹{mrpPrice.toLocaleString('en-IN')}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[10px] text-[#86868b]">Retail price</span>
                   </>
                 ) : (

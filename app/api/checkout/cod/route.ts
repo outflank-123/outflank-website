@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendOrderConfirmationEmail } from '@/lib/email'
 import { sendOrderPlacedNotification, sendAdminOrderAlertNotification } from '@/lib/services/whatsapp'
+import { validateCoupon, recordCouponUsage } from '@/lib/coupons'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { items, customer, totalAmount, shippingFee, firebaseUid } = body
+    const { items, customer, totalAmount, shippingFee, firebaseUid, couponCode } = body
 
     if (!items || !customer || !totalAmount) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -73,10 +74,31 @@ export async function POST(req: Request) {
       verifiedShippingFee = settings.flat_shipping_rate
     }
 
-    const verifiedTotalAmount = verifiedSubtotal + verifiedShippingFee
+    const verifiedSubtotalPlusShipping = verifiedSubtotal + verifiedShippingFee
 
-    // Safety check against frontend manipulation
-    if (Math.abs(verifiedTotalAmount - totalAmount) > 1) { // 1 rupee tolerance for float weirdness
+    // ── Coupon Validation ──────────────────────────────────────────────────
+    let couponDiscount = 0
+    let validatedCouponId: string | undefined
+    let validatedCouponCode: string | undefined
+
+    if (couponCode) {
+      const couponResult = await validateCoupon({
+        code: couponCode,
+        cartTotal: verifiedSubtotalPlusShipping,
+        customerPhone: customer.phone,
+      })
+      if (!couponResult.valid) {
+        return NextResponse.json({ error: `Coupon error: ${couponResult.error}` }, { status: 400 })
+      }
+      couponDiscount = couponResult.discountAmount ?? 0
+      validatedCouponId = couponResult.couponId
+      validatedCouponCode = couponResult.code
+    }
+
+    const verifiedTotalAmount = Math.max(0, verifiedSubtotalPlusShipping - couponDiscount)
+
+    // Safety check against frontend manipulation (2 rupee tolerance for float + coupon rounding)
+    if (Math.abs(verifiedTotalAmount - totalAmount) > 2) {
       console.warn(`Price mismatch detected in COD. Expected: ${verifiedTotalAmount}, Got: ${totalAmount}`)
       return NextResponse.json({ error: 'Cart total mismatch. Please refresh and try again.' }, { status: 400 })
     }
@@ -115,8 +137,10 @@ export async function POST(req: Request) {
       shipping_address: JSON.stringify(shippingAddressJson),
       total_amount: verifiedTotalAmount,
       shipping_fee: verifiedShippingFee,
+      coupon_code: validatedCouponCode || null,
+      coupon_discount: couponDiscount,
       payment_method: 'cod',
-      status: 'pending', // COD is technically pending payment upon delivery
+      status: 'pending',
       customer_uid: firebaseUid || null,
       has_custom_items: hasCustomItems
     }
@@ -262,7 +286,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Failed to save order items' }, { status: 500 })
     }
 
-    // 3. Send confirmation email for COD
+    // 3. Record coupon usage (after order is created successfully)
+    if (validatedCouponId && couponDiscount > 0) {
+      await recordCouponUsage({
+        couponId: validatedCouponId,
+        orderId: internalOrderId,
+        customerPhone: customer.phone,
+        discountAmount: couponDiscount,
+      }).catch(err => console.error('[COD] recordCouponUsage error:', err))
+    }
+
+    // 4. Send confirmation email for COD
     try {
       await sendOrderConfirmationEmail({
         orderId: internalOrderId,
@@ -270,6 +304,8 @@ export async function POST(req: Request) {
         customerEmail: customer.email,
         amount: verifiedTotalAmount,
         shippingFee: verifiedShippingFee,
+        couponCode: validatedCouponCode,
+        couponDiscount,
         paymentMethod: 'cod',
         items: verifiedItems,
         shippingAddress: JSON.stringify(shippingAddressJson)
@@ -278,7 +314,7 @@ export async function POST(req: Request) {
       console.error('Non-fatal error: Failed to send COD confirmation email', emailError)
     }
 
-    // 4. Trigger automated WhatsApp notifications (wait to prevent Vercel process kill)
+    // 5. Trigger automated WhatsApp notifications
     try {
       const fullOrder = {
         id: internalOrderId,
@@ -287,6 +323,8 @@ export async function POST(req: Request) {
         customer_phone: customer.phone,
         total_amount: verifiedTotalAmount,
         shipping_fee: verifiedShippingFee,
+        coupon_code: validatedCouponCode || null,
+        coupon_discount: couponDiscount,
         payment_method: 'cod',
         shipping_address: shippingAddressJson,
         items: verifiedItems,

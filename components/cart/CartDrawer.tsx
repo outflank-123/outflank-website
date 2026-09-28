@@ -125,7 +125,7 @@ export default function CartDrawer() {
                             )}
                             <div className="flex items-center gap-1 truncate">
                               <span className="truncate">
-                                {item.customBranding?.customizationLabel || item.customization}
+                                {item.customBranding?.brandText || item.customBranding?.customizationLabel || item.customization}
                               </span>
                               {item.customBranding?.textColor && (
                                 <span 

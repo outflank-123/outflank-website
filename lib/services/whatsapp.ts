@@ -340,6 +340,10 @@ export async function sendOrderPlacedNotification({
     }
     const paymentMode = order.payment_method ? String(order.payment_method).toUpperCase() : 'PREPAID';
 
+    const couponSavings = order.coupon_code && Number(order.coupon_discount) > 0
+      ? `• Coupon Applied: ${order.coupon_code} (-₹${Number(order.coupon_discount).toLocaleString('en-IN')} saved 🎉)\n`
+      : '';
+
     const textBody = 
       `*Order Confirmed* (Order ${orderRef})\n\n` +
       `Hi ${customerName},\n` +
@@ -348,8 +352,9 @@ export async function sendOrderPlacedNotification({
       `• Order ID: ${orderRef}\n` +
       `• Product(s): ${productsText}\n` +
       `• Order Value: ${totalAmount}\n` +
-      `• Payment Mode: ${paymentMode}\n\n` +
-      `We will notify you as soon as your package is dispatched!`;
+      `• Payment Mode: ${paymentMode}\n` +
+      couponSavings +
+      `\nWe will notify you as soon as your package is dispatched!`;
 
     // 1. Send to Customer
     const buttonPath = `track?order_id=${order.id}&email=${encodeURIComponent(order.customer_email || '')}`;

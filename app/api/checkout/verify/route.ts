@@ -3,11 +3,12 @@ import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sendOrderConfirmationEmail } from '@/lib/email'
 import { sendOrderPlacedNotification, sendAdminOrderAlertNotification } from '@/lib/services/whatsapp'
+import { recordCouponUsage } from '@/lib/coupons'
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, internal_order_id } = body
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, internal_order_id, coupon_id } = body
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !internal_order_id) {
       return NextResponse.json({ success: false, error: 'Missing payment details' }, { status: 400 })
@@ -82,6 +83,16 @@ export async function POST(req: Request) {
       }
     }) || []
 
+    // Record coupon usage if applicable
+    if (coupon_id && orderData.coupon_discount > 0 && orderData.customer_phone) {
+      await recordCouponUsage({
+        couponId: coupon_id,
+        orderId: internal_order_id,
+        customerPhone: orderData.customer_phone,
+        discountAmount: Number(orderData.coupon_discount),
+      }).catch(err => console.error('[Verify] recordCouponUsage error:', err))
+    }
+
     // Send confirmation email
     try {
       await sendOrderConfirmationEmail({
@@ -90,6 +101,8 @@ export async function POST(req: Request) {
         customerEmail: orderData.customer_email,
         amount: Number(orderData.total_amount),
         shippingFee: Number(orderData.shipping_fee || 0),
+        couponCode: orderData.coupon_code || undefined,
+        couponDiscount: Number(orderData.coupon_discount || 0),
         paymentMethod: orderData.payment_method || 'razorpay',
         items: items,
         shippingAddress: orderData.shipping_address

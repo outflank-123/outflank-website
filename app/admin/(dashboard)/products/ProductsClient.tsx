@@ -1865,7 +1865,6 @@ export default function ProductsClient({ initialProducts, categories }: Products
                 { id: 'pricing', label: 'Pricing & Supply', icon: DollarSign },
                 { id: 'media', label: 'Images & Gallery', icon: ImageIcon },
                 { id: 'variants', label: `Color Variants (${formData.color_variants.length})`, icon: Palette },
-                { id: 'branding', label: 'Customizer Studio', icon: Paintbrush },
               ].map((tab) => {
                 const Icon = tab.icon
                 const isActive = activeTab === tab.id
@@ -2465,17 +2464,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
                   </div>
                 )}
 
-                {/* ─── TAB 5: 3D BRANDING STUDIO CONFIG (CANVAS EDITOR) ─── */}
-                {activeTab === 'branding' && (
-                  <BrandingCanvasEditor
-                    brandingConfig={formData.branding_config}
-                    onChange={(newConfig) => setFormData(prev => ({ ...prev, branding_config: newConfig }))}
-                    productImage={formData.primary_image_url || formData.image_gallery[0] || ''}
-                    imageGallery={formData.image_gallery}
-                    isCustomizable={formData.is_customizable}
-                    onToggleCustomizable={(val) => setFormData(prev => ({ ...prev, is_customizable: val }))}
-                  />
-                )}
+                {/* ─── TAB 5: 3D BRANDING STUDIO CONFIG REMOVED ─── */}
               </form>
             </div>
 
