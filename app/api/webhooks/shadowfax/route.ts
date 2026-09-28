@@ -4,9 +4,8 @@ import { createHmac } from 'crypto'
 import { mapShadowfaxStatus } from '@/lib/shadowfax'
 import { sendShipmentStatusEmail } from '@/lib/email'
 import {
-  sendOrderOutForDeliveryNotification,
+  sendOrderShippedNotification,
   sendOrderDeliveredNotification,
-  sendOrderCancelledNotification,
 } from '@/lib/services/whatsapp'
 
 const supabase = createClient(
@@ -19,6 +18,10 @@ const supabase = createClient(
  *
  * Receives real-time push notifications from Shadowfax when a shipment
  * status changes. Registered in Shadowfax360 under Settings → Webhooks.
+ *
+ * WhatsApp template flow:
+ *  - 'picked' event      → sends order_shipped  (agent physically collected the package)
+ *  - 'delivered' event   → sends order_delivered (package handed to customer)
  *
  * Docs: https://sfxunifiedapi.docs.apiary.io/#Push_Callback_API
  */
@@ -49,7 +52,7 @@ export async function POST(req: NextRequest) {
     const {
       awb_number,
       order_id,        // Our internal client_order_id sent to Shadowfax
-      event,           // e.g. 'ofd', 'delivered', 'picked', 'rto'
+      event,           // e.g. 'picked', 'ofd', 'delivered', 'rto'
       current_location,
       rider_name,
       rider_contact,
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
     // Idempotency: skip if we already processed this exact event
     const { data: existingOrder } = await supabase
       .from('retail_orders')
-      .select('id, customer_email, customer_name, customer_phone, shadowfax_status, awb_number')
+      .select('id, customer_email, customer_name, customer_phone, shadowfax_status, awb_number, total_amount, payment_method')
       .eq('id', order_id)
       .single()
 
@@ -91,7 +94,7 @@ export async function POST(req: NextRequest) {
       .from('retail_orders')
       .update(updatePayload)
       .eq('id', order_id)
-      .select('id, customer_email, customer_name, customer_phone, status, awb_number')
+      .select('id, customer_email, customer_name, customer_phone, status, awb_number, total_amount, payment_method')
       .single()
 
     // Retry without delivered_at if column doesn't exist yet
@@ -101,7 +104,7 @@ export async function POST(req: NextRequest) {
         .from('retail_orders')
         .update(updatePayload)
         .eq('id', order_id)
-        .select('id, customer_email, customer_name, customer_phone, status, awb_number')
+        .select('id, customer_email, customer_name, customer_phone, status, awb_number, total_amount, payment_method')
         .single()
       order = retry.data
       error = retry.error
@@ -115,42 +118,35 @@ export async function POST(req: NextRequest) {
 
     console.log(`[Shadowfax Webhook] Order ${order_id} → status: ${internalStatus} (event: ${event})`)
 
-    // ── Notifications per status ──────────────────────────────────────────────
-    if (order) {
-      // 1. Out for Delivery → WhatsApp + Email
-      if (internalStatus === 'out_for_delivery') {
-        try {
-          await sendOrderOutForDeliveryNotification({
-            order: { ...order, awb_number: awb_number || existingOrder?.awb_number },
-            riderName: rider_name,
-            riderContact: rider_contact,
-          })
-        } catch (waErr) {
-          console.error('[Shadowfax Webhook] WhatsApp OFD error:', waErr)
-        }
+    // ── WhatsApp Notifications ────────────────────────────────────────────────
+    if (order && order.customer_phone) {
 
+      // ① 'picked' = Agent physically collected package → send order_shipped WhatsApp
+      if (event === 'picked') {
         try {
-          await sendShipmentStatusEmail({
-            customerEmail: order.customer_email,
-            customerName: order.customer_name,
-            orderId: order_id,
-            awbNumber: awb_number,
-            status: internalStatus,
-            riderName: rider_name,
-            riderContact: rider_contact,
-            currentLocation: current_location,
+          const fullOrder = {
+            ...order,
+            awb_number: awb_number || existingOrder?.awb_number,
+            items: [], // Items not needed for shipped template
+          }
+          await sendOrderShippedNotification({
+            order: fullOrder,
+            awbNumber: awb_number || existingOrder?.awb_number || '',
+            courierName: 'Shadowfax Surface Express',
           })
-        } catch (emailErr) {
-          console.error('[Shadowfax Webhook] OFD Email error:', emailErr)
+          console.log(`[Shadowfax Webhook] ✅ order_shipped WhatsApp sent for order ${order_id}`)
+        } catch (waErr) {
+          console.error('[Shadowfax Webhook] WhatsApp order_shipped error:', waErr)
         }
       }
 
-      // 2. Delivered → WhatsApp + Email
+      // ② 'delivered' → send order_delivered WhatsApp + Email
       if (internalStatus === 'delivered') {
         try {
           await sendOrderDeliveredNotification({ order })
+          console.log(`[Shadowfax Webhook] ✅ order_delivered WhatsApp sent for order ${order_id}`)
         } catch (waErr) {
-          console.error('[Shadowfax Webhook] WhatsApp Delivered error:', waErr)
+          console.error('[Shadowfax Webhook] WhatsApp order_delivered error:', waErr)
         }
 
         try {
@@ -169,16 +165,21 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // 3. Cancelled / RTO → WhatsApp only
-      if (internalStatus === 'cancelled' && order.customer_phone) {
-        const isRto = ['rto', 'rto_in_process', 'rto_d', 'rto_nd'].includes(event)
+      // ③ 'out_for_delivery' → Email only (no separate WA template for this)
+      if (internalStatus === 'out_for_delivery') {
         try {
-          await sendOrderCancelledNotification({
-            order,
-            reason: isRto ? 'rto' : 'cancelled',
+          await sendShipmentStatusEmail({
+            customerEmail: order.customer_email,
+            customerName: order.customer_name,
+            orderId: order_id,
+            awbNumber: awb_number,
+            status: internalStatus,
+            riderName: rider_name,
+            riderContact: rider_contact,
+            currentLocation: current_location,
           })
-        } catch (waErr) {
-          console.error('[Shadowfax Webhook] WhatsApp Cancelled error:', waErr)
+        } catch (emailErr) {
+          console.error('[Shadowfax Webhook] OFD Email error:', emailErr)
         }
       }
     }
