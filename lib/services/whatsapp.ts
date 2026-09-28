@@ -164,6 +164,22 @@ export async function sendWhatsAppMessage({
               text: String(param),
             })),
           });
+
+          // Meta Authentication templates (outflank_otp) automatically include a Copy Code button
+          // that requires the OTP variable to be mapped to the button parameter at index 0
+          if (templateName === 'outflank_otp') {
+            components.push({
+              type: 'button',
+              sub_type: 'url', // Meta copy code buttons are implemented internally as url subtypes in the API
+              index: 0,
+              parameters: [
+                {
+                  type: 'text',
+                  text: String(templateParams[0])
+                }
+              ]
+            });
+          }
         }
 
         if (templateName === 'outflank_marketing_flex' || templateName === 'outflank_custom_message') {
