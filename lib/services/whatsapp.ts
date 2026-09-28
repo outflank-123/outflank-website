@@ -488,6 +488,91 @@ export async function sendOrderDeliveredNotification({
 }
 
 /**
+ * Triggered when Shadowfax marks order as Out for Delivery (OFD).
+ */
+export async function sendOrderOutForDeliveryNotification({
+  order,
+  riderName,
+  riderContact,
+  siteUrl = 'https://outflank.in',
+}: {
+  order: any;
+  riderName?: string;
+  riderContact?: string;
+  siteUrl?: string;
+}) {
+  try {
+    const customerName = order.customer_name || 'Customer';
+    const orderRef = `#${order.id.slice(0, 8).toUpperCase()}`;
+    const awb = order.awb_number || '';
+    const trackUrl = awb
+      ? `https://shadowfax.in/tracking/${awb}`
+      : `${siteUrl}/track?order_id=${order.id}`;
+
+    const riderLine = riderName
+      ? `\n🛵 Rider: ${riderName}${riderContact ? ` (${riderContact})` : ''}`
+      : '';
+
+    const textBody =
+      `*Your Outflank Order is Out for Delivery!* 🚚\n\n` +
+      `Hi ${customerName},\n` +
+      `Great news! Your order ${orderRef} is on its way and will be delivered today.${riderLine}\n\n` +
+      `📍 Track your order: ${trackUrl}\n\n` +
+      `Please keep your phone reachable. Thank you for choosing Outflank!`;
+
+    await sendWhatsAppMessage({
+      to: order.customer_phone,
+      messageText: textBody,
+      templateName: 'order_out_for_delivery',
+      templateParams: [customerName, orderRef, trackUrl],
+    }).catch(err => console.error('[WhatsApp OFD] Customer send failed:', err));
+
+  } catch (err) {
+    console.error('[WhatsApp OFD Trigger Error]:', err);
+  }
+}
+
+/**
+ * Triggered when Shadowfax marks order as RTO / Cancelled.
+ */
+export async function sendOrderCancelledNotification({
+  order,
+  reason = 'cancelled',
+  siteUrl = 'https://outflank.in',
+}: {
+  order: any;
+  reason?: string;
+  siteUrl?: string;
+}) {
+  try {
+    const customerName = order.customer_name || 'Customer';
+    const orderRef = `#${order.id.slice(0, 8).toUpperCase()}`;
+    const isRto = reason === 'rto';
+
+    const textBody = isRto
+      ? `*Order Returned (RTO)* 📦\n\n` +
+        `Hi ${customerName},\n` +
+        `Unfortunately, our courier was unable to deliver your Outflank order ${orderRef} and it is being returned to us.\n\n` +
+        `Common reasons: address not found, recipient unavailable, or refused delivery.\n\n` +
+        `Please contact us to re-ship or get a refund: ${siteUrl}/contact`
+      : `*Order Cancelled* ❌\n\n` +
+        `Hi ${customerName},\n` +
+        `Your Outflank order ${orderRef} has been cancelled.\n\n` +
+        `If you have any questions or would like to place a new order, visit us at ${siteUrl} or reply to this message.`;
+
+    await sendWhatsAppMessage({
+      to: order.customer_phone,
+      messageText: textBody,
+      templateName: isRto ? 'order_rto' : 'order_cancelled',
+      templateParams: [customerName, orderRef, siteUrl],
+    }).catch(err => console.error('[WhatsApp Cancelled] Customer send failed:', err));
+
+  } catch (err) {
+    console.error('[WhatsApp Cancelled Trigger Error]:', err);
+  }
+}
+
+/**
  * Triggered when a new order is received to alert store administrators.
  */
 export async function sendAdminNewOrderAlert({
