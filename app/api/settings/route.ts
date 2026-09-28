@@ -71,7 +71,7 @@ export async function GET() {
       whatsapp_notifications_enabled: Boolean(data.whatsapp_notifications_enabled),
     }, {
       headers: {
-        'Cache-Control': 'public, max-age=300, stale-while-revalidate=600',
+        'Cache-Control': 'no-store, max-age=0',
       },
     })
   } catch (error) {

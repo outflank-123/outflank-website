@@ -118,15 +118,16 @@ export default function CheckoutClient() {
   }, [customerProfile, user])
 
   const fetchSettings = async () => {
-    // Check browser session cache first
-    const cached = getBrowserCache<StoreSettings>('outflank_store_settings', 15 * 60 * 1000, 'session')
+    // Check browser session cache first, but with a very short TTL (10 seconds)
+    // so admin changes reflect almost instantly
+    const cached = getBrowserCache<StoreSettings>('outflank_store_settings', 10 * 1000, 'session')
     if (cached?.data) {
       setSettings(cached.data)
-      if (!cached.isStale) return // Fresh cache: eliminate API call!
+      if (!cached.isStale) return
     }
 
     try {
-      const res = await fetch('/api/settings')
+      const res = await fetch('/api/settings', { cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
         setSettings(data)
