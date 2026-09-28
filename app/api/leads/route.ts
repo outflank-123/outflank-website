@@ -82,9 +82,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 5. Trigger instant WhatsApp alert to store owner (non-blocking)
+    // 5. Trigger instant WhatsApp alert to store owner (wait to prevent Vercel process kill)
     try {
-      sendAdminLeadAlertNotification({
+      await sendAdminLeadAlertNotification({
         lead: {
           name: cleanName,
           company_name: cleanCompany,
