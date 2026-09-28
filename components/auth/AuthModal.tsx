@@ -278,9 +278,17 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         onClose();
       } else if (data?.customToken) {
         // Authenticate into Firebase with custom token
-        await signInWithCustomToken(auth, data.customToken);
-        await refreshProfile();
-        onClose();
+        try {
+          await signInWithCustomToken(auth, String(data.customToken).trim());
+          await refreshProfile();
+          onClose();
+        } catch (fbErr: any) {
+          console.error('Firebase Auth Error:', fbErr, 'Token prefix:', String(data.customToken).substring(0, 10));
+          if (fbErr?.name === 'InvalidCharacterError' || fbErr?.message?.includes('pattern')) {
+            throw new Error('Your browser blocked the security token format (Safari). Please try again or use Google Sign-in.');
+          }
+          throw fbErr;
+        }
       } else {
         setError('Could not establish session token. Please try again.');
       }

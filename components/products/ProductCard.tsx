@@ -21,6 +21,7 @@ export interface Product {
   slug: string
   short_desc?: string | null
   base_price?: number | null
+  mrp_price?: number | null
   min_order_qty?: number | null
   color_variants: ColorVariant[]
   primary_image_url?: string | null
@@ -52,20 +53,9 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const currentImages = variants[activeVariant]?.images ?? []
   const displayImage = currentImages[0] ?? product.primary_image_url ?? null
 
-  const isTShirt = product.categories?.slug?.toLowerCase().includes('t-shirt') || product.categories?.name?.toLowerCase().includes('t-shirt') || false
-  
   let retailPrice = product.base_price
-  let mrpPrice = product.base_price ? Math.round(product.base_price * 1.25) : null
+  let mrpPrice = product.mrp_price || (product.base_price ? Math.round(product.base_price * 1.25) : null)
 
-  if (isTShirt && product.base_price) {
-    mrpPrice = product.base_price
-    if (product.base_price === 359) retailPrice = 299
-    else if (product.base_price === 469) retailPrice = 399
-    else if (product.base_price === 599) retailPrice = 499
-    else if (product.base_price === 719) retailPrice = 599
-    else if (product.base_price === 959) retailPrice = 799
-    else retailPrice = Math.round(product.base_price / 1.2)
-  }
   return (
     <>
       <motion.article
