@@ -98,11 +98,11 @@ export async function POST(req: Request) {
       console.error('Non-fatal error: Failed to send Razorpay confirmation email', emailError)
     }
 
-    // Trigger automated WhatsApp notifications (non-blocking)
+    // Trigger automated WhatsApp notifications (wait to prevent Vercel process kill)
     try {
       const waOrder = { ...orderData, items: items }
-      sendOrderPlacedNotification({ order: waOrder })
-      sendAdminOrderAlertNotification({ order: waOrder })
+      await sendOrderPlacedNotification({ order: waOrder })
+      await sendAdminOrderAlertNotification({ order: waOrder })
     } catch (waError) {
       console.error('Non-fatal error: WhatsApp notification trigger failed', waError)
     }

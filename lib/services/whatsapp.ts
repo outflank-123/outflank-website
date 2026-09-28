@@ -353,7 +353,7 @@ export async function sendOrderPlacedNotification({
 
     // 1. Send to Customer
     const buttonPath = `track?order_id=${order.id}&email=${encodeURIComponent(order.customer_email || '')}`;
-    sendWhatsAppMessage({
+    await sendWhatsAppMessage({
       to: order.customer_phone,
       messageText: textBody,
       templateName: 'order_placed',
@@ -362,11 +362,15 @@ export async function sendOrderPlacedNotification({
     }).catch(err => console.error('[WhatsApp Placed] Customer send failed:', err));
 
     // 2. Mark order as notified in background
-    const supabase = createAdminClient();
-    await supabase
-      .from('retail_orders')
-      .update({ whatsapp_notified_placed: true })
-      .eq('id', order.id);
+    try {
+      const supabase = createAdminClient();
+      await supabase
+        .from('retail_orders')
+        .update({ whatsapp_notified_placed: true })
+        .eq('id', order.id);
+    } catch (dbErr) {
+      // Ignore if column doesn't exist
+    }
 
   } catch (err) {
     console.error('[WhatsApp Placed Trigger Error]:', err);
@@ -419,7 +423,7 @@ export async function sendOrderShippedNotification({
       `Expected delivery in 2-4 business days. Thank you for shopping with Outflank!`;
 
     // 1. Send to Customer (5 body params)
-    sendWhatsAppMessage({
+    await sendWhatsAppMessage({
       to: order.customer_phone,
       messageText: textBody,
       templateName: 'order_shipped',
@@ -427,11 +431,15 @@ export async function sendOrderShippedNotification({
     }).catch(err => console.error('[WhatsApp Shipped] Customer send failed:', err));
 
     // 2. Mark order as notified
-    const supabase = createAdminClient();
-    await supabase
-      .from('retail_orders')
-      .update({ whatsapp_notified_shipped: true })
-      .eq('id', order.id);
+    try {
+      const supabase = createAdminClient();
+      await supabase
+        .from('retail_orders')
+        .update({ whatsapp_notified_shipped: true })
+        .eq('id', order.id);
+    } catch (dbErr) {
+      // Ignore
+    }
 
   } catch (err) {
     console.error('[WhatsApp Shipped Trigger Error]:', err);
@@ -459,18 +467,20 @@ export async function sendOrderDeliveredNotification({
       `We hope you love your apparel. If you have any feedback or corporate requirements, simply reply to this message.\n\n` +
       `Visit us: ${siteUrl}`;
 
-    sendWhatsAppMessage({
+    await sendWhatsAppMessage({
       to: order.customer_phone,
       messageText: textBody,
       templateName: 'order_delivered',
       templateParams: [customerName, orderRef, siteUrl],
     }).catch(err => console.error('[WhatsApp Delivered] Customer send failed:', err));
 
-    const supabase = createAdminClient();
-    await supabase
-      .from('retail_orders')
-      .update({ whatsapp_notified_delivered: true })
-      .eq('id', order.id);
+    try {
+      const supabase = createAdminClient();
+      await supabase
+        .from('retail_orders')
+        .update({ whatsapp_notified_delivered: true })
+        .eq('id', order.id);
+    } catch (dbErr) {}
 
   } catch (err) {
     console.error('[WhatsApp Delivered Trigger Error]:', err);
@@ -509,7 +519,7 @@ export async function sendAdminNewOrderAlert({
       `• *City:* ${parsedAddress?.city || 'India'}\n\n` +
       `*Open Dashboard:* ${adminUrl}`;
 
-    sendWhatsAppMessage({
+    await sendWhatsAppMessage({
       to: settings.whatsapp_admin_alerts_phone,
       messageText: textBody,
       templateName: 'admin_order_alert',
@@ -547,7 +557,7 @@ export async function sendAdminLeadAlertNotification({
       `• *Quantity:* ${lead.quantity || '50+'}\n\n` +
       `*View Leads:* ${adminUrl}`;
 
-    sendWhatsAppMessage({
+    await sendWhatsAppMessage({
       to: settings.whatsapp_admin_alerts_phone,
       messageText: textBody,
       templateName: 'admin_lead_alert',
