@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import CategoryFilter from '@/components/products/CategoryFilter'
 import CategoryHeader from '@/components/products/CategoryHeader'
 import LiveSearch from '@/components/products/LiveSearch'
+import SortDropdown from '@/components/products/SortDropdown'
 import { Package } from 'lucide-react'
 import CatalogGridClient, { ProductGridSkeleton } from './CatalogGridClient'
 import { Product } from '@/components/products/ProductCard'
@@ -16,11 +17,11 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 interface CatalogPageProps {
-  searchParams: Promise<{ category?: string; q?: string }>
+  searchParams: Promise<{ category?: string; q?: string; sort?: string }>
 }
 
 export default async function CatalogPage({ searchParams }: CatalogPageProps) {
-  const { category, q } = await searchParams
+  const { category, q, sort } = await searchParams
   const supabase = await createClient()
 
   // Fetch categories
@@ -41,9 +42,20 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
       categories ( name, slug )
     `, { count: 'exact' })
     .eq('is_active', true)
-    .order('is_featured', { ascending: false })
-    .order('created_at', { ascending: false })
-    .order('id', { ascending: true }) // Tie-breaker to prevent pagination duplicates
+
+  // Apply sorting
+  if (sort === 'price_asc') {
+    query = query.order('base_price', { ascending: true })
+  } else if (sort === 'price_desc') {
+    query = query.order('base_price', { ascending: false })
+  } else if (sort === 'newest') {
+    query = query.order('created_at', { ascending: false })
+  } else {
+    // Default: featured
+    query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: false })
+  }
+  
+  query = query.order('id', { ascending: true }) // Tie-breaker
 
   if (activeCategory?.id) {
     query = query.eq('category_id', activeCategory.id)
@@ -69,9 +81,18 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
         categories ( name, slug )
       `, { count: 'exact' })
       .eq('is_active', true)
-      .order('is_featured', { ascending: false })
-      .order('created_at', { ascending: false })
-      .order('id', { ascending: true })
+
+    if (sort === 'price_asc') {
+      fallbackQuery = fallbackQuery.order('base_price', { ascending: true })
+    } else if (sort === 'price_desc') {
+      fallbackQuery = fallbackQuery.order('base_price', { ascending: false })
+    } else if (sort === 'newest') {
+      fallbackQuery = fallbackQuery.order('created_at', { ascending: false })
+    } else {
+      fallbackQuery = fallbackQuery.order('is_featured', { ascending: false }).order('created_at', { ascending: false })
+    }
+    
+    fallbackQuery = fallbackQuery.order('id', { ascending: true })
 
     if (activeCategory?.id) {
       fallbackQuery = fallbackQuery.eq('category_id', activeCategory.id)
@@ -104,18 +125,24 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           </Suspense>
 
           {/* Filters & Search Toolbar */}
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-5 justify-between mt-8 pt-6 border-t border-black/5">
-            <div className="flex-1">
-              <Suspense fallback={<div className="h-8 w-64 rounded-full bg-[#f5f5f7] animate-pulse" />}>
-                <CategoryFilter categories={categories ?? []} />
-              </Suspense>
-            </div>
+          <div className="mt-8 pt-6 border-t border-black/5 relative z-20">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4 justify-between">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+                <Suspense fallback={<div className="h-10 w-full sm:w-64 rounded-xl bg-[#f5f5f7] animate-pulse" />}>
+                  <CategoryFilter categories={categories ?? []} />
+                </Suspense>
+                
+                <Suspense fallback={<div className="h-10 w-full sm:w-48 rounded-xl bg-[#f5f5f7] animate-pulse" />}>
+                  <SortDropdown />
+                </Suspense>
+              </div>
 
-            {/* Live Search */}
-            <div className="flex items-center shrink-0">
-              <Suspense fallback={<div className="h-9 w-56 rounded-full bg-[#f5f5f7] animate-pulse" />}>
-                <LiveSearch initialQuery={q} />
-              </Suspense>
+              {/* Live Search */}
+              <div className="flex items-center shrink-0 w-full lg:w-auto">
+                <Suspense fallback={<div className="h-10 w-full lg:w-72 rounded-xl bg-[#f5f5f7] animate-pulse" />}>
+                  <LiveSearch initialQuery={q} />
+                </Suspense>
+              </div>
             </div>
           </div>
         </div>
@@ -126,10 +153,11 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
         <Suspense key={category || 'all'} fallback={<ProductGridSkeleton />}>
           {formattedProducts.length > 0 ? (
             <CatalogGridClient
-              key={category || 'all'}
+              key={`${category || 'all'}-${sort || 'featured'}`}
               initialProducts={formattedProducts}
               categoryId={activeCategory?.id}
               searchQuery={q}
+              sortQuery={sort}
               totalCount={totalProductCount}
             />
           ) : (

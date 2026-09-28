@@ -289,6 +289,7 @@ export async function POST(req: Request) {
         shipping_fee: verifiedShippingFee,
         payment_method: 'cod',
         shipping_address: shippingAddressJson,
+        items: verifiedItems,
       }
       sendOrderPlacedNotification({ order: fullOrder })
       sendAdminOrderAlertNotification({ order: fullOrder })

@@ -104,8 +104,6 @@ export default function AccountPage() {
     phone: '',
     email: '',
     gender: '',
-    companyName: '',
-    gstin: '',
   });
 
   // Address Edit State
@@ -161,9 +159,12 @@ export default function AccountPage() {
         phone: customerProfile?.phone || user?.phoneNumber?.replace(/\D/g, '').slice(-10) || '',
         email: customerProfile?.email || user?.email || '',
         gender: (customerProfile as any)?.gender || customerProfile?.shipping_address?.gender || '',
-        companyName: customerProfile?.company_name || customerProfile?.shipping_address?.companyName || '',
-        gstin: customerProfile?.gstin || customerProfile?.shipping_address?.gstin || '',
       });
+      
+      // Auto-open profile form if details are missing
+      if (!customerProfile?.full_name || !customerProfile?.email) {
+        setIsEditingProfile(true);
+      }
     }
   }, [customerProfile, user]);
 
@@ -262,8 +263,6 @@ export default function AccountPage() {
       phone: profileForm.phone.replace(/\D/g, '').slice(-10) || undefined,
       email: isGoogleUser ? (customerProfile?.email || user?.email || undefined) : (profileForm.email.trim() || undefined),
       gender: profileForm.gender || undefined,
-      companyName: profileForm.companyName.trim() || undefined,
-      gstin: profileForm.gstin.trim().toUpperCase() || undefined,
     });
 
     setSavingProfile(false);
@@ -582,27 +581,6 @@ export default function AccountPage() {
                     <option value="Prefer not to say">Prefer not to say</option>
                   </select>
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#86868b] mb-1.5">Company / Organization (Optional)</label>
-                  <input
-                    type="text"
-                    value={profileForm.companyName}
-                    onChange={(e) => setProfileForm({ ...profileForm, companyName: e.target.value })}
-                    className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] text-sm font-medium focus:bg-white focus:outline-none focus:border-[#1d1d1f]"
-                    placeholder="e.g. Zeecrown Corp"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#86868b] mb-1.5">GSTIN for B2B Invoice (Optional)</label>
-                  <input
-                    type="text"
-                    maxLength={15}
-                    value={profileForm.gstin}
-                    onChange={(e) => setProfileForm({ ...profileForm, gstin: e.target.value.toUpperCase() })}
-                    className="w-full h-11 px-4 rounded-xl border border-black/10 bg-[#fbfbfd] text-sm font-medium focus:bg-white focus:outline-none focus:border-[#1d1d1f]"
-                    placeholder="15-digit GSTIN number"
-                  />
-                </div>
               </div>
 
               <div className="flex items-center gap-3 pt-3">
@@ -724,26 +702,6 @@ export default function AccountPage() {
                 </div>
                 <div className="text-sm font-semibold text-[#1d1d1f]">
                   {(customerProfile as any)?.gender || customerProfile?.shipping_address?.gender || 'Not specified'}
-                </div>
-              </div>
-
-              <div className="bg-[#fbfbfd] p-4 rounded-2xl border border-black/5 space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
-                  <Building2 size={12} />
-                  <span>Company / Organization</span>
-                </div>
-                <div className="text-sm font-semibold text-[#1d1d1f]">
-                  {customerProfile?.company_name || customerProfile?.shipping_address?.companyName || 'Personal Account'}
-                </div>
-              </div>
-
-              <div className="bg-[#fbfbfd] p-4 rounded-2xl border border-black/5 space-y-1">
-                <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-bold uppercase tracking-wider">
-                  <ShieldCheck size={12} />
-                  <span>GSTIN for Tax Credit</span>
-                </div>
-                <div className="text-sm font-semibold text-[#1d1d1f]">
-                  {customerProfile?.gstin || customerProfile?.shipping_address?.gstin || 'No GSTIN attached'}
                 </div>
               </div>
             </div>

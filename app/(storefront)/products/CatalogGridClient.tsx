@@ -10,6 +10,7 @@ interface CatalogGridClientProps {
   initialProducts: Product[]
   categoryId?: string
   searchQuery?: string
+  sortQuery?: string
   totalCount: number
 }
 
@@ -45,6 +46,7 @@ export default function CatalogGridClient({
   initialProducts,
   categoryId,
   searchQuery,
+  sortQuery,
   totalCount,
 }: CatalogGridClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
@@ -84,7 +86,7 @@ export default function CatalogGridClient({
     isLoadingRef.current = true
     setLoading(true)
 
-    fetchProductsPage(page, categoryId, searchQuery)
+    fetchProductsPage(page, categoryId, searchQuery, sortQuery)
       .then((nextProducts) => {
         if (nextProducts.length > 0) {
           setProducts((prev) => {

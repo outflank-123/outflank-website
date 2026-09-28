@@ -91,6 +91,22 @@ export async function POST(req: Request) {
     const supabase = createAdminClient();
     const recipientMap = new Map<string, string>(); // phone -> name
 
+    if (targetAudience === 'registered_customers' || targetAudience === 'all') {
+      try {
+        const { data: registeredCustomers } = await supabase
+          .from('customers')
+          .select('phone, full_name, shipping_address');
+
+        (registeredCustomers || []).forEach((c) => {
+          const raw = (c.phone || c.shipping_address?.phone || '').replace(/\D/g, '');
+          const formatted = formatWhatsAppPhone(raw);
+          if (formatted && !recipientMap.has(formatted)) {
+            recipientMap.set(formatted, c.full_name || c.shipping_address?.fullName || 'Registered Customer');
+          }
+        });
+      } catch {}
+    }
+
     if (targetAudience === 'retail_customers' || targetAudience === 'all') {
       const { data: orders } = await supabase
         .from('retail_orders')
@@ -103,21 +119,6 @@ export async function POST(req: Request) {
           recipientMap.set(formatted, o.customer_name || 'Valued Customer');
         }
       });
-
-      // Include all registered customers from customers table
-      try {
-        const { data: registeredCustomers } = await supabase
-          .from('customers')
-          .select('phone, full_name')
-          .not('phone', 'is', null);
-
-        (registeredCustomers || []).forEach((c) => {
-          const formatted = formatWhatsAppPhone(c.phone);
-          if (formatted && !recipientMap.has(formatted)) {
-            recipientMap.set(formatted, c.full_name || 'Valued Customer');
-          }
-        });
-      } catch {}
     }
 
     if (targetAudience === 'leads' || targetAudience === 'all') {
@@ -136,6 +137,16 @@ export async function POST(req: Request) {
 
     if (targetAudience === 'custom' && Array.isArray(customNumbers)) {
       customNumbers.forEach((raw) => {
+        const formatted = formatWhatsAppPhone(raw);
+        if (formatted && !recipientMap.has(formatted)) {
+          recipientMap.set(formatted, 'Valued Customer');
+        }
+      });
+    }
+
+    // Ensure any explicitly checked selectedPhones are included
+    if (Array.isArray(body.selectedPhones) && body.selectedPhones.length > 0) {
+      body.selectedPhones.forEach((raw: string) => {
         const formatted = formatWhatsAppPhone(raw);
         if (formatted && !recipientMap.has(formatted)) {
           recipientMap.set(formatted, 'Valued Customer');
@@ -174,11 +185,14 @@ export async function POST(req: Request) {
         .replace(/{name}/gi, recipient.name)
         .replace(/{customer_name}/gi, recipient.name);
 
+      const chosenTemplate = templateName || (mediaUrl ? 'outflank_polo_showcase_v1' : 'outflank_catalog_showcase');
+      const chosenParams = [recipient.name];
+
       const res = await sendWhatsAppMessage({
         to: recipient.phone,
         messageText: personalizedText,
-        templateName: templateName || undefined,
-        templateParams: [recipient.name],
+        templateName: chosenTemplate,
+        templateParams: chosenParams,
         mediaUrl: mediaUrl || undefined,
         linkUrl: linkUrl || undefined,
         buttonText: buttonText || undefined,

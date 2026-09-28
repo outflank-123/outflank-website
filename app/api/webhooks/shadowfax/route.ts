@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
       .from('retail_orders')
       .update(updatePayload)
       .eq('id', order_id)
-      .select('id, customer_email, customer_name, status')
+      .select('id, customer_email, customer_name, customer_phone, status')
       .single()
 
     if (error && error.code === '42703' && updatePayload.delivered_at) {
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
         .from('retail_orders')
         .update(updatePayload)
         .eq('id', order_id)
-        .select('id, customer_email, customer_name, status')
+        .select('id, customer_email, customer_name, customer_phone, status')
         .single()
       order = retry.data
       error = retry.error
@@ -129,6 +129,16 @@ export async function POST(req: NextRequest) {
         })
       } catch (emailErr) {
         console.error('[Shadowfax Webhook] Email send error:', emailErr)
+      }
+      
+      // Also send WhatsApp for Delivered
+      if (internalStatus === 'delivered' && order.customer_phone) {
+        try {
+          const { sendOrderDeliveredNotification } = await import('@/lib/services/whatsapp');
+          await sendOrderDeliveredNotification({ order });
+        } catch (waErr) {
+          console.error('[Shadowfax Webhook] WhatsApp delivery send error:', waErr);
+        }
       }
     }
 

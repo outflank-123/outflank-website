@@ -8,7 +8,8 @@ const PAGE_SIZE = 36
 export async function fetchProductsPage(
   page: number,
   categoryId?: string,
-  searchQuery?: string
+  searchQuery?: string,
+  sortQuery?: string
 ): Promise<Product[]> {
   const supabase = await createClient()
 
@@ -20,9 +21,18 @@ export async function fetchProductsPage(
       categories ( name, slug )
     `)
     .eq('is_active', true)
-    .order('is_featured', { ascending: false })
-    .order('created_at', { ascending: false })
-    .order('id', { ascending: true }) // Tie-breaker to prevent pagination duplicates
+
+  if (sortQuery === 'price_asc') {
+    query = query.order('base_price', { ascending: true })
+  } else if (sortQuery === 'price_desc') {
+    query = query.order('base_price', { ascending: false })
+  } else if (sortQuery === 'newest') {
+    query = query.order('created_at', { ascending: false })
+  } else {
+    query = query.order('is_featured', { ascending: false }).order('created_at', { ascending: false })
+  }
+  
+  query = query.order('id', { ascending: true }) // Tie-breaker to prevent pagination duplicates
 
   if (categoryId) {
     query = query.eq('category_id', categoryId)
@@ -49,9 +59,18 @@ export async function fetchProductsPage(
         categories ( name, slug )
       `)
       .eq('is_active', true)
-      .order('is_featured', { ascending: false })
-      .order('created_at', { ascending: false })
-      .order('id', { ascending: true })
+
+    if (sortQuery === 'price_asc') {
+      fallbackQuery = fallbackQuery.order('base_price', { ascending: true })
+    } else if (sortQuery === 'price_desc') {
+      fallbackQuery = fallbackQuery.order('base_price', { ascending: false })
+    } else if (sortQuery === 'newest') {
+      fallbackQuery = fallbackQuery.order('created_at', { ascending: false })
+    } else {
+      fallbackQuery = fallbackQuery.order('is_featured', { ascending: false }).order('created_at', { ascending: false })
+    }
+    
+    fallbackQuery = fallbackQuery.order('id', { ascending: true })
 
     if (categoryId) {
       fallbackQuery = fallbackQuery.eq('category_id', categoryId)

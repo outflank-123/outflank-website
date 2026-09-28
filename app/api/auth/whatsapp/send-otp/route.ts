@@ -58,12 +58,15 @@ export async function POST(req: NextRequest) {
       expiresInMinutes: 5,
     });
 
-    // 4. Dispatch WhatsApp message via Meta Cloud API
+    // 4. Dispatch WhatsApp message via Meta Cloud API using an approved Template
+    // (A template is REQUIRED so new users can receive it without initiating a chat first)
     const messageText = `Your Outflank verification code is ${rawOtp}.\n\nValid for 5 minutes. Do not share this code with anyone for your account security.`;
     
     const sendResult = await sendWhatsAppMessage({
       to: formattedPhone,
-      messageText,
+      messageText, // Fallback for Wati/Interakt
+      templateName: 'outflank_otp', // MUST MATCH the name of the template in Meta Dashboard
+      templateParams: [rawOtp], // Inject the 6-digit OTP into the {{1}} variable
     });
 
     if (!sendResult.success) {
