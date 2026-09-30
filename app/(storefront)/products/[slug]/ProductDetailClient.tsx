@@ -54,6 +54,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [zoomLevel, setZoomLevel] = useState(1)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [customText, setCustomText] = useState('')
+  const [customInstructions, setCustomInstructions] = useState('')
   const [customLogoBase64, setCustomLogoBase64] = useState<string | null>(null)
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,11 +194,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const handleAddToCart = () => {
     let customBranding: any = undefined;
     
-    if (isCustomizable && (customText || customLogoBase64)) {
+    if (isCustomizable && (customText || customLogoBase64 || customInstructions)) {
       customBranding = {
         isCustomized: true,
         brandText: customText,
-        logoUrl: customLogoBase64 || undefined
+        logoUrl: customLogoBase64 || undefined,
+        printingInstructions: customInstructions || undefined
       }
     }
 
@@ -555,6 +557,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                               <Check size={14} /> Logo uploaded successfully
                             </div>
                           )}
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-[#86868b] uppercase tracking-wider mb-2">
+                            Printing & Customization Notes (Optional)
+                          </label>
+                          <textarea 
+                            rows={3}
+                            placeholder="e.g., Print the logo on the bottom right corner, keep it small, etc."
+                            value={customInstructions}
+                            onChange={(e) => setCustomInstructions(e.target.value)}
+                            className="w-full px-4 py-2.5 rounded-xl border border-black/10 focus:border-[#e3231c] focus:ring-1 focus:ring-[#e3231c] outline-none transition-all text-sm resize-none"
+                          />
                         </div>
                       </div>
                     )}

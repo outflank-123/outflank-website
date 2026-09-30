@@ -14,6 +14,7 @@ interface CustomDetail {
   printPosition?: string | null;
   coordinates?: { top?: string | number; left?: string | number; width?: string | number } | null;
   customizationLabel?: string | null;
+  printingInstructions?: string | null;
 }
 
 interface OrderItem {
@@ -92,6 +93,7 @@ function extractTrackCustomData(item: OrderItem, order: Order): CustomDetail | n
     printPosition: printPos,
     coordinates: coords,
     customizationLabel: c.customizationLabel || c.customization_label || null,
+    printingInstructions: c.printingInstructions || c.printing_instructions || null,
   };
 }
 
@@ -408,6 +410,19 @@ function TrackOrderForm() {
                             <div className="text-xs">
                               <p className="font-semibold text-gray-900">Custom Uploaded Logo Graphic</p>
                               <p className="text-[11px] text-emerald-600 font-medium">✓ High-resolution raster/vector asset attached</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Item-Level Printing Instructions */}
+                        {custom.printingInstructions && (
+                          <div className="mt-3 p-3 rounded-lg border border-amber-200 bg-amber-50 shadow-sm">
+                            <div className="flex items-center gap-1.5 mb-1.5 text-amber-800">
+                              <FileText size={14} className="text-amber-600" />
+                              <h4 className="text-[10px] font-bold uppercase tracking-wider">Printing Notes</h4>
+                            </div>
+                            <div className="text-xs text-gray-700 whitespace-pre-wrap font-medium">
+                              {custom.printingInstructions}
                             </div>
                           </div>
                         )}

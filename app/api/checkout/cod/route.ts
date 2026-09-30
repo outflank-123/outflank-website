@@ -152,9 +152,11 @@ export async function POST(req: Request) {
       .single()
 
     if (orderError && (orderError.code === '42703' || orderError.code === 'PGRST204' || orderError.message?.includes('has_custom_items'))) {
-      // Fallback if has_custom_items column does not exist yet
+      // Fallback if columns do not exist yet
       delete orderPayload.has_custom_items
-      orderPayload.notes = JSON.stringify({ has_custom_items: hasCustomItems })
+      orderPayload.notes = JSON.stringify({ 
+        has_custom_items: hasCustomItems
+      })
       const retry = await supabase.from('retail_orders').insert([orderPayload]).select('id').single()
       orderData = retry.data
       orderError = retry.error
