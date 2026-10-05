@@ -210,7 +210,13 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         body: JSON.stringify({ phone: cleanPhone }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch (e) {
+        throw new Error('Server returned an invalid response. Please try again.');
+      }
+      
       if (!res.ok) {
         setError(data.error || 'Failed to send WhatsApp verification code.');
         if (data.cooldownRemaining) setCooldown(data.cooldownRemaining);
@@ -251,7 +257,13 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch (e) {
+        throw new Error('Server returned an invalid response. Please try again.');
+      }
+      
       if (!res.ok) {
         setError(data.error || 'Invalid or expired verification code.');
         setLoading(false);
