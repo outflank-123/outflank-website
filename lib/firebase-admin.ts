@@ -1,97 +1,106 @@
 /**
- * Firebase Admin operations implemented via pure REST API calls.
- * This completely replaces the firebase-admin Node.js SDK, which crashes on
- * Vercel due to an ES-module bundling issue with its dependency `jose`.
- *
- * Uses the Firebase Auth REST API + a self-signed Google OAuth2 service-account
- * JWT (no external SDKs — only Node.js built-ins: crypto, fetch).
+ * Firebase Admin operations via pure REST — no firebase-admin SDK needed.
+ * Uses Node.js built-in `crypto` to sign JWTs + native `fetch` for REST calls.
+ * This avoids the jose/ES-module crash that firebase-admin causes on Vercel.
  */
 
 import crypto from 'crypto';
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
+// ─── Config ─────────────────────────────────────────────────────────────────
 
-function getFirebaseConfig() {
+function getConfig() {
   const projectId =
     process.env.FIREBASE_PROJECT_ID ||
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
     'outflank-store';
-  const clientEmail = (process.env.FIREBASE_CLIENT_EMAIL || '').replace(/^"|"$/g, '');
-  let privateKey = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/^"|"$/g, '');
+  const clientEmail = (process.env.FIREBASE_CLIENT_EMAIL || '').replace(/^"|"$/g, '').trim();
+  let privateKey = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/^"|"$/g, '').trim();
   privateKey = privateKey.replace(/\\n/g, '\n');
-
   return { projectId, clientEmail, privateKey };
 }
 
-/**
- * Build a self-signed JWT for Google OAuth2 service-account auth.
- * Used to obtain a short-lived access token.
- */
-function buildServiceAccountJwt(clientEmail: string, privateKey: string): string {
+// ─── Google OAuth2 Access Token ───────────────────────────────────────────────
+
+let _cachedToken: { token: string; expiresAt: number } | null = null;
+
+async function getGoogleAccessToken(): Promise<string> {
+  // Return cached token if still valid (with 60s buffer)
+  if (_cachedToken && Date.now() < _cachedToken.expiresAt - 60_000) {
+    return _cachedToken.token;
+  }
+
+  const { clientEmail, privateKey } = getConfig();
+  if (!clientEmail || !privateKey) {
+    throw new Error('Firebase Admin: FIREBASE_CLIENT_EMAIL or FIREBASE_PRIVATE_KEY is not set.');
+  }
+
   const now = Math.floor(Date.now() / 1000);
+
+  // Build service-account JWT for Google OAuth2 token exchange
   const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
-  const payload = Buffer.from(
+  const claimsPayload = Buffer.from(
     JSON.stringify({
       iss: clientEmail,
       sub: clientEmail,
       aud: 'https://oauth2.googleapis.com/token',
       iat: now,
       exp: now + 3600,
-      scope: 'https://www.googleapis.com/auth/firebase.auth https://www.googleapis.com/auth/identitytoolkit',
+      scope: [
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/firebase',
+        'https://www.googleapis.com/auth/identitytoolkit',
+      ].join(' '),
     })
   ).toString('base64url');
 
-  const unsigned = `${header}.${payload}`;
-  const sign = crypto.createSign('RSA-SHA256');
-  sign.update(unsigned);
-  const signature = sign.sign(privateKey, 'base64url');
-  return `${unsigned}.${signature}`;
-}
-
-/** Obtain a short-lived Google OAuth2 access token for the service account. */
-async function getAccessToken(): Promise<string> {
-  const { clientEmail, privateKey } = getFirebaseConfig();
-  if (!clientEmail || !privateKey) {
-    throw new Error('Firebase Admin: FIREBASE_CLIENT_EMAIL or FIREBASE_PRIVATE_KEY not set in environment.');
-  }
-
-  const jwt = buildServiceAccountJwt(clientEmail, privateKey);
+  const signingInput = `${header}.${claimsPayload}`;
+  const signer = crypto.createSign('RSA-SHA256');
+  signer.update(signingInput);
+  const signature = signer.sign(privateKey, 'base64url');
+  const assertion = `${signingInput}.${signature}`;
 
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-      assertion: jwt,
+      assertion,
     }),
   });
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Firebase Admin: Failed to get access token: ${err}`);
+  const data: any = await res.json();
+
+  if (!res.ok || !data.access_token) {
+    throw new Error(
+      `Firebase Admin: Failed to obtain Google access token: ${JSON.stringify(data)}`
+    );
   }
 
-  const data = await res.json();
-  return data.access_token as string;
+  _cachedToken = {
+    token: data.access_token,
+    expiresAt: Date.now() + (data.expires_in || 3600) * 1000,
+  };
+
+  return _cachedToken.token;
 }
 
-// ─── Public API ─────────────────────────────────────────────────────────────
+// ─── Public API ──────────────────────────────────────────────────────────────
 
 /**
- * Creates a Firebase Custom Auth Token for a WhatsApp-verified phone number.
- * Uses the Firebase Auth REST API — no firebase-admin SDK required.
+ * Creates a Firebase Custom Auth Token (self-signed JWT) for the given UID.
+ * This token can be passed directly to `signInWithCustomToken()` on the client.
  */
 export async function createCustomFirebaseToken(
   uid: string,
   claims: Record<string, any> = {}
 ): Promise<string> {
-  const { clientEmail, privateKey } = getFirebaseConfig();
+  const { clientEmail, privateKey } = getConfig();
   if (!clientEmail || !privateKey) {
     throw new Error('Firebase Admin: credentials not configured.');
   }
 
-  // Firebase custom tokens are self-signed JWTs minted by the service account
   const now = Math.floor(Date.now() / 1000);
+
   const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
   const payload = Buffer.from(
     JSON.stringify({
@@ -105,73 +114,73 @@ export async function createCustomFirebaseToken(
     })
   ).toString('base64url');
 
-  const unsigned = `${header}.${payload}`;
-  const sign = crypto.createSign('RSA-SHA256');
-  sign.update(unsigned);
-  const signature = sign.sign(privateKey, 'base64url');
+  const signingInput = `${header}.${payload}`;
+  const signer = crypto.createSign('RSA-SHA256');
+  signer.update(signingInput);
+  const signature = signer.sign(privateKey, 'base64url');
 
-  return `${unsigned}.${signature}`;
+  return `${signingInput}.${signature}`;
 }
 
 /**
- * Retrieves an existing Firebase user by phone number, or creates a new one.
- * Uses the Firebase Auth REST API v1 (Admin scope).
+ * Looks up a Firebase user by phone number, or creates one if not found.
+ * Uses the Firebase Auth REST API (Identity Toolkit v1).
  */
 export async function getOrCreateUserByPhone(
   formattedPhone: string,
   displayName?: string
 ): Promise<{ user: any; isNew: boolean }> {
-  const { projectId } = getFirebaseConfig();
-  const accessToken = await getAccessToken();
-  const baseUrl = `https://identitytoolkit.googleapis.com/v1/projects/${projectId}`;
+  const { projectId } = getConfig();
+  const accessToken = await getGoogleAccessToken();
+  const base = `https://identitytoolkit.googleapis.com/v1/projects/${projectId}`;
+  const authHeader = { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' };
 
-  // 1. Try to look up existing user by phone
-  const lookupRes = await fetch(`${baseUrl}/accounts:lookup`, {
+  // 1. Look up by phone number
+  const lookupRes = await fetch(`${base}/accounts:lookup`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
+    headers: authHeader,
     body: JSON.stringify({ phoneNumber: [formattedPhone] }),
   });
 
   if (lookupRes.ok) {
-    const lookupData = await lookupRes.json();
+    const lookupData: any = await lookupRes.json();
     if (lookupData.users && lookupData.users.length > 0) {
-      const existing = lookupData.users[0];
-      // Update displayName if needed
-      if (displayName && (!existing.displayName || existing.displayName !== displayName)) {
+      const u = lookupData.users[0];
+      // Optionally update displayName
+      if (displayName && (!u.displayName || u.displayName !== displayName)) {
         try {
-          await fetch(`${baseUrl}/accounts:update`, {
+          await fetch(`${base}/accounts:update`, {
             method: 'POST',
-            headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ localId: existing.localId, displayName }),
+            headers: authHeader,
+            body: JSON.stringify({ localId: u.localId, displayName }),
           });
         } catch {}
       }
-      return { user: { uid: existing.localId, phoneNumber: existing.phoneNumber, displayName: existing.displayName }, isNew: false };
+      return {
+        user: { uid: u.localId, phoneNumber: u.phoneNumber, displayName: u.displayName || displayName || null },
+        isNew: false,
+      };
     }
   }
 
   // 2. Create a new user
-  const createRes = await fetch(`${baseUrl}/accounts`, {
+  const createRes = await fetch(`${base}/accounts`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
+    headers: authHeader,
     body: JSON.stringify({
       phoneNumber: formattedPhone,
-      displayName: displayName || undefined,
+      ...(displayName ? { displayName } : {}),
     }),
   });
 
-  if (!createRes.ok) {
-    const errText = await createRes.text();
-    throw new Error(`Firebase Admin: Failed to create user: ${errText}`);
+  const created: any = await createRes.json();
+
+  if (!createRes.ok || created.error) {
+    throw new Error(
+      `Firebase Admin: Failed to create user: ${JSON.stringify(created.error || created)}`
+    );
   }
 
-  const created = await createRes.json();
   return {
     user: { uid: created.localId, phoneNumber: formattedPhone, displayName: displayName || null },
     isNew: true,
