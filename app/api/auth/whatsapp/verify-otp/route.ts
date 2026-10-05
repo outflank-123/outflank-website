@@ -79,21 +79,47 @@ export async function POST(req: NextRequest) {
     // 5. Code is valid! Invalidate OTP immediately to prevent replay attacks
     await deleteOtpRecord(formattedPhone);
 
-    // 6. Get or create user in Firebase via Admin SDK
-    const phoneWithPlus = formattedPhone.startsWith('+') ? formattedPhone : `+${formattedPhone}`;
-    const { user: firebaseUser } = await getOrCreateUserByPhone(phoneWithPlus, name);
-
-    // 7. Store / Upsert customer record in Supabase `customers` table
     const supabase = createAdminClient();
+    const phoneWithPlus = formattedPhone.startsWith('+') ? formattedPhone : `+${formattedPhone}`;
+    
+    // 6. Check if this phone number is already linked to a customer (e.g., from Google auth)
+    let targetUid = '';
+    let targetName = name || null;
+
+    try {
+      const tenDigitPhone = formattedPhone.slice(-10);
+      const { data: existingCustomers } = await supabase
+        .from('customers')
+        .select('firebase_uid, full_name, auth_provider')
+        .like('phone', `%${tenDigitPhone}`)
+        .limit(1);
+
+      if (existingCustomers && existingCustomers.length > 0) {
+        const existingCustomer = existingCustomers[0];
+        targetUid = existingCustomer.firebase_uid;
+        targetName = targetName || existingCustomer.full_name;
+      }
+    } catch (err) {
+      // Ignored: either no customer found or network error
+    }
+
+    // 7. If no existing customer found, create a new one in Firebase
+    if (!targetUid) {
+      const { user: firebaseUser } = await getOrCreateUserByPhone(phoneWithPlus, targetName || undefined);
+      targetUid = firebaseUser.uid;
+      targetName = targetName || firebaseUser.displayName || null;
+    }
+
+    // 8. Store / Upsert customer record in Supabase `customers` table
     try {
       await supabase
         .from('customers')
         .upsert(
           {
-            firebase_uid: firebaseUser.uid,
+            firebase_uid: targetUid,
             phone: formattedPhone,
-            full_name: name || firebaseUser.displayName || null,
-            auth_provider: 'whatsapp',
+            full_name: targetName,
+            auth_provider: 'whatsapp', // Alternatively, you could preserve 'google' if it was already google
             last_login_at: now.toISOString(),
             updated_at: now.toISOString(),
           },
@@ -103,8 +129,8 @@ export async function POST(req: NextRequest) {
       console.warn('[Verify OTP] Customers table upsert skipped:', err);
     }
 
-    // 8. Generate Firebase Custom Authentication Token
-    const customToken = await createCustomFirebaseToken(firebaseUser.uid, {
+    // 9. Generate Firebase Custom Authentication Token
+    const customToken = await createCustomFirebaseToken(targetUid, {
       phone: formattedPhone,
       provider: 'whatsapp',
     });
@@ -113,15 +139,16 @@ export async function POST(req: NextRequest) {
       success: true,
       customToken,
       user: {
-        uid: firebaseUser.uid,
+        uid: targetUid,
         phoneNumber: phoneWithPlus,
-        displayName: name || firebaseUser.displayName || null,
+        displayName: targetName,
       },
     });
   } catch (err: any) {
-    console.error('[Verify OTP] Unexpected exception:', err);
+    console.error('[Verify OTP] Unexpected exception:', err?.message || err);
+    console.error('[Verify OTP] Stack:', err?.stack);
     return NextResponse.json(
-      { error: err?.message || 'Authentication error while verifying code.' },
+      { error: err?.message || 'Authentication error while verifying code.', stack: process.env.NODE_ENV === 'development' ? err?.stack : undefined },
       { status: 500 }
     );
   }
