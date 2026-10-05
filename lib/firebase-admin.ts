@@ -1,16 +1,25 @@
-import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
-import { getAuth, Auth, UserRecord } from 'firebase-admin/auth';
+/**
+ * Firebase Admin SDK — loaded via dynamic import to avoid the
+ * "require() of ES Module" crash in Vercel / Next.js edge bundler.
+ * All functions in this file are async.
+ */
 
-let adminApp: App | null = null;
+let _adminApp: any = null;
 
-function initializeFirebaseAdmin(): App | null {
+async function initializeFirebaseAdmin(): Promise<any> {
+  // Dynamic import avoids the static-bundle ES-module crash on Vercel
+  const { initializeApp, getApps, cert } = await import('firebase-admin/app');
+
   const existingApps = getApps();
   if (existingApps.length > 0 && existingApps[0]) {
     return existingApps[0];
   }
 
   const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-  const projectId = process.env.FIREBASE_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'outflank-store';
+  const projectId =
+    process.env.FIREBASE_PROJECT_ID ||
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
+    'outflank-store';
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   let privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
@@ -24,38 +33,35 @@ function initializeFirebaseAdmin(): App | null {
     }
 
     if (clientEmail && privateKey) {
-      // Clean up the private key (Vercel sometimes adds outer quotes or escapes newlines differently)
+      // Vercel sometimes escapes newlines or wraps the key in quotes
       privateKey = privateKey.replace(/^"|"$/g, '');
       privateKey = privateKey.replace(/\\n/g, '\n');
-      
+
       return initializeApp({
-        credential: cert({
-          projectId,
-          clientEmail,
-          privateKey,
-        }),
+        credential: cert({ projectId, clientEmail, privateKey }),
         projectId,
       });
     }
 
-    // Default initialization or project-only initialization if credentials not yet set
-    return initializeApp({
-      projectId,
-    });
+    // Fallback: project-only (no auth operations will work without credentials)
+    return initializeApp({ projectId });
   } catch (err: any) {
     console.error('[Firebase Admin] Initialization error:', err?.message || err);
     return null;
   }
 }
 
-export function getAdminAuth(): Auth {
-  if (!adminApp) {
-    adminApp = initializeFirebaseAdmin();
+async function getAdminAuthInstance(): Promise<any> {
+  if (!_adminApp) {
+    _adminApp = await initializeFirebaseAdmin();
   }
-  if (!adminApp) {
-    throw new Error('Firebase Admin could not be initialized. Please check your FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY in .env');
+  if (!_adminApp) {
+    throw new Error(
+      'Firebase Admin could not be initialized. Please check FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY in Vercel env vars.'
+    );
   }
-  return getAuth(adminApp);
+  const { getAuth } = await import('firebase-admin/auth');
+  return getAuth(_adminApp);
 }
 
 /**
@@ -65,7 +71,7 @@ export async function createCustomFirebaseToken(
   uid: string,
   claims: Record<string, any> = {}
 ): Promise<string> {
-  const auth = getAdminAuth();
+  const auth = await getAdminAuthInstance();
   return auth.createCustomToken(uid, claims);
 }
 
@@ -75,8 +81,8 @@ export async function createCustomFirebaseToken(
 export async function getOrCreateUserByPhone(
   formattedPhone: string,
   displayName?: string
-): Promise<{ user: UserRecord; isNew: boolean }> {
-  const auth = getAdminAuth();
+): Promise<{ user: any; isNew: boolean }> {
+  const auth = await getAdminAuthInstance();
 
   try {
     const existing = await auth.getUserByPhoneNumber(formattedPhone);
@@ -88,7 +94,6 @@ export async function getOrCreateUserByPhone(
     return { user: existing, isNew: false };
   } catch (err: any) {
     if (err.code === 'auth/user-not-found') {
-      // Create new user with phone number
       const newUser = await auth.createUser({
         phoneNumber: formattedPhone,
         displayName: displayName || undefined,
