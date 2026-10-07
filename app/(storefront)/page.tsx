@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import LandingClient from './LandingClient'
 
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 0 // Fetch fresh data on every request to instantly reflect banner/product changes
 
 export default async function StorefrontPage() {
   const supabase = await createClient()
